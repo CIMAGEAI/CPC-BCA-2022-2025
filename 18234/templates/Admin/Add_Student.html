@@ -1,0 +1,1203 @@
+{% extends "Admin/AdminMaster.html" %}
+
+{% block title %}Add Student | Admin Panel{% endblock %}
+
+{% block head %}
+<style>
+    /* Progress Bar Styles */
+    .multi-step-progress {
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .progress-bar-container {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 15px;
+    }
+    
+    .progress-bar-container::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background-color: #e9ecef;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+    
+    .progress-bar {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 4px;
+        background-color: #4e73df;
+        transform: translateY(-50%);
+        z-index: 2;
+        transition: width 0.3s ease;
+    }
+    
+    .progress-step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 3;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .progress-step.active {
+        background-color: #4e73df;
+        color: white;
+        box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.2);
+    }
+    
+    .progress-step.completed {
+        background-color: #1cc88a;
+        color: white;
+    }
+    
+    .step-label {
+        position: absolute;
+        top: 45px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    .progress-step.active .step-label,
+    .progress-step.completed .step-label {
+        color: #4e73df;
+        font-weight: 600;
+    }
+    
+    /* Form Steps */
+    .form-step {
+        display: none;
+        animation: fadeIn 0.5s ease;
+    }
+    
+    .form-step.active {
+        display: block;
+    }
+    
+    input{
+        height: calc(3.5rem + 2px) !important;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Navigation Buttons */
+    .form-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .btn-next, .btn-prev, .btn-submit {
+        min-width: 120px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-next {
+        background-color: #4e73df;
+        border-color: #4e73df;
+    }
+    
+    .btn-next:hover {
+        background-color: #3a5bbf;
+        border-color: #3a5bbf;
+    }
+    
+    .btn-submit {
+        background-color: #1cc88a;
+        border-color: #1cc88a;
+    }
+    
+    .btn-submit:hover {
+        background-color: #17a673;
+        border-color: #17a673;
+    }
+    
+    /* Form Field Styles */
+    .form-section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #4e73df;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .file-upload-container {
+        margin-bottom: 20px;
+    }
+    
+    .file-upload-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .file-preview {
+        max-width: 100px;
+        max-height: 100px;
+        margin-top: 10px;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        display: none;
+    }
+    
+    /* Validation Styles */
+    .is-invalid {
+        border-color: #e74a3b !important;
+    }
+    
+    .invalid-feedback {
+        display: none;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 0.875em;
+        color: #e74a3b;
+    }
+    
+    .is-invalid ~ .invalid-feedback {
+        display: block;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+        }
+        
+        .step-label {
+            font-size: 10px;
+            top: 35px;
+        }
+        
+        .form-navigation {
+            flex-direction: column-reverse;
+            gap: 10px;
+        }
+        
+        .btn-next, .btn-prev, .btn-submit {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h4 class="mb-4 text-primary">Student Registration</h4>
+                
+                <!-- Progress Bar -->
+                <div class="multi-step-progress">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <div class="progress-step active" data-step="1">
+                            <span>1</span>
+                            <span class="step-label">Personal Info</span>
+                        </div>
+                        <div class="progress-step" data-step="2">
+                            <span>2</span>
+                            <span class="step-label">Address</span>
+                        </div>
+                        <div class="progress-step" data-step="3">
+                            <span>3</span>
+                            <span class="step-label">Parents & Bus</span>
+                        </div>
+                        <div class="progress-step" data-step="4">
+                            <span>4</span>
+                            <span class="step-label">Documents</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="POST" enctype="multipart/form-data" id="studentForm" novalidate>
+                    <!-- Step 1: Personal Information -->
+                    <div class="form-step active" id="step1">
+                        <h5 class="form-section-title">Personal Information</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-dark" id="student_id" name="student_id"
+                                        placeholder="Student ID" value="{{ student_id }}" readonly>
+                                    <label for="student_id">Student ID</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-dark" id="financial_year"
+                                        name="financial_year" placeholder="Academic Year" value="{{ financial_year }}"
+                                        readonly>
+                                    <label for="financial_year">Academic Year</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Full Name"
+                                        value="{{ form_data.name }}" required>
+                                    <label for="name">Full Name</label>
+                                    <div class="invalid-feedback">Please provide student's full name</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Mobile"
+                                        maxlength="10" value="{{ form_data.mobile }}" required>
+                                    <label for="mobile">Mobile Number</label>
+                                    <div class="invalid-feedback">Please provide a valid 10-digit mobile number</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Email Address" value="{{ form_data.email }}" required>
+                                    <label for="email">Email Address</label>
+                                    <div class="invalid-feedback">Please provide a valid email address</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="bgroup" name="bgroup"
+                                        placeholder="Blood Group" value="{{ form_data.bgroup }}" required>
+                                    <label for="bgroup">Blood Group</label>
+                                    <div class="invalid-feedback">Please provide blood group</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="adhar" name="adhar"
+                                        placeholder="Aadhar Number" maxlength="12" value="{{ form_data.adhar }}" required>
+                                    <label for="adhar">Aadhar Number</label>
+                                    <div class="invalid-feedback">Please provide 12-digit Aadhar number</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="gender" name="gender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male" {% if form_data.gender == 'Male' %}selected{% endif %}>Male</option>
+                                        <option value="Female" {% if form_data.gender == 'Female' %}selected{% endif %}>Female</option>
+                                        <option value="Other" {% if form_data.gender == 'Other' %}selected{% endif %}>Other</option>
+                                    </select>
+                                    <label for="gender">Gender</label>
+                                    <div class="invalid-feedback">Please select gender</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="nationality" name="nationality" required>
+                                        <option value="">Select Nationality</option>
+                                        <option value="Indian" {% if form_data.nationality == 'Indian' %}selected{% endif %}>Indian</option>
+                                        <option value="Others" {% if form_data.nationality == 'Others' %}selected{% endif %}>Others</option>
+                                    </select>
+                                    <label for="nationality">Nationality</label>
+                                    <div class="invalid-feedback">Please select nationality</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="religion" name="religion" required>
+                                        <option value="">Select Religion</option>
+                                        <option value="Hindu" {% if form_data.religion == 'Hindu' %}selected{% endif %}>Hindu</option>
+                                        <option value="Sikh" {% if form_data.religion == 'Sikh' %}selected{% endif %}>Sikh</option>
+                                        <option value="Christan" {% if form_data.religion == 'Christan' %}selected{% endif %}>Christan</option>
+                                        <option value="Muslim" {% if form_data.religion == 'Muslim' %}selected{% endif %}>Muslim</option>
+                                    </select>
+                                    <label for="religion">Religion</label>
+                                    <div class="invalid-feedback">Please select religion</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="caste" name="caste"
+                                        placeholder="Caste" value="{{ form_data.caste }}" required>
+                                    <label for="caste">Caste</label>
+                                    <div class="invalid-feedback">Please provide caste</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="category" name="category" required>
+                                        <option value="">Select Category</option>
+                                        <option value="BC" {% if form_data.category == 'BC' %}selected{% endif %}>BC</option>
+                                        <option value="EWS" {% if form_data.category == 'EWS' %}selected{% endif %}>EWS</option>
+                                        <option value="GEN" {% if form_data.category == 'GEN' %}selected{% endif %}>GEN</option>
+                                        <option value="OBC" {% if form_data.category == 'OBC' %}selected{% endif %}>OBC</option>
+                                        <option value="SC" {% if form_data.category == 'SC' %}selected{% endif %}>SC</option>
+                                        <option value="ST" {% if form_data.category == 'ST' %}selected{% endif %}>ST</option>
+                                    </select>
+                                    <label for="category">Category</label>
+                                    <div class="invalid-feedback">Please select category</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="dob" name="dob" value="{{ form_data.dob }}" required>
+                                    <label for="dob">Date of Birth</label>
+                                    <div class="invalid-feedback">Please provide date of birth</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="adate" name="adate" value="{{ form_data.adate }}" required>
+                                    <label for="adate">Admission Date</label>
+                                    <div class="invalid-feedback">Please provide admission date</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="class" name="class" required>
+                                        <option value="">Select Class</option>
+                                        {% for class in classes %}
+                                        <option value="{{ class }}" {% if form_data.class == class %}selected{% endif %}>
+                                            {{ class }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="class">Class</label>
+                                    <div class="invalid-feedback">Please select class</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="section" name="section" required>
+                                        <option value="">Select Section</option>
+                                        {% for section in sections %}
+                                        <option value="{{ section }}" {% if form_data.section == section %}selected{% endif %}>
+                                            {{ section }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="section">Section</label>
+                                    <div class="invalid-feedback">Please select section</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="roll" name="roll" placeholder="Roll Number"
+                                        value="{{ form_data.roll }}" required>
+                                    <label for="roll">Roll Number</label>
+                                    <div class="invalid-feedback">Please provide roll number</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Address Information -->
+                    <div class="form-step" id="step2">
+                        <h5 class="form-section-title">Temporary Address</h5>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="tlocation" name="tlocation"
+                                        placeholder="Location" value="{{ form_data.tlocation }}">
+                                    <label for="tlocation">Location</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="tcity" name="tcity" placeholder="City"
+                                        value="{{ form_data.tcity }}">
+                                    <label for="tcity">City</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="tpin" name="tpin" placeholder="PIN Code"
+                                        maxlength="6" value="{{ form_data.tpin }}">
+                                    <label for="tpin">PIN Code</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="tstate" name="tstate" placeholder="State"
+                                        value="{{ form_data.tstate }}">
+                                    <label for="tstate">State</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="form-section-title">Permanent Address</h5>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="plocation" name="plocation"
+                                        placeholder="Location" value="{{ form_data.plocation }}" required>
+                                    <label for="plocation">Location</label>
+                                    <div class="invalid-feedback">Please provide permanent location</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="pcity" name="pcity" placeholder="City"
+                                        value="{{ form_data.pcity }}" required>
+                                    <label for="pcity">City</label>
+                                    <div class="invalid-feedback">Please provide permanent city</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="ppin" name="ppin" placeholder="PIN Code"
+                                        maxlength="6" value="{{ form_data.ppin }}" required>
+                                    <label for="ppin">PIN Code</label>
+                                    <div class="invalid-feedback">Please provide 6-digit PIN code</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="pstate" name="pstate" placeholder="State"
+                                        value="{{ form_data.pstate }}" required>
+                                    <label for="pstate">State</label>
+                                    <div class="invalid-feedback">Please provide permanent state</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Parents & Bus Information -->
+                    <div class="form-step" id="step3">
+                        <h5 class="form-section-title">Father's Information</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="fathername" name="fathername"
+                                        placeholder="Father's Name" value="{{ form_data.fathername }}" required>
+                                    <label for="fathername">Father's Name</label>
+                                    <div class="invalid-feedback">Please provide father's name</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="fathermobile" name="fathermobile"
+                                        placeholder="Father's Mobile" maxlength="10" value="{{ form_data.fathermobile }}">
+                                    <label for="fathermobile">Father's Mobile</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="fatherquali" name="fatherquali"
+                                        placeholder="Father's Qualification" value="{{ form_data.fatherquali }}">
+                                    <label for="fatherquali">Qualification</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="fatheroccupation" name="fatheroccupation"
+                                        placeholder="Father's Occupation" value="{{ form_data.fatheroccupation }}">
+                                    <label for="fatheroccupation">Occupation</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="fatherannual" name="fatherannual"
+                                        placeholder="Father's Annual Income" value="{{ form_data.fatherannual }}">
+                                    <label for="fatherannual">Annual Income</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="form-section-title">Mother's Information</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="mothername" name="mothername"
+                                        placeholder="Mother's Name" value="{{ form_data.mothername }}" required>
+                                    <label for="mothername">Mother's Name</label>
+                                    <div class="invalid-feedback">Please provide mother's name</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="mothermobile" name="mothermobile"
+                                        placeholder="Mother's Mobile" maxlength="10" value="{{ form_data.mothermobile }}">
+                                    <label for="mothermobile">Mother's Mobile</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="motherquali" name="motherquali"
+                                        placeholder="Mother's Qualification" value="{{ form_data.motherquali }}">
+                                    <label for="motherquali">Qualification</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="motheroccupation" name="motheroccupation"
+                                        placeholder="Mother's Occupation" value="{{ form_data.motheroccupation }}">
+                                    <label for="motheroccupation">Occupation</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="motherannual" name="motherannual"
+                                        placeholder="Mother's Annual Income" value="{{ form_data.motherannual }}">
+                                    <label for="motherannual">Annual Income</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="form-section-title">Guardian Information</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="localgaurdaian" name="localgaurdaian"
+                                        placeholder="Local Guardian" value="{{ form_data.localgaurdaian }}">
+                                    <label for="localgaurdaian">Local Guardian</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="relationship" name="relationship"
+                                        placeholder="Relationship" value="{{ form_data.relationship }}">
+                                    <label for="relationship">Relationship</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="guardianmobile" name="guardianmobile"
+                                        placeholder="Guardian Mobile" maxlength="10" value="{{ form_data.guardianmobile }}">
+                                    <label for="guardianmobile">Guardian Mobile</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="form-section-title">Bus Facility</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="busfacility" name="busfacility" required>
+                                        <option value="">Select Bus Facility</option>
+                                        <option value="Yes" {% if form_data.busfacility == 'Yes' %}selected{% endif %}>Yes</option>
+                                        <option value="No" {% if form_data.busfacility == 'No' %}selected{% endif %}>No</option>
+                                    </select>
+                                    <label for="busfacility">Bus Facility</label>
+                                    <div class="invalid-feedback">Please select bus facility option</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3" id="busnumber_div" style="display: {% if form_data.busfacility == 'Yes' %}block{% else %}none{% endif %}">
+                                <div class="form-floating">
+                                    <select class="form-select" id="busnumber" name="busnumber" {% if form_data.busfacility == 'Yes' %}required{% endif %}>
+                                        <option value="">Select Bus Number</option>
+                                        {% for number in bus_numbers %}
+                                        <option value="{{ number }}" {% if form_data.busnumber == number %}selected{% endif %}>
+                                            {{ number }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="busnumber">Bus Number</label>
+                                    <div class="invalid-feedback">Please select bus number</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3" id="busroute_div" style="display: {% if form_data.busfacility == 'Yes' %}block{% else %}none{% endif %}">
+                                <div class="form-floating">
+                                    <select class="form-select" id="busroute" name="busroute" {% if form_data.busfacility == 'Yes' %}required{% endif %}>
+                                        <option value="">Select Bus Route</option>
+                                        {% if form_data.busroute %}
+                                        <option value="{{ form_data.busroute }}" selected>{{ form_data.busroute }}</option>
+                                        {% endif %}
+                                    </select>
+                                    <label for="busroute">Bus Route</label>
+                                    <div class="invalid-feedback">Please select bus route</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3" id="busfee_div" style="display: {% if form_data.busfacility == 'Yes' %}block{% else %}none{% endif %}">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="busfee" name="busfee" placeholder="Bus Fee"
+                                        value="{{ form_data.busfee }}">
+                                    <label for="busfee">Bus Fee</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4: Documents & Images -->
+                    <div class="form-step" id="step4">
+                        <h5 class="form-section-title">Required Documents</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container">
+                                    <label for="student_image" class="file-upload-label">Student Photo</label>
+                                    <input type="file" class="form-control" id="student_image" name="student_image" required
+                                        accept=".jpg,.jpeg,.png">
+                                    <img id="student_image_preview" class="file-preview">
+                                    <div class="invalid-feedback">Please upload student photo (JPG/PNG)</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container">
+                                    <label for="dob_cert" class="file-upload-label">DOB Certificate</label>
+                                    <input type="file" class="form-control" id="dob_cert" name="dob_cert" required
+                                        accept=".jpg,.jpeg,.png,.pdf">
+                                    <img id="dob_cert_preview" class="file-preview">
+                                    <div class="invalid-feedback">Please upload DOB certificate</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container">
+                                    <label for="adhar_image" class="file-upload-label">Aadhar Card</label>
+                                    <input type="file" class="form-control" id="adhar_image" name="adhar_image" required
+                                        accept=".jpg,.jpeg,.png,.pdf">
+                                    <img id="adhar_image_preview" class="file-preview">
+                                    <div class="invalid-feedback">Please upload Aadhar card</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container">
+                                    <label for="leaving_cert" class="file-upload-label">Leaving Certificate</label>
+                                    <input type="file" class="form-control" id="leaving_cert" name="leaving_cert"
+                                        accept=".jpg,.jpeg,.png,.pdf">
+                                    <img id="leaving_cert_preview" class="file-preview">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="file-upload-container">
+                                    <label for="qual_cert" class="file-upload-label">Qualification Certificate</label>
+                                    <input type="file" class="form-control" id="qual_cert" name="qual_cert"
+                                        accept=".jpg,.jpeg,.png,.pdf">
+                                    <img id="qual_cert_preview" class="file-preview">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Buttons -->
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-secondary btn-prev" id="prevBtn" style="display: none;">
+                            <i class="fas fa-arrow-left me-2"></i>Back
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next" id="nextBtn">
+                            Next<i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                        <button type="submit" class="btn btn-success btn-submit" id="submitBtn" style="display: none;">
+                            <i class="fas fa-save me-2"></i>Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form elements
+    const form = document.getElementById('studentForm');
+    const steps = document.querySelectorAll('.form-step');
+    const progressSteps = document.querySelectorAll('.progress-step');
+    const progressBar = document.getElementById('progressBar');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    let currentStep = 0;
+    
+    // File storage management
+    const fileStorage = {
+        getStorageKey: function(inputId) {
+            const studentId = document.getElementById('student_id').value;
+            return `student_${studentId}_${inputId}`;
+        },
+
+        storeFile: function(inputId) {
+            const input = document.getElementById(inputId);
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const key = fileStorage.getStorageKey(inputId);
+                    sessionStorage.setItem(key, e.target.result);
+                    sessionStorage.setItem(key + '_name', file.name);
+                    sessionStorage.setItem(key + '_type', file.type);
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+
+        restoreFile: function(inputId) {
+            const key = fileStorage.getStorageKey(inputId);
+            const fileData = sessionStorage.getItem(key);
+            const fileName = sessionStorage.getItem(key + '_name');
+            const fileType = sessionStorage.getItem(key + '_type');
+            
+            if (fileData && fileName) {
+                const input = document.getElementById(inputId);
+                const preview = document.getElementById(inputId + '_preview');
+                
+                // Create a blob from the data URL
+                const blob = this.dataURLtoBlob(fileData);
+                const file = new File([blob], fileName, { type: fileType });
+                
+                // Create a new DataTransfer and add the file
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                
+                // Assign the files to the input
+                input.files = dataTransfer.files;
+                
+                // Update the preview
+                if (preview) {
+                    preview.src = fileData;
+                    preview.style.display = 'block';
+                }
+            }
+        },
+
+        dataURLtoBlob: function(dataURL) {
+            const arr = dataURL.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
+        },
+
+        storeAllFiles: function() {
+            const fileInputs = ['student_image', 'dob_cert', 'adhar_image', 'leaving_cert', 'qual_cert'];
+            fileInputs.forEach(id => this.storeFile(id));
+        },
+
+        restoreAllFiles: function() {
+            const fileInputs = ['student_image', 'dob_cert', 'adhar_image', 'leaving_cert', 'qual_cert'];
+            fileInputs.forEach(id => this.restoreFile(id));
+        },
+
+        clearFilesForCurrentStudent: function() {
+            const fileInputs = ['student_image', 'dob_cert', 'adhar_image', 'leaving_cert', 'qual_cert'];
+            fileInputs.forEach(inputId => {
+                const key = this.getStorageKey(inputId);
+                sessionStorage.removeItem(key);
+                sessionStorage.removeItem(key + '_name');
+                sessionStorage.removeItem(key + '_type');
+                
+                // Clear preview and input
+                const preview = document.getElementById(inputId + '_preview');
+                if (preview) {
+                    preview.src = '';
+                    preview.style.display = 'none';
+                }
+                document.getElementById(inputId).value = '';
+            });
+        }
+    };
+    
+    // Initialize form
+    function init() {
+        showStep(currentStep);
+        updateProgressBar();
+        setupEventListeners();
+        fileStorage.restoreAllFiles(); // Restore any previously stored files
+    }
+    
+    // Show specific step
+    function showStep(stepIndex) {
+        steps.forEach((step, index) => {
+            step.classList.toggle('active', index === stepIndex);
+        });
+        
+        // Update button visibility
+        prevBtn.style.display = stepIndex === 0 ? 'none' : 'block';
+        nextBtn.style.display = stepIndex === steps.length - 1 ? 'none' : 'block';
+        submitBtn.style.display = stepIndex === steps.length - 1 ? 'block' : 'none';
+    }
+    
+    // Update progress bar
+    function updateProgressBar() {
+        // Update progress steps
+        progressSteps.forEach((step, index) => {
+            if (index < currentStep) {
+                step.classList.add('completed');
+                step.classList.remove('active');
+            } else if (index === currentStep) {
+                step.classList.add('active');
+                step.classList.remove('completed');
+            } else {
+                step.classList.remove('active', 'completed');
+            }
+        });
+        
+        // Update progress bar width
+        const progressPercentage = (currentStep / (steps.length - 1)) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
+    }
+    
+    // Validate current step before proceeding
+    function validateStep(stepIndex) {
+        const currentStep = steps[stepIndex];
+        const inputs = currentStep.querySelectorAll('input[required], select[required], textarea[required]');
+        let isValid = true;
+        
+        // Reset validation
+        inputs.forEach(input => {
+            input.classList.remove('is-invalid');
+        });
+        
+        // Validate each required field
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                input.classList.add('is-invalid');
+                isValid = false;
+            }
+            
+            // Special validation for file inputs
+            if (input.type === 'file' && input.required) {
+                if (!input.files || input.files.length === 0) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                }
+            }
+            
+            // Validate mobile numbers
+            if (input.id === 'mobile' || input.id === 'fathermobile' || 
+                input.id === 'mothermobile' || input.id === 'guardianmobile') {
+                if (input.value && !/^\d{10}$/.test(input.value)) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                }
+            }
+            
+            // Validate Aadhar number
+            if (input.id === 'adhar' && !/^\d{12}$/.test(input.value)) {
+                input.classList.add('is-invalid');
+                isValid = false;
+            }
+            
+            // Validate PIN codes
+            if ((input.id === 'ppin' || input.id === 'tpin') && input.value && !/^\d{6}$/.test(input.value)) {
+                input.classList.add('is-invalid');
+                isValid = false;
+            }
+        });
+        
+        return isValid;
+    }
+    
+    // Navigation functions
+    function goToNextStep() {
+        if (validateStep(currentStep)) {
+            // Store files before moving to next step
+            fileStorage.storeAllFiles();
+            
+            currentStep++;
+            showStep(currentStep);
+            updateProgressBar();
+            
+            // Scroll to top of form
+            window.scrollTo({
+                top: form.offsetTop - 20,
+                behavior: 'smooth'
+            });
+        }
+    }
+    
+    function goToPrevStep() {
+        currentStep--;
+        showStep(currentStep);
+        updateProgressBar();
+        
+        // Scroll to top of form
+        window.scrollTo({
+            top: form.offsetTop - 20,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Progress step click handler
+    function handleProgressStepClick(e) {
+        const stepIndex = parseInt(e.currentTarget.getAttribute('data-step')) - 1;
+        
+        // Only allow jumping to completed steps
+        if (stepIndex <= currentStep) {
+            currentStep = stepIndex;
+            showStep(currentStep);
+            updateProgressBar();
+        }
+    }
+    
+    // Setup event listeners
+    function setupEventListeners() {
+        // Navigation buttons
+        nextBtn.addEventListener('click', goToNextStep);
+        prevBtn.addEventListener('click', goToPrevStep);
+        
+        // Progress step clicks
+        progressSteps.forEach(step => {
+            step.addEventListener('click', handleProgressStepClick);
+        });
+        
+        // Number validation for numeric fields
+        const numericFields = ['mobile', 'adhar', 'tpin', 'ppin', 'fathermobile', 'mothermobile', 'guardianmobile'];
+        numericFields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field) {
+                field.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            }
+        });
+        
+        // File preview handlers
+        const fileInputs = {
+            'student_image': 'student_image_preview',
+            'dob_cert': 'dob_cert_preview',
+            'adhar_image': 'adhar_image_preview',
+            'leaving_cert': 'leaving_cert_preview',
+            'qual_cert': 'qual_cert_preview'
+        };
+        
+        Object.entries(fileInputs).forEach(([inputId, previewId]) => {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            
+            if (input && preview) {
+                input.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        preview.src = '';
+                        preview.style.display = 'none';
+                    }
+                });
+            }
+        });
+        
+        // Bus facility toggle
+        const busFacilitySelect = document.getElementById('busfacility');
+        if (busFacilitySelect) {
+            busFacilitySelect.addEventListener('change', function() {
+                const busNumberDiv = document.getElementById('busnumber_div');
+                const busRouteDiv = document.getElementById('busroute_div');
+                const busFeeDiv = document.getElementById('busfee_div');
+                
+                if (this.value === 'Yes') {
+                    busNumberDiv.style.display = 'block';
+                    busRouteDiv.style.display = 'block';
+                    busFeeDiv.style.display = 'block';
+                    
+                    // Make fields required
+                    document.getElementById('busnumber').required = true;
+                    document.getElementById('busroute').required = true;
+                } else {
+                    busNumberDiv.style.display = 'none';
+                    busRouteDiv.style.display = 'none';
+                    busFeeDiv.style.display = 'none';
+                    
+                    // Remove required attribute
+                    document.getElementById('busnumber').required = false;
+                    document.getElementById('busroute').required = false;
+                }
+            });
+        }
+        
+        // AJAX for bus routes
+        const busNumberSelect = document.getElementById('busnumber');
+        if (busNumberSelect) {
+            busNumberSelect.addEventListener('change', function() {
+                const busNumber = this.value;
+                if (busNumber) {
+                    fetch(`/admin/get-bus-routes/${busNumber}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const routeSelect = document.getElementById('busroute');
+                            routeSelect.innerHTML = '<option value="">Select Bus Route</option>';
+                            
+                            if (data.routes && data.routes.length > 0) {
+                                data.routes.forEach(route => {
+                                    const option = document.createElement('option');
+                                    option.value = route;
+                                    option.textContent = route;
+                                    routeSelect.appendChild(option);
+                                });
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        }
+        
+        // AJAX for bus fee
+        const busRouteSelect = document.getElementById('busroute');
+        if (busRouteSelect) {
+            busRouteSelect.addEventListener('change', function() {
+                const busNumber = document.getElementById('busnumber').value;
+                const route = this.value;
+                if (busNumber && route) {
+                    fetch(`/admin/get-bus-fee/${busNumber}/${route}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.fee) {
+                                document.getElementById('busfee').value = data.fee;
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        }
+        
+        // Roll number handling
+        const classSelect = document.getElementById('class');
+        const sectionSelect = document.getElementById('section');
+        if (classSelect && sectionSelect) {
+            classSelect.addEventListener('change', function() {
+                sectionSelect.value = '';
+                document.getElementById('roll').value = '';
+            });
+            
+            sectionSelect.addEventListener('change', function() {
+                const classVal = classSelect.value;
+                const sectionVal = this.value;
+                if (classVal && sectionVal) {
+                    fetch(`/admin/get-next-roll/${classVal}/${sectionVal}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.next_roll) {
+                                document.getElementById('roll').value = data.next_roll;
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        }
+        
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            // Validate all steps before submission
+            let allValid = true;
+            steps.forEach((step, index) => {
+                if (!validateStep(index)) {
+                    allValid = false;
+                    // Show the first invalid step
+                    if (allValid) {
+                        currentStep = index;
+                        showStep(currentStep);
+                        updateProgressBar();
+                    }
+                }
+            });
+            
+            if (!allValid) {
+                e.preventDefault();
+                alert('Please fill all required fields before submitting.');
+            } else {
+                // Store files before submission
+                fileStorage.storeAllFiles();
+                
+                // Set up handler for successful submission
+                const form = this;
+                const originalSubmit = form.submit.bind(form);
+                
+                form.submit = function() {
+                    // Clear files only after successful submission
+                    fetch(form.action, {
+                        method: form.method,
+                        body: new FormData(form)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            fileStorage.clearFilesForCurrentStudent();
+                            window.location.href = response.url;
+                        } else {
+                            // If submission fails (like email exists), keep the files
+                            return response.text().then(text => {
+                                throw new Error(text);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Show error message to user
+                        alert('Submission failed: ' + error.message);
+                    });
+                };
+            }
+        });
+    }
+    
+    // Initialize the form
+    init();
+});
+</script>
+{% endblock %}

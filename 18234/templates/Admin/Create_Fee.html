@@ -1,0 +1,267 @@
+{% extends "Admin/AdminMaster.html" %}
+
+{% block title %}Create Fee | Admin Panel{% endblock %}
+
+{% block head %}
+<style>
+    .form-floating {
+        margin-bottom: 1rem;
+    }
+    .table-responsive {
+        overflow-x: auto;
+    }
+    @media (max-width: 768px) {
+        .table-responsive {
+            width: 100%;
+            margin-bottom: 1rem;
+            overflow-y: hidden;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+            border: 1px solid #ddd;
+        }
+    }
+    .action-btn {
+        margin: 0 5px;
+    }
+    select.form-select {
+        background-color: #000;
+        color: white;
+        appearance: auto !important;
+    }
+</style>
+<script>
+    function validateNumber(event) {
+        const keyCode = event.keyCode || event.which;
+        const keyValue = String.fromCharCode(keyCode);
+        
+        // Allow numbers, backspace, delete, tab, escape, enter
+        if (/[0-9]/.test(keyValue) || 
+            keyCode === 8 || keyCode === 46 || 
+            keyCode === 9 || keyCode === 27 || 
+            keyCode === 13) {
+            return true;
+        }
+        
+        event.preventDefault();
+        return false;
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Add Fee Structure</h6>
+                <form method="POST" id="feeForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="fee_name" name="fee_name" required>
+                                    <option value="">--Select Fee Name--</option>
+                                    {% for name in fee_names %}
+                                        <option value="{{ name }}" {% if fee_data.fee_name == name %}selected{% endif %}>
+                                            {{ name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <label for="fee_name">Fee Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="class_name" name="class_name" required>
+                                    <option value="">--Select Class--</option>
+                                    {% for class in classes %}
+                                        <option value="{{ class }}" {% if fee_data.class_name == class %}selected{% endif %}>
+                                            {{ class }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <label for="class_name">Class Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="fee_type" name="fee_type" required>
+                                    <option value="">--Select Fee Type--</option>
+                                    {% for type in fee_types %}
+                                        <option value="{{ type }}" {% if fee_data.fee_type == type %}selected{% endif %}>
+                                            {{ type }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <label for="fee_type">Fee Type</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="fee_price" name="fee_price" 
+                                       placeholder="Fee Price" required
+                                       value="{{ fee_data.fee_price if fee_data.fee_price else '' }}"
+                                       onkeypress="return validateNumber(event)">
+                                <label for="fee_price">Fee Price</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-3">
+                                <button type="submit" name="save" class="btn btn-primary w-100">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Fee Structure Details</h6>
+                <div class="table-responsive">
+                    {% if fee_records %}
+                        <table class="table table-hover table-bordered custom-grid-bg">
+                            <thead>
+                                <tr class="bg-primary text-white">
+                                    <th>Actions</th>
+                                    <th>S.No.</th>
+                                    <th>Class</th>
+                                    <th>Fee Name</th>
+                                    <th>Fee Type</th>
+                                    <th>Fee</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for fee in fee_records %}
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-sm btn-info action-btn edit-btn" 
+                                                data-id="{{ fee.ID }}"
+                                                data-fee-name="{{ fee.FeeName }}"
+                                                data-class="{{ fee.Class }}"
+                                                data-fee-type="{{ fee.FeeType }}"
+                                                data-fee-price="{{ fee.Fee }}">
+                                            Edit
+                                        </button>
+                                        <form method="POST" action="{{ url_for('admin.create_fee.delete_fee', fee_id=fee.ID) }}"
+                                              style="display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-primary action-btn"
+                                                    onclick="return confirm('Are you sure you want to delete this fee structure?')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ fee.Class }}</td>
+                                    <td>{{ fee.FeeName }}</td>
+                                    <td>{{ fee.FeeType }}</td>
+                                    <td>{{ fee.Fee }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <h4 class="text-center text-danger">No fee records found</h4>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-secondary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Fee Structure</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" id="editForm">
+                <input type="hidden" id="edit_fee_id" name="fee_id">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="edit_fee_type" name="updated_fee_type" required>
+                            <option value="">--Select Fee Type--</option>
+                            {% for type in edit_fee_types %}
+                                <option value="{{ type }}">{{ type }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="edit_fee_type">Fee Type</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="edit_fee_price" name="updated_fee_price" 
+                               placeholder="Fee Price" required
+                               onkeypress="return validateNumber(event)">
+                        <label for="edit_fee_price">Fee Price</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="update" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Handle edit button clicks
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.getElementById('edit_fee_id').value = this.dataset.id;
+            document.getElementById('edit_fee_price').value = this.dataset.feePrice;
+            
+            // Set the selected fee type
+            const feeTypeSelect = document.getElementById('edit_fee_type');
+            const currentFeeType = this.dataset.feeType;
+            
+            for (let i = 0; i < feeTypeSelect.options.length; i++) {
+                if (feeTypeSelect.options[i].value === currentFeeType) {
+                    feeTypeSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            // Show modal
+            const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            editModal.show();
+        });
+    });
+
+    // Form validation
+    document.getElementById('feeForm').addEventListener('submit', function(e) {
+        const feeName = document.getElementById('fee_name').value;
+        const className = document.getElementById('class_name').value;
+        const feeType = document.getElementById('fee_type').value;
+        const feePrice = document.getElementById('fee_price').value;
+        
+        if (!feeName || !className || !feeType || !feePrice) {
+            e.preventDefault();
+            alert('All fields are required');
+            return false;
+        }
+        
+        if (!/^\d+$/.test(feePrice)) {
+            e.preventDefault();
+            alert('Fee price must be a number');
+            return false;
+        }
+        
+        return true;
+    });
+</script>
+{% endblock %}

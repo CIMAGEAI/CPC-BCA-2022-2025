@@ -1,0 +1,270 @@
+{% extends "Admin/AdminMaster.html" %}
+{% block title %}Monthly Fee Receipt{% endblock %}
+
+{% block content %}
+<style>
+    .secondtable td {
+        border: 1px solid black;
+        color: black;
+    }
+    table th {
+        color: black;
+    }
+    table td {
+        color: black;
+    }
+    @media (max-width: 767px) {
+        .schooldetails {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .schoollogo {
+            width: 100% !important;
+        }
+        .schoolcontent {
+            width: 100% !important;
+        }
+        .schoolcontent p {
+            font-size: 15px;
+        }
+        .signature {
+            margin-top: 15px;
+        }
+        .stamp p {
+            text-align: left !important;
+        }
+    }
+</style>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="bg-secondary rounded h-100 p-4">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="bg-white rounded h-100 p-4" id="print">
+                        <div class="schooldetails d-flex justify-content-center">
+                            {% if school_details %}
+                            <div class="schoollogo d-flex justify-content-center" style="width: 20%">
+                                <img src="{{ url_for('static', filename='AdminAssets/Image/' + school_details.Image) }}" 
+                                     style="height: 100px; width: 100px" />
+                            </div>
+                            <div class="schoolcontent d-inline-flex justify-content-center align-items-center" style="width: 80%">
+                                <div>
+                                    <h3 style="text-align: center; color: black !important; margin-bottom: 0; line-height: 1">
+                                        {{ school_details.Name }}
+                                    </h3>
+                                    <p style="text-align: center">
+                                        <b>Address:</b> {{ school_details.Address }} &nbsp;
+                                        <b>Mobile:</b> {{ school_details.Mobile }} &nbsp; 
+                                        <b>Affiliation No:</b> {{ school_details.Affiliation_Number }}
+                                    </p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <hr style="margin: 3px 0" />
+                        <h5 style="text-align: center; color: black;">Monthly Fee Receipt</h5>
+                        <div class="table-responsive">
+                            {% if student_details %}
+                            <table class="table">
+                                <tr>
+                                    <th>Receipt No:</th>
+                                    <td>{{ student_details.InvoiceNo }}</td>
+                                    <th>Student ID:</th>
+                                    <td>{{ student_details.StudentID }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Name:</th>
+                                    <td>{{ student_details.Name }}</td>
+                                    <th>Class</th>
+                                    <td>{{ student_details.Class }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Section</th>
+                                    <td>{{ student_details.Section }}</td>
+                                    <th>Roll No</th>
+                                    <td>{{ student_details.Roll }}</td>
+                                </tr>
+                            </table>
+                            {% endif %}
+
+                            <table class="table secondtable" border="1">
+                                {% for fee in fee_details %}
+                                <tr>
+                                    <th>{{ fee.FeeHead }} &nbsp ({{ fee.Months }})</th>
+                                    <td>{{ "%.2f"|format(fee.TotalFeeAmount) }}</td>
+                                </tr>
+                                {% endfor %}
+                                
+                                {% if other_details %}
+                                <tr>
+                                    <th>Total Amount</th>
+                                    <td>{{ "%.2f"|format(other_details.Amount) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Previous Due</th>
+                                    <td>{{ "%.2f"|format(other_details.PreviousDues) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Late Fine</th>
+                                    <td>{{ "%.2f"|format(other_details.LateFine) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Concession Amount</th>
+                                    <td>{{ "%.2f"|format(other_details.ConcessionAmount or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <th style="font-weight:bold">Net Amount</th>
+                                    <td style="font-weight:bold">{{ "%.2f"|format(other_details.TotalAmount) }}</td>
+                                </tr>
+                                <tr>
+                                    <th style="font-weight:bold">Paid Amount</th>
+                                    <td style="font-weight:bold">{{ "%.2f"|format(other_details.PaidAmount) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Dues Amount</th>
+                                    <td>{{ "%.2f"|format(other_details.Dues) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Pay Mode</th>
+                                    <td>{{ other_details.PayType }}</td>
+                                </tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                        <div class="row">
+                            <p style="color: black; font-weight: 600; text-align: right">
+                                {{ other_details.PaidInWords }} ONLY /.
+                            </p>
+                        </div>
+                        <div class="row signature">
+                            <div class="col-sm-6">
+                                <p style="color: black; margin-bottom: 2px">Authority Signature's</p>
+                                <p style="color: black">Date: {{ other_details.Date }}</p>
+                            </div>
+                            <div class="col-sm-6 stamp">
+                                <p style="text-align: right; color: black">School Stamp</p>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                 <div class="row mt-2">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-danger w-100" onclick="printDiv()">Print Report</button>
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function printDiv() {
+        var printContents = document.getElementById("print").outerHTML;
+        var printWindow = window.open('', '_blank');
+
+        printWindow.document.write('<html><head><title>Monthly Fee Receipt</title>');
+
+        // Bootstrap CSS
+        printWindow.document.write('<link rel="stylesheet" href="{{ url_for("static", filename="AdminAssets/css/bootstrap.min.css") }}" type="text/css" />');
+
+        // Custom styles
+        printWindow.document.write('<style>');
+        printWindow.document.write(`
+
+            body {
+                font-family: Arial, sans-serif;
+                background-color: white !important;
+                padding: 20px;
+            }
+
+            .secondtable td {
+                border: 1px solid black;
+                color: black;
+            }
+
+            table th, table td {
+                color: black;
+            }
+
+            .schooldetails {
+                display: flex;
+                justify-content: center;
+            }
+
+            .schoollogo {
+                width: 20%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .schoolcontent {
+                width: 80%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .schoolcontent h3 {
+                margin-bottom: 0;
+                line-height: 1;
+            }
+
+            .schoolcontent p {
+                font-size: 15px;
+                text-align: center;
+            }
+
+            .signature {
+                margin-top: 15px;
+            }
+
+            .stamp p {
+                text-align: right;
+            }
+
+            @media (max-width: 767px) {
+                .schooldetails {
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .schoollogo,
+                .schoolcontent {
+                    width: 100% !important;
+                }
+
+                .schoolcontent p {
+                    font-size: 15px;
+                }
+
+                .stamp p {
+                    text-align: left !important;
+                }
+            }
+
+        `);
+        printWindow.document.write('</style>');
+
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContents);
+        printWindow.document.write('</body></html>');
+
+        printWindow.document.close();
+
+        printWindow.focus();
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 500);
+    }
+</script>
+
+{% endblock %}
