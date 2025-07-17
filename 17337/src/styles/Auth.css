@@ -1,0 +1,377 @@
+.auth-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #18191c;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+
+.login-container {
+  width: 100%;
+  max-width: 480px; 
+  padding: 40px; 
+  background-color: #232323;
+  border: 1px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.login-header h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  width: 100%;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #bbb;
+  font-size: 0.9rem;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"],
+.login-form input[type="text"] {
+  width: 100%;
+  height: 48px;
+  padding: 0 15px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background-color: #18191c;
+  color: #fff;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-form .form-group:focus-within label {
+    color: #4CAF50;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25);
+}
+
+.login-form input[readonly] {
+  background-color: #2a2a2a;
+  cursor: not-allowed;
+  color: #888;
+}
+
+.email-input-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.otp-button {
+  height: 48px;
+  padding: 0 15px;
+  background-color: #3e4a59;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+  transition: background-color 0.3s;
+}
+
+.otp-button:hover {
+  background-color: #4a5869;
+}
+
+.otp-button:disabled {
+  background-color: #2a2a2a;
+  cursor: wait;
+}
+
+.login-form button[type="submit"] {
+  width: 100%;
+  height: 48px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.login-form button[type="submit"]:hover:not(:disabled) {
+  background-color: #5cb85c;
+  transform: translateY(-2px);
+}
+
+.login-form button[type="submit"]:disabled {
+  background-color: #555;
+  cursor: wait;
+}
+
+.error-message, .success-message {
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  line-height: 1.4;
+  animation: fadeIn 0.5s ease;
+  border-left: 4px solid;
+  background-color: #2a2a2a; 
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.error-message {
+  color: #ffcdd2;
+  border-color: #c62828;
+}
+
+.success-message {
+  color: #c8e6c9;
+  border-color: #2e7d32;
+}
+
+.or-separator {
+  margin: 25px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #bbb;
+  position: relative;
+  height: 10px;
+}
+
+.or-separator span {
+  background-color: #232323;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.or-separator::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #444;
+  z-index: 0;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.login-footer a {
+  color: #4CAF50 !important;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+.otp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out 0.2s;
+  visibility: hidden;
+}
+
+.otp-section.visible {
+  max-height: 500px; 
+  opacity: 1;
+  visibility: visible;
+}
+
+
+.password-strength {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.strength-bar {
+  flex: 1;
+  height: 6px;
+  background-color: #444;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.strength-bar.filled:nth-child(1) { background-color: #f44336; }
+.strength-bar.filled:nth-child(2) { background-color: #ff9800; }
+.strength-bar.filled:nth-child(3) { background-color: #ffeb3b; }
+.strength-bar.filled:nth-child(4) { background-color: #4CAF50; }
+
+.strength-text {
+  font-size: 12px;
+  color: #bbb;
+  margin-top: 4px;
+  height: 14px; 
+}
+
+.password-match-indicator {
+  font-size: 12px;
+  margin-top: 8px;
+  height: 14px; 
+}
+
+.password-match-indicator.match { color: #4CAF50; }
+.password-match-indicator.no-match { color: #f44336; }
+
+.google-btn {
+  width: 100%;
+  height: 45px;
+  background-color: #18191c;
+  border: 1px solid #444;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.3s;
+}
+
+.google-btn:hover {
+  background-color: #2a2a2a;
+}
+
+
+
+.change-email-button {
+  height: 48px;
+  padding: 0 15px;
+  background: none;
+  border: none;
+  color: #4CAF50;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.change-email-button:hover {
+  color: #5cb85c;
+}
+
+.resend-otp-container {
+  text-align: right;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #bbb;
+}
+
+.resend-otp-button {
+  background: none;
+  border: none;
+  color: #4CAF50;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.resend-otp-button:hover {
+  color: #5cb85c;
+}
+
+.email-exists-error {
+  font-size: 12px;
+  color: #ff9800; 
+  margin-top: 8px;
+}
+
+.email-exists-error a {
+  color: #ffc107 !important;
+  text-decoration: underline;
+}
+
+
+.forgot-password-link {
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--accent-color); 
+  margin-top: 8px;
+  cursor: pointer; 
+  transition: all 0.2s ease;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+
+.success-message {
+  color: #28a745; 
+  background-color: rgba(40, 167, 69, 0.1);
+  border: 1px solid rgba(40, 167, 69, 0.2);
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 16px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Add this to the bottom of src/styles/Auth.css */
+
+.finalizing-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 8px solid #444;
+  border-top-color: #fff;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

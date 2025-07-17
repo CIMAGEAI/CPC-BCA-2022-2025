@@ -1,0 +1,298 @@
+:root {
+  --account-bg: #1a1a1a;
+  --account-card-bg: #1f2937; 
+  --account-text-primary: #f3f4f6; 
+  --account-text-secondary: #9ca3af; 
+  --account-accent-color: #2dbab1; 
+  --account-border-color: #374151; 
+  --account-logout-bg: #e74c3c;
+  --account-logout-bg-hover: #c0392b;
+}
+
+.account-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  color: var(--account-text-primary);
+}
+
+.account-container.not-logged-in {
+  text-align: center;
+  background-color: var(--account-card-bg);
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid var(--account-border-color);
+}
+
+.account-container.not-logged-in a {
+  color: var(--account-accent-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.account-container.not-logged-in a:hover {
+  text-decoration: underline;
+}
+
+.loading-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--account-text-secondary);
+  padding: 40px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background-color: var(--account-card-bg);
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  border: 1px solid var(--account-border-color);
+}
+
+.profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--account-accent-color);
+  flex-shrink: 0;
+}
+
+.profile-picture.default-icon {
+  color: var(--account-text-secondary);
+  border: none;
+  padding: 0;
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--account-text-primary);
+}
+
+.profile-email {
+  margin: 4px 0 0 0;
+  color: var(--account-text-secondary);
+  font-size: 1rem;
+}
+
+.btn-logout {
+  background-color: var(--account-logout-bg);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-logout:hover {
+  background-color: var(--account-logout-bg-hover);
+}
+
+.account-section h3 {
+  font-size: 1.75rem;
+  color: var(--account-text-primary);
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--account-border-color);
+  padding-bottom: 12px;
+}
+
+.order-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-item {
+  background-color: var(--account-card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--account-border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.order-item-header {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.order-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-label {
+  font-size: 0.8rem;
+  color: var(--account-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.order-value {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.order-id {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: var(--account-text-secondary);
+}
+
+.order-total {
+  font-weight: 700;
+  color: var(--account-accent-color);
+}
+
+.btn-view-details {
+  background-color: var(--account-accent-color);
+  color: #111827;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-view-details:hover {
+  background-color: #36d1dc;
+}
+
+.no-orders-message {
+  color: var(--account-text-secondary);
+  text-align: center;
+  padding: 20px;
+  background-color: var(--account-card-bg);
+  border-radius: 12px;
+}
+
+
+
+.section-description {
+  color: var(--account-text-secondary);
+  margin-top: -16px;
+  margin-bottom: 24px;
+}
+
+.session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--account-card-bg);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--account-border-color);
+  transition: background-color 0.2s;
+}
+
+.session-item.current-session {
+  border-left: 4px solid var(--account-accent-color);
+  background-color: #2a3b4d; 
+}
+
+.session-icon {
+  font-size: 1.75rem;
+  color: var(--account-text-secondary);
+  flex-shrink: 0;
+}
+
+.session-info {
+  flex-grow: 1;
+}
+
+.session-info p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.session-info p strong {
+  color: var(--account-text-primary);
+}
+
+.session-info .last-seen {
+  font-size: 0.85rem;
+  color: var(--account-text-secondary);
+}
+
+.current-device-tag {
+  color: var(--account-accent-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+}
+
+.btn-logout-device {
+  background-color: transparent;
+  color: var(--account-text-secondary);
+  border: 1px solid var(--account-border-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-logout-device:hover {
+  background-color: var(--account-logout-bg);
+  color: white;
+  border-color: var(--account-logout-bg);
+}
+
+.btn-logout-all {
+  background-color: var(--account-logout-bg);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  max-width: 300px;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-logout-all:hover {
+  background-color: var(--account-logout-bg-hover);
+}
+
+@media (max-width: 600px) {
+    .session-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .btn-logout-device, .current-device-tag {
+        align-self: flex-end;
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
+    }
+}
