@@ -1,0 +1,267 @@
+@import "tailwindcss";
+ 
+
+/* @layer base {
+    h1,h2,h3,h4,h5{
+        @apply font-poppins;
+    }
+
+    body{
+        @apply font-fredoka;
+    }
+
+    p, span{
+        @apply font-roboto;
+    }
+
+} */
+
+
+
+/* changes */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* base layout */
+    .font-poppins{
+        font-family: "Poppins", sans-serif;
+    }
+
+    .font-fredoka{
+        font-family: "Fredoka", sans-serif;
+    }
+
+    .font-roboto{
+        font-family: "Roboto", sans-serif;
+    }
+
+
+    /*animation for courses */
+    @keyframes colorCycle {
+        0% { background-color: #fef9c3; }   /* amber-100 */
+        25% { background-color: #bfdbfe; }  /* blue-200 */
+        50% { background-color: #c7d2fe; }  /* indigo-200 */
+        75% { background-color: #bbf7d0; }  /* green-200 */
+        100% { background-color: #fef9c3; }
+      }
+    .animate-bg {
+        animation: colorCycle 1s infinite linear;
+      }
+
+      @keyframes diagonalGradientMove {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      
+      .animate-diagonal-gradient {
+        background: linear-gradient(135deg, #fef9c3, #bfdbfe, #c7d2fe, #bbf7d0, #fef9c3);
+        background-size: 300% 300%;
+        animation: diagonalGradientMove 1s ease infinite;
+      }
+
+
+    /* animation for purchases */
+
+    @keyframes diagonalGradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    
+    .animated-diagonal-bg {
+      background: linear-gradient(135deg, #ff6a00, #ff6a6a, #6a00ff, #1fa356, #0099ff, #ff1ed6);
+      background-size: 500% 500%;
+      animation: diagonalGradient 8s ease infinite;
+    }
+    
+    
+      
+    /* user login page animation */
+
+    .circle {
+      position: absolute;
+      width: 60px;  /* Adjust size */
+      height: 60px;
+      border-radius: 50%;
+      opacity: 0.5;
+      border: 3px solid #ffffff;  /* Stroke color */
+      z-index: 0;
+      pointer-events: none;  /* Ensure circles don’t block content */
+      animation: float 1s ease-in-out infinite alternate, blink 0.5s infinite alternate;
+    }
+    
+    /* Animation for movement */
+    @keyframes float {
+      0% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(50vw, 20vh);
+      }
+      50% {
+        transform: translate(30vw, 40vh);
+      }
+      75% {
+        transform: translate(-20vw, 60vh);
+      }
+      100% {
+        transform: translate(0, 80vh);
+      }
+    }
+    
+    /* Blinking effect (fading in and out) */
+    @keyframes blink {
+      0% {
+        opacity: 0.8;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.8;
+      }
+    }
+    
+    /* Customize individual circle colors */
+    .circle-1 {
+      background-color: rgba(255, 99, 132, 0.8); /* Pink */
+    }
+    .circle-2 {
+      background-color: rgba(54, 162, 235, 0.8); /* Blue */
+    }
+    .circle-3 {
+      background-color: rgba(255, 159, 64, 0.8); /* Orange */
+    }
+    .circle-4 {
+      background-color: rgba(75, 192, 192, 0.8); /* Teal */
+    }
+    .circle-5 {
+      background-color: rgba(153, 102, 255, 0.8); /* Purple */
+    }
+    .circle-6 {
+      background-color: rgba(255, 159, 64, 0.8); /* Orange */
+    }
+    /* Repeat similar for additional circles or use CSS classes dynamically */
+    
+    
+    
+
+    /* animation for user signup page */
+/* Fade-in for the form */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input Field Animation on focus */
+@keyframes inputFocus {
+  0% {
+    transform: scale(1);
+    border-color: #fff;
+  }
+  50% {
+    transform: scale(1.05);
+    border-color: #3b82f6; /* Blue color on focus */
+  }
+  100% {
+    transform: scale(1);
+    border-color: #3b82f6;
+  }
+}
+
+/* Button Hover Animation */
+@keyframes buttonHover {
+  0% {
+    transform: scale(1);
+    background-color: #f97316;
+  }
+  50% {
+    transform: scale(1.05);
+    background-color: #2563eb;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #3b82f6;
+  }
+}
+
+/* General page layout */
+.bg-gradient-to-r {
+  background: linear-gradient(to right, #000000, #1e3a8a);
+}
+
+/* Header Animation */
+header {
+  animation: fadeIn 1.5s ease-out;
+}
+
+/* Signup Form Animation */
+.signup-form {
+  animation: fadeIn 2s ease-out;
+  animation-delay: 0.5s;
+}
+
+/* Input focus effect */
+input:focus {
+  animation: inputFocus 0.3s ease-in-out;
+}
+
+/* Button Hover Effect */
+button:hover {
+  animation: buttonHover 0.5s ease-in-out;
+}
+
+/* Custom styles for the form and inputs */
+input, button {
+  transition: all 0.3s ease;
+}
+
+input {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+}
+
+button {
+  background-color: #f97316;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+button:focus, input:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.7); /* Blue shadow on focus */
+}
+
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+}
