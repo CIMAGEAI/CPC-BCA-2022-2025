@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - LibraTech</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;500;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-bg">
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="ltBadge" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#4f8cff"/>
+                      <stop offset="1" stop-color="#7c3aed"/>
+                    </linearGradient>
+                  </defs>
+                  <circle cx="32" cy="32" r="30" fill="url(#ltBadge)"/>
+                  <path d="M20 44V24C20 21.8 21.8 20 24 20H32V44H24C21.8 44 20 42.2 20 40V44Z" fill="#fff" fill-opacity="0.97"/>
+                  <path d="M44 44V24C44 21.8 42.2 20 40 20H32V44H40C42.2 44 44 42.2 44 40V44Z" fill="#fff" fill-opacity="0.85"/>
+                  <rect x="26" y="28" width="4" height="10" rx="2" fill="#7c3aed"/>
+                  <rect x="26" y="38" width="8" height="2" rx="1" fill="#7c3aed"/>
+                  <rect x="34" y="28" width="4" height="10" rx="2" fill="#4f8cff"/>
+                  <rect x="32" y="28" width="8" height="2" rx="1" fill="#4f8cff"/>
+                  <rect x="22" y="48" width="20" height="2" rx="1" fill="#fff" fill-opacity="0.7"/>
+                  <circle cx="26" cy="51" r="1.2" fill="#7c3aed"/>
+                  <circle cx="32" cy="51" r="1.2" fill="#4f8cff"/>
+                  <circle cx="38" cy="51" r="1.2" fill="#7c3aed"/>
+                </svg>
+                <a href="index.html" class="site-title"><span class="site-title-text">LibraTech</span></a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-link active" id="nav-dashboard">Dashboard</a>
+                <a href="#" class="nav-link" id="nav-books">Manage Books</a>
+                <a href="#" class="nav-link" id="nav-users">Manage Users</a>
+                <a href="#" class="nav-link" id="nav-transactions">Transactions</a>
+                <a href="#" class="nav-link" id="nav-reports">Reports</a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <span class="user-name" id="adminName">Admin User</span>
+                    <span class="user-role">System Administrator</span>
+                </div>
+                <button class="logout-btn" id="nav-logout">Logout</button>
+            </div>
+        </aside>
+        <!-- Main Content Area -->
+        <div class="dashboard-main">
+            <div class="dashboard-container">
+                <!-- Welcome Section -->
+                <section class="welcome-section fade-in">
+                    <div class="welcome-content">
+                        <h1>Welcome, <span class="gradient-text" id="welcomeAdmin">Administrator</span>!</h1>
+                        <p>Manage your library system efficiently with these powerful tools.</p>
+                    </div>
+                    <div class="welcome-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">📚</div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="totalBooks">1,247</span>
+                                <span class="stat-label">Total Books</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="totalUsers">342</span>
+                                <span class="stat-label">Active Users</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="activeLoans">89</span>
+                                <span class="stat-label">Active Loans</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⚠️</div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="overdueBooks">12</span>
+                                <span class="stat-label">Overdue Books</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Quick Actions -->
+                <section class="quick-actions-section fade-in">
+                    <h2>Quick Actions</h2>
+                    <div class="actions-grid">
+                        <button class="action-card" onclick="showAddBook()">
+                            <div class="action-icon">➕</div>
+                            <h3>Add New Book</h3>
+                            <p>Add a new book to the library catalog</p>
+                        </button>
+                        <button class="action-card" onclick="showAddUser()">
+                            <div class="action-icon">👤</div>
+                            <h3>Add New User</h3>
+                            <p>Register a new library member</p>
+                        </button>
+                        <button class="action-card" onclick="showTransactions()">
+                            <div class="action-icon">📋</div>
+                            <h3>View Transactions</h3>
+                            <p>Monitor all borrowing activities</p>
+                        </button>
+                        <button class="action-card" onclick="showReports()">
+                            <div class="action-icon">📈</div>
+                            <h3>Generate Reports</h3>
+                            <p>Create detailed library reports</p>
+                        </button>
+                    </div>
+                </section>
+                <!-- Recent Activity -->
+                <section class="recent-activity-section fade-in">
+                    <h2>Recent System Activity</h2>
+                    <div class="activity-list" id="adminActivityList">
+                        <!-- Activity items will be loaded here -->
+                    </div>
+                </section>
+                <!-- System Overview -->
+                <section class="system-overview-section fade-in">
+                    <h2>System Overview</h2>
+                    <div class="overview-grid">
+                        <div class="overview-card">
+                            <h3>Book Categories</h3>
+                            <div class="category-stats" id="categoryStats">
+                                <!-- Category statistics will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="overview-card">
+                            <h3>Popular Books</h3>
+                            <div class="popular-books" id="popularBooks">
+                                <!-- Popular books will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Main Content Area -->
+                <div id="admin-main-content" class="main-content-area">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Book Modal -->
+    <div class="modal-bg" id="addBookModal">
+        <div class="modal-card card-anim">
+            <button class="close-modal" onclick="hideAddBookModal()">&times;</button>
+            <div class="modal-header">
+                <h3>Add New Book</h3>
+            </div>
+            <form class="add-book-form" id="addBookForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bookTitle">Book Title *</label>
+                        <input type="text" id="bookTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookAuthor">Author *</label>
+                        <input type="text" id="bookAuthor" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bookISBN">ISBN *</label>
+                        <input type="text" id="bookISBN" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookCategory">Category *</label>
+                        <select id="bookCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="fiction">Fiction</option>
+                            <option value="non-fiction">Non-Fiction</option>
+                            <option value="science">Science</option>
+                            <option value="history">History</option>
+                            <option value="technology">Technology</option>
+                            <option value="biography">Biography</option>
+                            <option value="self-help">Self-Help</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bookDescription">Description</label>
+                    <textarea id="bookDescription" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bookCopies">Number of Copies *</label>
+                        <input type="number" id="bookCopies" min="1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookLocation">Shelf Location</label>
+                        <input type="text" id="bookLocation" placeholder="e.g., A1-B2-C3">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="hideAddBookModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal-bg" id="addUserModal">
+        <div class="modal-card card-anim">
+            <button class="close-modal" onclick="hideAddUserModal()">&times;</button>
+            <div class="modal-header">
+                <h3>Add New User</h3>
+            </div>
+            <form class="add-user-form" id="addUserForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userFirstName">First Name *</label>
+                        <input type="text" id="userFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userLastName">Last Name *</label>
+                        <input type="text" id="userLastName" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userEmail">Email *</label>
+                        <input type="email" id="userEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userPhone">Phone</label>
+                        <input type="tel" id="userPhone">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userRole">Role *</label>
+                        <select id="userRole" required>
+                            <option value="">Select Role</option>
+                            <option value="member">Library Member</option>
+                            <option value="student">Student</option>
+                            <option value="faculty">Faculty</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userStatus">Status *</label>
+                        <select id="userStatus" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="hideAddUserModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transactions Modal -->
+    <div class="modal-bg" id="transactionsModal">
+        <div class="modal-card card-anim">
+            <button class="close-modal" onclick="hideTransactionsModal()">&times;</button>
+            <div class="modal-header">
+                <h3>Library Transactions</h3>
+            </div>
+            <div class="transactions-filters">
+                <select id="transactionFilter">
+                    <option value="all">All Transactions</option>
+                    <option value="borrowed">Borrowed</option>
+                    <option value="returned">Returned</option>
+                    <option value="overdue">Overdue</option>
+                </select>
+                <input type="date" id="transactionDate" placeholder="Filter by date">
+            </div>
+            <div class="transactions-list" id="transactionsList">
+                <!-- Transactions will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="api.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html> 

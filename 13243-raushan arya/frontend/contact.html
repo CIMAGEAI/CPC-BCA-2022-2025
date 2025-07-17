@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - LibraTech</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;500;400&display=swap" rel="stylesheet">
+</head>
+<body class="front-bg enhanced-bg">
+    <!-- Animated Peach Blobs -->
+    <div class="bg-blobs">
+      <div class="bg-blob bg-blob1"></div>
+      <div class="bg-blob bg-blob2"></div>
+      <div class="bg-blob bg-blob3"></div>
+    </div>
+    
+    <!-- Header -->
+    <header class="main-header glass-nav">
+        <div class="header-content">
+            <div class="header-logo">
+                <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="ltBadge" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#4f8cff"/>
+                      <stop offset="1" stop-color="#7c3aed"/>
+                    </linearGradient>
+                  </defs>
+                  <circle cx="32" cy="32" r="30" fill="url(#ltBadge)"/>
+                  <path d="M20 44V24C20 21.8 21.8 20 24 20H32V44H24C21.8 44 20 42.2 20 40V44Z" fill="#fff" fill-opacity="0.97"/>
+                  <path d="M44 44V24C44 21.8 42.2 20 40 20H32V44H40C42.2 44 44 42.2 44 40V44Z" fill="#fff" fill-opacity="0.85"/>
+                  <rect x="26" y="28" width="4" height="10" rx="2" fill="#7c3aed"/>
+                  <rect x="26" y="38" width="8" height="2" rx="1" fill="#7c3aed"/>
+                  <rect x="34" y="28" width="4" height="10" rx="2" fill="#4f8cff"/>
+                  <rect x="32" y="28" width="8" height="2" rx="1" fill="#4f8cff"/>
+                  <rect x="22" y="48" width="20" height="2" rx="1" fill="#fff" fill-opacity="0.7"/>
+                  <circle cx="26" cy="51" r="1.2" fill="#7c3aed"/>
+                  <circle cx="32" cy="51" r="1.2" fill="#4f8cff"/>
+                  <circle cx="38" cy="51" r="1.2" fill="#7c3aed"/>
+                </svg>
+                <a href="index.html" class="site-title"><span class="site-title-text">LibraTech</span></a>
+            </div>
+            <nav class="header-nav right-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link active">Contact</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <button class="header-login-btn nav-btn" onclick="window.open('login.html', '_blank')">Login</button>
+                <button class="header-register-btn nav-btn" onclick="window.open('register.html', '_blank')">Registration</button>
+            </nav>
+        </div>
+    </header>
+
+<!-- Modern Professional Contact Page -->
+<style>
+  .contact-main {
+    display: flex;
+    gap: 48px;
+    max-width: 950px;
+    margin: 48px auto 0 auto;
+    padding: 0 16px 48px 16px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .contact-left {
+    flex: 1 1 320px;
+    max-width: 380px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(79,140,255,0.07), 0 1.5px 6px rgba(124,58,237,0.04);
+    padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 0;
+  }
+  .contact-left .contact-illustration {
+    margin-bottom: 1.2em;
+    width: 80px;
+    height: 80px;
+  }
+  .contact-left h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #222;
+    margin-bottom: 0.3em;
+  }
+  .contact-left .contact-tagline {
+    color: #7c3aed;
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin-bottom: 0.7em;
+  }
+  .contact-info-list {
+    margin: 1.2em 0 0.5em 0;
+    width: 100%;
+    text-align: left;
+  }
+  .contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    margin-bottom: 0.7em;
+    font-size: 1.08rem;
+    color: #4a5568;
+  }
+  .contact-info-item .icon {
+    font-size: 1.3em;
+    color: #4f8cff;
+    min-width: 1.3em;
+    text-align: center;
+  }
+  .urgent-help {
+    margin-top: 1.2em;
+    background: linear-gradient(90deg, #ffb199 0%, #ff7e5f 100%);
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.7em 1em;
+    font-weight: 600;
+    font-size: 1.05rem;
+    box-shadow: 0 2px 8px rgba(255,126,95,0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7em;
+  }
+  .urgent-help .icon {
+    color: #fff;
+    font-size: 1.2em;
+    margin: 0;
+  }
+  .contact-form-card {
+    flex: 1 1 340px;
+    max-width: 420px;
+    width: 100%;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(79,140,255,0.07), 0 1.5px 6px rgba(124,58,237,0.04);
+    padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+    border-left: 6px solid #7c3aed;
+    border-top: 1.5px solid #e3e8f7;
+    border-right: 1.5px solid #e3e8f7;
+    border-bottom: 1.5px solid #e3e8f7;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact-form-card h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5em;
+    font-weight: 800;
+    color: #222;
+    text-align: center;
+  }
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .contact-form .form-group {
+    width: 100%;
+    margin-bottom: 1.1em;
+    box-sizing: border-box;
+  }
+  .contact-form input, .contact-form textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: block;
+    padding: 0.85em 1em;
+    font-size: 1.08rem;
+    border: 1.5px solid #e3e8f7;
+    border-radius: 8px;
+    background: #f8faff;
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+  .contact-form input:focus, .contact-form textarea:focus {
+    border: 1.5px solid #7c3aed;
+    box-shadow: 0 0 0 2px #e9d8fd;
+    outline: none;
+  }
+  .contact-submit-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #4f8cff 0%, #7c3aed 100%);
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 0.95em 0;
+    font-size: 1.13rem;
+    margin-top: 0.2em;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.10);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  }
+  .contact-submit-btn:hover {
+    background: linear-gradient(90deg, #7c3aed 0%, #4f8cff 100%);
+    box-shadow: 0 4px 16px rgba(124,58,237,0.13);
+    transform: translateY(-2px) scale(1.01);
+  }
+  .success-message {
+    display: none;
+    text-align: center;
+    color: #38a169;
+    font-weight: 600;
+    margin-top: 1em;
+    font-size: 1.1rem;
+  }
+  .success-message.active {
+    display: block;
+    animation: fadeIn 0.7s;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @media (max-width: 900px) {
+    .contact-main {
+      flex-direction: column;
+      gap: 32px;
+      align-items: stretch;
+    }
+    .contact-left, .contact-form-card {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<main class="contact-main">
+  <section class="contact-left">
+    <div class="contact-illustration">
+      <!-- Modern envelope illustration -->
+      <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="25" width="70" height="40" rx="10" fill="#fff" stroke="#7c3aed" stroke-width="2"/>
+        <polyline points="10,25 45,60 80,25" fill="none" stroke="#4f8cff" stroke-width="2.5"/>
+        <circle cx="45" cy="60" r="5" fill="#ffb199"/>
+        <rect x="30" y="65" width="30" height="7" rx="3.5" fill="#f0f4ff"/>
+      </svg>
+    </div>
+    <h1>Contact <span class="gradient-text">LibraTech</span></h1>
+    <div class="contact-tagline">We love to hear from you!</div>
+    <div class="contact-info-list">
+      <div class="contact-info-item"><span class="icon">📧</span> info@libratech.com</div>
+      <div class="contact-info-item"><span class="icon">📞</span> +91 9155460873</div>
+      <div class="contact-info-item"><span class="icon">🏢</span> 24 Rajiv Nagar, Aasiyana digha road, 800025 </div>
+        </div>
+    <div class="urgent-help"><span class="icon">⚡</span>Need urgent help? <a href="mailto:support@libratech.com" style="color:#fff;text-decoration:underline;font-weight:600;">Email Support</a></div>
+    </section>
+  <section class="contact-form-card card-anim">
+                <h2>Send us a Message</h2>
+                <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+        <textarea id="message" name="message" rows="5" required placeholder="How can we help you?"></textarea>
+                    </div>
+                    <button type="submit" class="contact-submit-btn">Send Message</button>
+                </form>
+    <div class="success-message" id="successMessage">Thank you! Your message has been sent. We’ll get back to you soon.</div>
+    </section>
+</main>
+
+<script>
+// Success message after form submission
+const contactForm = document.getElementById('contactForm');
+const successMessage = document.getElementById('successMessage');
+if (contactForm) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    contactForm.style.display = 'none';
+    successMessage.classList.add('active');
+    setTimeout(() => {
+      contactForm.style.display = '';
+      successMessage.classList.remove('active');
+      contactForm.reset();
+    }, 3500);
+  });
+}
+</script>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>LibraTech</h3>
+                <p>Modern solutions for modern libraries.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Product</h4>
+                <ul>
+                                            <li><a href="index.html#features">Features</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Community</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 LibraTech. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Live Chat Widget -->
+    <div id="chatWidget" class="chat-widget">
+        <div class="chat-header">
+            <span>💬 Live Chat</span>
+            <button onclick="toggleChat()" class="chat-toggle">×</button>
+        </div>
+        <div class="chat-body">
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message bot">
+                    <p>Hello! Welcome to LibraTech support. How can we help you today?</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="api.js"></script>
+    <script src="main.js"></script>
+    <script>
+    // Contact form handling
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Show loading state
+        const submitBtn = this.querySelector('.contact-submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        
+        // Simulate form submission
+        setTimeout(() => {
+            alert('Thank you for your message! We\'ll get back to you within 24 hours. A confirmation email has been sent to your inbox.');
+            this.reset();
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }, 2000);
+    });
+
+    // Live chat functionality
+    function openLiveChat() {
+        document.getElementById('chatWidget').classList.add('active');
+    }
+
+    function toggleChat() {
+        document.getElementById('chatWidget').classList.toggle('active');
+    }
+
+    function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        
+        if (message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user';
+            userMessage.innerHTML = `<p>${message}</p>`;
+            chatMessages.appendChild(userMessage);
+            
+            input.value = '';
+            
+            // Simulate bot response
+            setTimeout(() => {
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chat-message bot';
+                botMessage.innerHTML = '<p>Thanks for your message! A support agent will be with you shortly. In the meantime, you can check our FAQ section for quick answers.</p>';
+                chatMessages.appendChild(botMessage);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    }
+
+    // Enter key for chat
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendChatMessage();
+        }
+    });
+
+    // Form validation
+    document.querySelectorAll('#contactForm input, #contactForm select, #contactForm textarea').forEach(field => {
+        field.addEventListener('blur', function() {
+            if (this.hasAttribute('required') && !this.value) {
+                this.classList.add('error');
+            } else {
+                this.classList.remove('error');
+            }
+        });
+    });
+    </script>
+</body>
+</html> 
