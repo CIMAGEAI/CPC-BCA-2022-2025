@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    h2 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+
+  <h2>All Restaurants</h2>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Owner</th>
+    </tr>
+    {% for restaurant in restaurants %}
+    <tr>
+      <td>{{ restaurant.name }}</td>
+      <td>{{ restaurant.location }}</td>
+      <td>{{ restaurant.owner.username }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>All Bookings</h2>
+  <table>
+    <tr>
+      <th>Restaurant</th>
+      <th>Customer</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Guests</th>
+    </tr>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.restaurant.name }}</td>
+      <td>{{ booking.name }}</td>
+      <td>{{ booking.date }}</td>
+      <td>{{ booking.time }}</td>
+      <td>{{ booking.guests }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
