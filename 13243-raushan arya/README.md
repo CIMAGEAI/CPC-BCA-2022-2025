@@ -208,7 +208,6 @@ library-management-system/
 ### Environment Variables for Production
 
 ```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/libraryDB
 NODE_ENV=production
 PORT=5000
 JWT_SECRET=your-very-long-and-very-random-secret-key
