@@ -1,0 +1,11 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\prasa\\Downloads\\itextpdf-5.5.13.2.jar",
+        "c:\\Users\\prasa\\Downloads\\pdfbox-app-2.0.27.jar",
+        "c:\\Users\\prasa\\Downloads\\activation-1.1.jar",
+        "c:\\Users\\prasa\\Downloads\\mail-1.4.7.jar",
+        "c:\\Users\\prasa\\Downloads\\mysql-connector-j-9.3.0\\mysql-connector-j-9.3.0\\mysql-connector-j-9.3.0.jar",
+        "c:\\Users\\prasa\\Downloads\\jfreechart-1.0.19\\jfreechart-1.0.19\\jfreechart-1.0.19-demo.jar"
+    ]
+}
