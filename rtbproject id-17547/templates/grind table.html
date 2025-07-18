@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book a Table | The Grind House</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      color: #555;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #219150;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Book a Table</h2>
+
+   <form id="bookingForm" action="/book/grind/" method="POST">
+     {% csrf_token %}
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="phone">Mobile Number</label>
+      <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="time">Time</label>
+      <input type="time" id="time" name="time" required>
+
+      <label for="guests">Number of Guests</label>
+      <select id="guests" name="guests" required>
+        <option value="">Select</option>
+        <option value="1">1 Person</option>
+        <option value="2">2 People</option>
+        <option value="3">3 People</option>
+        <option value="4">4 People</option>
+         <option value="5">5 People</option>
+        <option value="6">6 People</option>
+        <option value="7">7 People</option>
+        <option value="8">8 People</option>
+        <option value="9">9 People</option>
+        <option value="10">10 People</option>
+      </select>
+
+      <!-- ✅ Menu input textarea -->
+      <label for="menu">Menu (What would you like to order?)</label>
+      <textarea id="menu" name="menu" rows="4" placeholder="Eg: Paneer Tikka, Hakka Noodles, Mojito..."></textarea>
+
+      <button type="submit">Book Now</button>
+      <!-- ✅ Success Message with Table Number -->
+  {% if booking %}
+    <div style="color: green;">
+      ✅ Booking Confirmed! Table Number: <strong>{{ booking.table_number }}</strong>
+    </div>
+  {% endif %}
+
+  <!-- ❌ Error Message if all tables booked -->
+  {% if form_submitted %}
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags == 'error' %}
+        <div style="color: red; margin-top: 10px;">❌ {{ message }}</div>
+      {% elif message.tags == 'success' %}
+        <div style="color: green; margin-top: 10px;">✅ {{ message }}</div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endif %}
+    </form>
+  </div>
+
+    
+</body>
+
+</html>

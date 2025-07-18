@@ -1,0 +1,451 @@
+{% extends "Admin/AdminMaster.html" %}
+
+{% block title %}Add Employee | Admin Panel{% endblock %}
+
+{% block head %}
+<style>
+    .form-floating {
+        margin-bottom: 1rem;
+    }
+    /* Style for date inputs */
+    input[type="date"] {
+        background-color: #2a3038;
+        color: white;
+        border: 1px solid #444;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+    }
+    /* Style the calendar picker icon */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        cursor: pointer;
+    }
+    /* For Firefox */
+    input[type="date"]::-moz-calendar-picker-indicator {
+        filter: invert(1);
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Add Employee</h6>
+                <form method="POST" id="employeeForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark text-white" id="emp_id" name="emp_id" 
+                                       value="{{ emp_id }}" readonly>
+                                <label for="emp_id">Employee ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       placeholder="Employee Name" required
+                                       value="{{ form_data.name if form_data.name else '' }}">
+                                <label for="name">Employee Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="father_name" name="father_name" 
+                                       placeholder="Father's Name" required
+                                       value="{{ form_data.father_name if form_data.father_name else '' }}">
+                                <label for="father_name">Father's Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="mobile" name="mobile" 
+                                       placeholder="Mobile" maxlength="10" required
+                                       pattern="\d{10}" title="Please enter a 10-digit number"
+                                       value="{{ form_data.mobile if form_data.mobile else '' }}">
+                                <label for="mobile">Mobile</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       placeholder="name@example.com" required
+                                       value="{{ form_data.email if form_data.email else '' }}">
+                                <label for="email">Email</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="salary" name="salary" 
+                                       placeholder="Basic Salary" required step="0.01" min="0"
+                                       value="{{ form_data.salary if form_data.salary else '' }}">
+                                <label for="salary">Basic Salary</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" id="doj" name="doj" required
+                                       value="{{ form_data.doj if form_data.doj else '' }}">
+                                <label for="doj">Date Of Joining</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="department" name="department" required>
+                                    <option value="">Select Department</option>
+                                    {% for department in departments %}
+                                        <option value="{{ department }}"
+                                            {% if form_data.department == department %}selected{% endif %}>
+                                            {{ department }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <label for="department">Department</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="designation" name="designation" required>
+                                    <option value="">Select Designation</option>
+                                    {% if form_data.department %}
+                                        {% for designation in get_designations(form_data.department).get('designations', []) %}
+                                            <option value="{{ designation }}"
+                                                {% if form_data.designation == designation %}selected{% endif %}>
+                                                {{ designation }}
+                                            </option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                                <label for="designation">Designation</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4" id="subjectContainer" style="display: none;">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="subject" name="subject">
+                                    <option value="">Select Subject</option>
+                                    {% for subject in subjects %}
+                                        <option value="{{ subject }}"
+                                            {% if form_data.subject == subject %}selected{% endif %}>
+                                            {{ subject }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <label for="subject">Subject</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary w-100">Save Employee</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Employee List</h6>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered custom-grid-bg">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th>Actions</th>
+                                <th>#</th>
+                                <th>Employee ID</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Salary</th>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Subject</th>
+                                <th>Join Date</th>
+                                <th>Resignation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if employees %}
+                                {% for emp in employees %}
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-sm btn-info edit-btn" 
+                                                data-id="{{ emp.id }}"
+                                                data-emp_id="{{ emp.emp_id }}"
+                                                data-name="{{ emp.name }}"
+                                                data-father_name="{{ emp.father_name }}"
+                                                data-mobile="{{ emp.mobile }}"
+                                                data-email="{{ emp.email }}"
+                                                data-salary="{{ emp.salary }}"
+                                                data-doj="{{ emp.dateofjoining_html }}"
+                                                data-resignation="{{ emp.resignation_html if emp.resignation_html else '' }}"
+                                                data-department="{{ emp.department }}"
+                                                data-designation="{{ emp.designation }}"
+                                                data-subject="{{ emp.subject if emp.subject else '' }}">
+                                            Edit
+                                        </button>
+                                        <form method="POST" action="{{ url_for('admin.add_employee.delete_employee', employee_id=emp.id) }}"
+                                              style="display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-danger" style="margin: 2px;"
+                                                    onclick="return confirm('Are you sure you want to delete this employee?')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ emp.emp_id }}</td>
+                                    <td>{{ emp.name }}</td>
+                                    <td>{{ emp.mobile }}</td>
+                                    <td>{{ emp.email }}</td>
+                                    <td>{{ emp.salary }}</td>
+                                    <td>{{ emp.department }}</td>
+                                    <td>{{ emp.designation }}</td>
+                                    <td>{{ emp.subject if emp.subject else '-' }}</td>
+                                    <td>{{ emp.dateofjoining }}</td>
+                                    <td>{{ emp.resignation if emp.resignation else '-' }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="12" class="text-center">No employees found</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-secondary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editForm" method="POST">
+                <input type="hidden" id="edit_id" name="employee_id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark text-white" id="edit_emp_id" name="emp_id" readonly>
+                                <label for="edit_emp_id">Employee ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="edit_name" name="name" required>
+                                <label for="edit_name">Employee Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="edit_father_name" name="father_name" required>
+                                <label for="edit_father_name">Father's Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="edit_mobile" name="mobile" required
+                                       pattern="\d{10}" maxlength="10">
+                                <label for="edit_mobile">Mobile</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="edit_email" name="email" required>
+                                <label for="edit_email">Email</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="edit_salary" name="salary" required step="0.01" min="0">
+                                <label for="edit_salary">Salary</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" id="edit_doj" name="doj" required>
+                                <label for="edit_doj">Join Date</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" id="edit_resignation" name="resignation">
+                                <label for="edit_resignation">Resignation Date</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="edit_department" name="department" required>
+                                    <option value="">Select Department</option>
+                                    {% for department in departments %}
+                                        <option value="{{ department }}">{{ department }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="edit_department">Department</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="edit_designation" name="designation" required>
+                                    <option value="">Select Designation</option>
+                                </select>
+                                <label for="edit_designation">Designation</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4" id="edit_subjectContainer" style="display: none;">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="edit_subject" name="subject">
+                                    <option value="">Select Subject</option>
+                                    {% for subject in subjects %}
+                                        <option value="{{ subject }}">{{ subject }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="edit_subject">Subject</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Load designations based on department
+    function loadDesignations(department, prefix = '') {
+        if (!department) return;
+        
+        const designationSelect = document.getElementById(`${prefix}designation`);
+        if (!designationSelect) return;
+        
+        while (designationSelect.options.length > 1) {
+            designationSelect.remove(1);
+        }
+        
+        fetch(`/admin/get-designations/${department}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.designations && data.designations.length > 0) {
+                    data.designations.forEach(designation => {
+                        const option = new Option(designation, designation);
+                        designationSelect.add(option);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error loading designations:', error);
+            });
+    }
+
+    // Toggle subject field visibility
+    function toggleSubjectField(designation, prefix = '') {
+        const subjectContainer = document.getElementById(`${prefix}subjectContainer`);
+        const subjectField = document.getElementById(`${prefix}subject`);
+        
+        if (!subjectContainer || !subjectField) return;
+        
+        const isTeacher = designation && designation.toLowerCase() === 'teacher';
+        subjectContainer.style.display = isTeacher ? 'block' : 'none';
+        subjectField.required = isTeacher;
+    }
+
+    // Initialize edit modal
+    function setupEditModal(button) {
+        const form = document.getElementById('editForm');
+        form.action = `/admin/update-employee/${button.dataset.id}`;
+        
+        document.getElementById('edit_id').value = button.dataset.id;
+        document.getElementById('edit_emp_id').value = button.dataset.emp_id;
+        document.getElementById('edit_name').value = button.dataset.name;
+        document.getElementById('edit_father_name').value = button.dataset.father_name;
+        document.getElementById('edit_mobile').value = button.dataset.mobile;
+        document.getElementById('edit_email').value = button.dataset.email;
+        document.getElementById('edit_salary').value = button.dataset.salary;
+        document.getElementById('edit_doj').value = button.dataset.doj;
+        document.getElementById('edit_resignation').value = button.dataset.resignation || '';
+        
+        const deptSelect = document.getElementById('edit_department');
+        deptSelect.value = button.dataset.department;
+        
+        loadDesignations(button.dataset.department, 'edit_');
+        
+        setTimeout(() => {
+            const designationSelect = document.getElementById('edit_designation');
+            if (designationSelect) {
+                designationSelect.value = button.dataset.designation;
+                toggleSubjectField(button.dataset.designation, 'edit_');
+                
+                if (button.dataset.subject && button.dataset.subject !== 'None') {
+                    document.getElementById('edit_subject').value = button.dataset.subject;
+                }
+            }
+        }, 300);
+        
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Edit button handlers
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', () => setupEditModal(btn));
+        });
+
+        // Main form event listeners
+        const departmentSelect = document.getElementById('department');
+        if (departmentSelect) {
+            departmentSelect.addEventListener('change', function() {
+                loadDesignations(this.value);
+                document.getElementById('designation').value = '';
+                document.getElementById('subjectContainer').style.display = 'none';
+            });
+        }
+
+        const designationSelect = document.getElementById('designation');
+        if (designationSelect) {
+            designationSelect.addEventListener('change', function() {
+                toggleSubjectField(this.value);
+            });
+        }
+
+        // Initialize subject field if designation is already selected
+        if (document.getElementById('designation').value) {
+            toggleSubjectField(document.getElementById('designation').value);
+        }
+        
+        // Copy password to clipboard when alert is shown
+        const successAlert = document.querySelector('.alert-success');
+        if (successAlert && successAlert.textContent.includes('Password:')) {
+            const password = successAlert.textContent.match(/Password: (\w+)/)[1];
+            navigator.clipboard.writeText(password).then(() => {
+                console.log('Password copied to clipboard');
+            });
+        }
+    });
+</script>
+{% endblock %}

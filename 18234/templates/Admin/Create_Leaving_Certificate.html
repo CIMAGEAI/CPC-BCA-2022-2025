@@ -1,0 +1,119 @@
+{% extends "Admin/AdminMaster.html" %}
+
+{% block title %}Create Leaving Certificate | Admin Panel{% endblock %}
+
+{% block head %}
+<style>
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+    }
+    .form-floating {
+        margin-bottom: 1rem;
+    }
+    textarea.form-control {
+        min-height: 100px;
+        resize: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h5 class="mb-4">Add Student's Leaving Certificate Details</h5>
+                <form method="POST">
+                    <h6 class="mb-4">Personal Info</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="sid" name="sid" 
+                                       placeholder="Student ID" value="{{ student.Student_ID }}" readonly style="background-color: #000;">
+                                <label for="sid">Student ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       placeholder="Student Name" value="{{ student.Name }}" readonly style="background-color: #000;">
+                                <label for="name">Student Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="father_name" name="father_name" 
+                                       placeholder="Father's Name" value="{{ student.FatherName }}" readonly style="background-color: #000;">
+                                <label for="father_name">Father's Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="mother_name" name="mother_name" 
+                                       placeholder="Mother's Name" value="{{ student.MotherName }}" readonly style="background-color: #000;">
+                                <label for="mother_name">Mother's Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="adate" name="adate" 
+                                       placeholder="Date Of Admission" value="{{ student.AdmissionDate }}" readonly style="background-color: #000;">
+                                <label for="adate">Date Of Admission</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="admitted_class" name="admitted_class" 
+                                       placeholder="Admitted Class" value="{{ student.AdmittedClass }}" readonly style="background-color: #000;">
+                                <label for="admitted_class">Admitted Class</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="studied_upto" name="studied_upto" 
+                                       placeholder="Studied Upto" required>
+                                <label for="studied_upto">Studied Upto</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" id="leaving_date" name="leaving_date" 
+                                       placeholder="Date OF Leaving School" required>
+                                <label for="leaving_date">Date Of Leaving School</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" id="reason" name="reason" 
+                                          placeholder="Reason For Leaving" required></textarea>
+                                <label for="reason">Reason For Leaving</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" id="co_activities" name="co_activities" 
+                                          placeholder="CO-Curricular Activities Details" required></textarea>
+                                <label for="co_activities">CO-Curricular Activities Details</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="behaviour" name="behaviour" 
+                                       placeholder="Behaviour" required>
+                                <label for="behaviour">Behaviour</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group mb-3">
+                                <button type="submit" class="btn btn-primary w-100">Save Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

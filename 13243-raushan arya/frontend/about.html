@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - LibraTech</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;500;400&display=swap" rel="stylesheet">
+</head>
+<body class="front-bg enhanced-bg">
+    <!-- Animated Peach Blobs -->
+    <div class="bg-blobs">
+      <div class="bg-blob bg-blob1"></div>
+      <div class="bg-blob bg-blob2"></div>
+      <div class="bg-blob bg-blob3"></div>
+    </div>
+    
+    <!-- Header -->
+    <header class="main-header glass-nav">
+        <div class="header-content">
+            <div class="header-logo">
+                <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="ltBadge" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#4f8cff"/>
+                      <stop offset="1" stop-color="#7c3aed"/>
+                    </linearGradient>
+                  </defs>
+                  <circle cx="32" cy="32" r="30" fill="url(#ltBadge)"/>
+                  <path d="M20 44V24C20 21.8 21.8 20 24 20H32V44H24C21.8 44 20 42.2 20 40V44Z" fill="#fff" fill-opacity="0.97"/>
+                  <path d="M44 44V24C44 21.8 42.2 20 40 20H32V44H40C42.2 44 44 42.2 44 40V44Z" fill="#fff" fill-opacity="0.85"/>
+                  <rect x="26" y="28" width="4" height="10" rx="2" fill="#7c3aed"/>
+                  <rect x="26" y="38" width="8" height="2" rx="1" fill="#7c3aed"/>
+                  <rect x="34" y="28" width="4" height="10" rx="2" fill="#4f8cff"/>
+                  <rect x="32" y="28" width="8" height="2" rx="1" fill="#4f8cff"/>
+                  <rect x="22" y="48" width="20" height="2" rx="1" fill="#fff" fill-opacity="0.7"/>
+                  <circle cx="26" cy="51" r="1.2" fill="#7c3aed"/>
+                  <circle cx="32" cy="51" r="1.2" fill="#4f8cff"/>
+                  <circle cx="38" cy="51" r="1.2" fill="#7c3aed"/>
+                </svg>
+                <a href="index.html" class="site-title"><span class="site-title-text">LibraTech</span></a>
+            </div>
+            <nav class="header-nav right-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link active">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="faqs.html" class="nav-link">FAQs</a>
+                <button class="header-login-btn nav-btn" onclick="window.open('login.html', '_blank')">Login</button>
+                <button class="header-register-btn nav-btn" onclick="window.open('register.html', '_blank')">Registration</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- About Hero Section -->
+    <section class="about-hero-section fade-in">
+        <div class="about-hero-content">
+            <div class="hero-title-container">
+                <h1 class="hero-main-title">
+                    <span class="title-word title-word-1">About</span>
+                    <span class="title-word title-word-2">LibraTech</span>
+                    
+                    <div class="title-sparkles">
+                        <span class="sparkle sparkle-1">✨</span>
+                        <span class="sparkle sparkle-2">🌟</span>
+                        <span class="sparkle sparkle-3">💫</span>
+                        <span class="sparkle sparkle-4">⭐</span>
+                    </div>
+                </h1>
+                <div class="hero-subtitle-wrapper">
+                    <p class="about-hero-subtitle">Revolutionizing library management through innovative technology and user-centered design. We're on a mission to make knowledge accessible to everyone.</p>
+                </div>
+                <div class="hero-description-wrapper">
+                    <p class="about-hero-description">Discover our journey from a simple idea to a comprehensive library management platform that's transforming how libraries operate worldwide. Learn about our mission, values, and the passionate team behind the innovation.</p>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="500">0</div>
+                    <div class="stat-label">Libraries</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="25">0</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="99">0</div>
+                    <div class="stat-label">Satisfaction %</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-background-elements">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+                <div class="shape shape-5"></div>
+            </div>
+            <div class="hero-particles"></div>
+        </div>
+    </section>
+
+    <style>
+      /* Import additional fonts */
+      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Righteous&family=Quicksand:wght@300;400;500;600;700&display=swap');
+      
+      /* About Hero Section Professional Styling */
+      .about-hero-section {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #ced4da 75%, #adb5bd 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 12s ease infinite;
+        overflow: hidden;
+        padding: 2rem 1rem;
+      }
+      
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      
+      .about-hero-content {
+        text-align: center;
+        max-width: 1200px;
+        width: 100%;
+        z-index: 10;
+        position: relative;
+      }
+      
+      /* Enhanced Title Styling */
+      .hero-title-container {
+        margin-bottom: 3rem;
+        position: relative;
+      }
+      
+      .hero-title-container::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, #2c3e50, #34495e, #1a252f, transparent);
+        border-radius: 2px;
+        animation: titleLineGlow 3s ease-in-out infinite;
+      }
+      
+      .hero-title-container::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #1a252f, #2c3e50, transparent);
+        border-radius: 2px;
+        animation: titleLineGlow 3s ease-in-out infinite reverse;
+      }
+      
+      @keyframes titleLineGlow {
+        0%, 100% {
+          opacity: 0.5;
+          transform: translateX(-50%) scaleX(0.8);
+        }
+        50% {
+          opacity: 1;
+          transform: translateX(-50%) scaleX(1.2);
+        }
+      }
+      
+      /* Sparkle Effects */
+      .title-sparkles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+      
+      .sparkle {
+        position: absolute;
+        font-size: 1.5rem;
+        animation: sparkleFloat 4s ease-in-out infinite;
+        opacity: 0.8;
+      }
+      
+      .sparkle-1 {
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+      
+      .sparkle-2 {
+        top: 20%;
+        right: 15%;
+        animation-delay: 1s;
+      }
+      
+      .sparkle-3 {
+        bottom: 30%;
+        left: 20%;
+        animation-delay: 2s;
+      }
+      
+      .sparkle-4 {
+        bottom: 10%;
+        right: 10%;
+        animation-delay: 3s;
+      }
+      
+      @keyframes sparkleFloat {
+        0%, 100% {
+          transform: translateY(0px) rotate(0deg) scale(1);
+          opacity: 0.8;
+        }
+        25% {
+          transform: translateY(-10px) rotate(90deg) scale(1.2);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(-5px) rotate(180deg) scale(0.8);
+          opacity: 0.6;
+        }
+        75% {
+          transform: translateY(-15px) rotate(270deg) scale(1.1);
+          opacity: 0.9;
+        }
+      }
+      
+      .hero-main-title {
+        font-family: 'Orbitron', monospace;
+        font-size: clamp(3rem, 10vw, 7rem);
+        font-weight: 900;
+        margin-bottom: 2rem;
+        line-height: 1.1;
+        letter-spacing: 4px;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        text-transform: uppercase;
+        filter: drop-shadow(0 0 20px rgba(44, 62, 80, 0.2));
+        animation: titleEntrance 1.5s ease-out 0.5s both;
+      }
+      
+      @keyframes titleEntrance {
+        from {
+          opacity: 0;
+          transform: translateY(-50px) scale(0.8);
+          filter: blur(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+      
+      .title-word {
+        animation: color-animation 4s linear infinite, titleGlow 2s ease-in-out infinite alternate;
+        position: relative;
+        display: inline-block;
+        text-shadow: 2px 2px 4px rgba(44,62,80,0.3), 0 0 15px rgba(44,62,80,0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: linear-gradient(45deg, var(--color-1), var(--color-2), var(--color-3));
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: color-animation 4s linear infinite, titleGlow 2s ease-in-out infinite alternate, gradientShift 3s ease infinite;
+      }
+      
+      .title-word:hover {
+        transform: scale(1.2) rotate(3deg) translateY(-5px);
+        text-shadow: 3px 3px 8px rgba(44,62,80,0.4), 0 0 20px rgba(44,62,80,0.2);
+        filter: brightness(1.2) contrast(1.1);
+      }
+      
+      @keyframes titleGlow {
+        0% {
+          filter: drop-shadow(0 0 8px rgba(44, 62, 80, 0.2)) brightness(1);
+        }
+        100% {
+          filter: drop-shadow(0 0 15px rgba(44, 62, 80, 0.4)) brightness(1.05);
+        }
+      }
+      
+      .title-word-1 {
+        --color-1: #2c3e50;
+        --color-2: #34495e;
+        --color-3: #1a252f;
+        animation-delay: 0s;
+      }
+      
+      .title-word-2 {
+        --color-1: #34495e;
+        --color-2: #1a252f;
+        --color-3: #2c3e50;
+        animation-delay: 0.5s;
+      }
+      
+      .title-word-3 {
+        --color-1: #1a252f;
+        --color-2: #2c3e50;
+        --color-3: #34495e;
+        animation-delay: 1s;
+      }
+      
+      @keyframes color-animation {
+        0%    { color: var(--color-1) }
+        32%   { color: var(--color-1) }
+        33%   { color: var(--color-2) }
+        65%   { color: var(--color-2) }
+        66%   { color: var(--color-3) }
+        99%   { color: var(--color-3) }
+        100%  { color: var(--color-1) }
+      }
+      
+      /* Enhanced Subtitle Styling */
+      .hero-subtitle-wrapper {
+        margin-bottom: 2rem;
+        position: relative;
+      }
+      
+      .about-hero-subtitle {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        font-weight: 500;
+        color: #2c3e50;
+        text-shadow: 1px 1px 2px rgba(44,62,80,0.1);
+        margin-bottom: 1.5rem;
+        line-height: 1.4;
+        position: relative;
+        z-index: 2;
+        animation: slideInFromLeft 1s ease-out 0.5s both;
+      }
+      
+      .hero-subtitle-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        right: -20px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #2c3e50, transparent);
+        transform: translateY(-50%);
+        animation: expandLine 1.5s ease-out 1s both;
+      }
+      
+      @keyframes slideInFromLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes expandLine {
+        from {
+          width: 0;
+          opacity: 0;
+        }
+        to {
+          width: calc(100% + 40px);
+          opacity: 0.6;
+        }
+      }
+      
+      /* Enhanced Description Styling */
+      .hero-description-wrapper {
+        position: relative;
+      }
+      
+      .about-hero-description {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1rem, 2.5vw, 1.3rem);
+        font-weight: 400;
+        color: #4a5568;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+        animation: slideInFromRight 1s ease-out 1s both;
+        position: relative;
+        z-index: 2;
+      }
+      
+      @keyframes slideInFromRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      /* Stats Section */
+      .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+        animation: fadeInUp 1s ease-out 1.5s both;
+      }
+      
+      .stat-item {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid rgba(44, 62, 80, 0.2);
+        transition: all 0.3s ease;
+        min-width: 120px;
+      }
+      
+      .stat-item:hover {
+        transform: translateY(-10px) scale(1.05);
+        background: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 20px 40px rgba(44, 62, 80, 0.15);
+      }
+      
+      .stat-number {
+        font-family: 'Orbitron', monospace;
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #2c3e50;
+        text-shadow: 1px 1px 2px rgba(44, 62, 80, 0.2);
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+      
+      .stat-label {
+        font-family: 'Quicksand', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #4a5568;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      /* Floating Background Elements */
+      .hero-background-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+      
+      .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(44, 62, 80, 0.1);
+        animation: float 6s ease-in-out infinite;
+      }
+      
+      .shape-1 {
+        width: 80px;
+        height: 80px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+      
+      .shape-2 {
+        width: 120px;
+        height: 120px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+      }
+      
+      .shape-3 {
+        width: 60px;
+        height: 60px;
+        top: 80%;
+        left: 20%;
+        animation-delay: 4s;
+      }
+      
+      .shape-4 {
+        width: 100px;
+        height: 100px;
+        top: 30%;
+        right: 30%;
+        animation-delay: 1s;
+      }
+      
+      .shape-5 {
+        width: 70px;
+        height: 70px;
+        top: 70%;
+        right: 5%;
+        animation-delay: 3s;
+      }
+      
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(180deg);
+        }
+      }
+      
+      .hero-particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          radial-gradient(circle at 25% 25%, rgba(44,62,80,0.1) 1px, transparent 1px),
+          radial-gradient(circle at 75% 75%, rgba(108,117,125,0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: particleMove 20s linear infinite;
+      }
+      
+      @keyframes particleMove {
+        0% { transform: translateY(0px); }
+        100% { transform: translateY(-50px); }
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero-main-title {
+          flex-direction: column;
+          gap: 0.2rem;
+        }
+        
+        .hero-stats {
+          gap: 1.5rem;
+        }
+        
+        .stat-item {
+          min-width: 100px;
+          padding: 1rem;
+        }
+        
+        .stat-number {
+          font-size: 2rem;
+        }
+        
+        .shape {
+          display: none;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .hero-stats {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+        
+        .stat-item {
+          width: 200px;
+        }
+      }
+    </style>
+
+    <script>
+      // Animated counter for stats
+      function animateCounter(element, target, duration = 2000) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        
+        function updateCounter() {
+          start += increment;
+          if (start < target) {
+            element.textContent = Math.floor(start);
+            requestAnimationFrame(updateCounter);
+          } else {
+            element.textContent = target;
+          }
+        }
+        
+        updateCounter();
+      }
+      
+      // Intersection Observer for stats animation
+      const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -100px 0px'
+      };
+      
+      const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const statNumbers = entry.target.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+              const target = parseInt(stat.getAttribute('data-target'));
+              animateCounter(stat, target);
+            });
+            statsObserver.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+      
+      // Observe the stats section
+      document.addEventListener('DOMContentLoaded', () => {
+        const statsSection = document.querySelector('.hero-stats');
+        if (statsSection) {
+          statsObserver.observe(statsSection);
+        }
+      });
+    </script>
+
+    <!-- Add section dividers and improved structure for clarity and engagement -->
+    <!-- Example: Add a divider between major sections -->
+    <style>
+      .section-divider {
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #4f8cff 0%, #7c3aed 50%, #ff7e5f 100%);
+        opacity: 0.12;
+        margin: 48px 0 32px 0;
+        border-radius: 2px;
+      }
+      .card-anim, .mission-card, .timeline-item, .tech-card, .team-card, .achievement-card, .value-card {
+        box-shadow: 0 2px 16px rgba(79,140,255,0.07), 0 1.5px 6px rgba(124,58,237,0.04);
+        border-radius: 14px;
+        background: #fff;
+        padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+        margin-bottom: 24px;
+        transition: box-shadow 0.2s, transform 0.2s;
+      }
+      .card-anim:hover, .mission-card:hover, .timeline-item:hover, .tech-card:hover, .team-card:hover, .achievement-card:hover, .value-card:hover {
+        box-shadow: 0 6px 32px rgba(79,140,255,0.13), 0 2.5px 12px rgba(124,58,237,0.08);
+        transform: translateY(-4px) scale(1.02);
+      }
+      .section-header, .about-hero-content, .story-content, .timeline-section, .tech-section, .team-section, .achievements-section, .values-section {
+        max-width: 900px;
+        margin: 0 auto 32px auto;
+        padding: 0 16px;
+      }
+      .about-hero-section, .mission-section, .story-section, .timeline-section, .tech-section, .team-section, .achievements-section, .values-section {
+        margin-bottom: 48px;
+      }
+      .about-hero-content h1, .section-header h2, .story-content h2, .timeline-section h2, .tech-section h2, .team-section h2, .achievements-section h2, .values-section h2 {
+        font-size: 2.2rem;
+        margin-bottom: 0.7em;
+        font-weight: 800;
+        color: #222;
+        letter-spacing: 0.5px;
+        text-align: center;
+      }
+      .about-hero-content p, .section-header p, .story-content p, .tech-section p, .team-section p, .achievements-section p, .values-section p {
+        font-size: 1.1rem;
+        color: #4a5568;
+        text-align: center;
+        margin-bottom: 1.2em;
+      }
+      .team-grid, .achievements-grid, .values-grid, .tech-grid, .mission-container, .timeline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        justify-content: center;
+      }
+      .team-card, .achievement-card, .value-card, .tech-card, .mission-card, .timeline-item {
+        flex: 1 1 260px;
+        min-width: 260px;
+        max-width: 320px;
+      }
+      @media (max-width: 900px) {
+        .team-grid, .achievements-grid, .values-grid, .tech-grid, .mission-container, .timeline {
+          flex-direction: column;
+          align-items: center;
+        }
+        .team-card, .achievement-card, .value-card, .tech-card, .mission-card, .timeline-item {
+          max-width: 100%;
+        }
+      }
+    </style>
+    <!-- Add section dividers between major sections -->
+    <!-- After About Hero -->
+    <div class="section-divider"></div>
+
+    <!-- Mission & Vision Section -->
+    <section class="mission-section fade-in">
+        <div class="mission-background">
+            <div class="mission-particles"></div>
+            <div class="mission-shapes">
+                <div class="mission-shape mission-shape-1"></div>
+                <div class="mission-shape mission-shape-2"></div>
+                <div class="mission-shape mission-shape-3"></div>
+            </div>
+        </div>
+        <div class="mission-container">
+            <div class="mission-card card-anim mission-card-enhanced" data-delay="0">
+                <div class="mission-card-glow"></div>
+                <div class="mission-icon-container">
+                    <div class="mission-icon mission-icon-animated">🎯</div>
+                    <div class="mission-icon-ring"></div>
+                </div>
+                <div class="mission-content">
+                    <h3 class="mission-title">Our Mission</h3>
+                    <div class="mission-line"></div>
+                    <p class="mission-text">To empower libraries worldwide with cutting-edge technology that streamlines operations, enhances user experience, and promotes knowledge accessibility for all communities. We believe every library deserves modern, efficient tools to serve their readers better.</p>
+                    <div class="mission-highlights">
+                        <span class="highlight-item">✨ Innovation</span>
+                        <span class="highlight-item">🌍 Global Reach</span>
+                        <span class="highlight-item">📚 Knowledge Access</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mission-card card-anim mission-card-enhanced" data-delay="0.2">
+                <div class="mission-card-glow"></div>
+                <div class="mission-icon-container">
+                    <div class="mission-icon mission-icon-animated">🔮</div>
+                    <div class="mission-icon-ring"></div>
+                </div>
+                <div class="mission-content">
+                    <h3 class="mission-title">Our Vision</h3>
+                    <div class="mission-line"></div>
+                    <p class="mission-text">To become the global standard for library management systems, fostering a world where every library can efficiently serve its community with modern, accessible technology. We envision a future where knowledge flows freely and libraries thrive as community hubs.</p>
+                    <div class="mission-highlights">
+                        <span class="highlight-item">🌟 Global Standard</span>
+                        <span class="highlight-item">🤝 Community Focus</span>
+                        <span class="highlight-item">🚀 Future Ready</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mission-card card-anim mission-card-enhanced" data-delay="0.4">
+                <div class="mission-card-glow"></div>
+                <div class="mission-icon-container">
+                    <div class="mission-icon mission-icon-animated">💎</div>
+                    <div class="mission-icon-ring"></div>
+                </div>
+                <div class="mission-content">
+                    <h3 class="mission-title">Our Values</h3>
+                    <div class="mission-line"></div>
+                    <p class="mission-text">Innovation drives us to constantly improve. Accessibility ensures our solutions work for everyone. Security protects the trust libraries place in us. Community connects us to the people we serve. Excellence is our standard in everything we do.</p>
+                    <div class="mission-highlights">
+                        <span class="highlight-item">🔒 Security</span>
+                        <span class="highlight-item">♿ Accessibility</span>
+                        <span class="highlight-item">🏆 Excellence</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+      /* Mission & Vision Section Enhanced Animations */
+      .mission-section {
+        position: relative;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+        padding: 4rem 0;
+        overflow: hidden;
+      }
+      
+      .mission-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+      
+      .mission-particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          radial-gradient(circle at 20% 20%, rgba(255,138,101,0.1) 1px, transparent 1px),
+          radial-gradient(circle at 80% 80%, rgba(255,179,71,0.1) 1px, transparent 1px);
+        background-size: 60px 60px;
+        animation: missionParticleFloat 25s linear infinite;
+      }
+      
+      @keyframes missionParticleFloat {
+        0% { transform: translateY(0px); }
+        100% { transform: translateY(-60px); }
+      }
+      
+      .mission-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .mission-shape {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(45deg, rgba(255,138,101,0.1), rgba(255,179,71,0.1));
+        animation: missionShapeFloat 8s ease-in-out infinite;
+      }
+      
+      .mission-shape-1 {
+        width: 100px;
+        height: 100px;
+        top: 10%;
+        left: 5%;
+        animation-delay: 0s;
+      }
+      
+      .mission-shape-2 {
+        width: 80px;
+        height: 80px;
+        top: 60%;
+        right: 10%;
+        animation-delay: 2s;
+      }
+      
+      .mission-shape-3 {
+        width: 120px;
+        height: 120px;
+        bottom: 20%;
+        left: 15%;
+        animation-delay: 4s;
+      }
+      
+      @keyframes missionShapeFloat {
+        0%, 100% {
+          transform: translateY(0px) rotate(0deg) scale(1);
+          opacity: 0.3;
+        }
+        50% {
+          transform: translateY(-20px) rotate(180deg) scale(1.1);
+          opacity: 0.6;
+        }
+      }
+      
+      .mission-container {
+        position: relative;
+        z-index: 2;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+      }
+      
+      .mission-card-enhanced {
+        flex: 1 1 280px;
+        max-width: 320px;
+        min-height: 350px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+        transform: translateY(50px);
+        opacity: 0;
+        animation: missionCardEntrance 1s ease-out forwards;
+        animation-delay: calc(var(--delay, 0) * 0.3s);
+        border: 1px solid rgba(255, 138, 101, 0.1);
+        box-shadow: 0 10px 30px rgba(255, 138, 101, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .mission-card-enhanced[data-delay="0"] { --delay: 0; }
+      .mission-card-enhanced[data-delay="0.2"] { --delay: 1; }
+      .mission-card-enhanced[data-delay="0.4"] { --delay: 2; }
+      
+      @keyframes missionCardEntrance {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      .mission-card-enhanced:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 25px 60px rgba(255, 138, 101, 0.2);
+        border-color: rgba(255, 138, 101, 0.3);
+      }
+      
+      .mission-card-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255,138,101,0.05) 0%, rgba(255,179,71,0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 25px;
+      }
+      
+      .mission-card-enhanced:hover .mission-card-glow {
+        opacity: 1;
+      }
+      
+      .mission-icon-container {
+        position: relative;
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      
+      .mission-icon-animated {
+        font-size: 3rem;
+        display: inline-block;
+        position: relative;
+        z-index: 2;
+        animation: missionIconFloat 3s ease-in-out infinite;
+        filter: drop-shadow(0 4px 8px rgba(255, 138, 101, 0.3));
+      }
+      
+      @keyframes missionIconFloat {
+        0%, 100% {
+          transform: translateY(0px) scale(1);
+        }
+        50% {
+          transform: translateY(-8px) scale(1.05);
+        }
+      }
+      
+      .mission-icon-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90px;
+        height: 90px;
+        border: 3px solid rgba(255, 138, 101, 0.2);
+        border-radius: 50%;
+        animation: missionRingRotate 10s linear infinite;
+      }
+      
+      @keyframes missionRingRotate {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      
+      .mission-content {
+        text-align: center;
+      }
+      
+      .mission-title {
+        font-family: 'Orbitron', monospace;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.8rem;
+        position: relative;
+        animation: missionTitleGlow 2s ease-in-out infinite alternate;
+      }
+      
+      @keyframes missionTitleGlow {
+        0% {
+          text-shadow: 0 0 5px rgba(255, 138, 101, 0.3);
+        }
+        100% {
+          text-shadow: 0 0 15px rgba(255, 138, 101, 0.6);
+        }
+      }
+      
+      .mission-line {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #ff8a65, #ffb347);
+        margin: 0 auto 1.5rem auto;
+        border-radius: 2px;
+        animation: missionLineExpand 1.5s ease-out 0.5s both;
+      }
+      
+      @keyframes missionLineExpand {
+        from {
+          width: 0;
+          opacity: 0;
+        }
+        to {
+          width: 60px;
+          opacity: 1;
+        }
+      }
+      
+      .mission-text {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #4a5568;
+        margin-bottom: 1.5rem;
+        animation: missionTextFade 1s ease-out 1s both;
+      }
+      
+      @keyframes missionTextFade {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .mission-highlights {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        justify-content: center;
+        animation: missionHighlightsSlide 1s ease-out 1.5s both;
+      }
+      
+      @keyframes missionHighlightsSlide {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .highlight-item {
+        background: linear-gradient(135deg, #ff8a65, #ffb347);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        transform: scale(0.9);
+      }
+      
+      .mission-card-enhanced:hover .highlight-item {
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(255, 138, 101, 0.3);
+      }
+      
+      .highlight-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(255, 138, 101, 0.4);
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .mission-container {
+          flex-direction: column;
+          align-items: center;
+        }
+        
+        .mission-card-enhanced {
+          max-width: 100%;
+          min-height: auto;
+        }
+        
+        .mission-icon-animated {
+          font-size: 3rem;
+        }
+        
+        .mission-icon-ring {
+          width: 90px;
+          height: 90px;
+        }
+        
+        .mission-shapes {
+          display: none;
+        }
+      }
+    </style>
+
+    <!-- Add section dividers between major sections -->
+    <!-- After Mission & Vision -->
+    <div class="section-divider"></div>
+
+    <!-- Story Section -->
+    <section class="story-section fade-in">
+        <div class="story-content">
+            <h2>Our Story</h2>
+            <p>Founded in 2020 by a team of passionate developers and library professionals, LibraTech emerged from a simple observation: libraries, the cornerstone of knowledge and learning, were struggling with outdated, inefficient management systems that couldn't keep up with modern demands.</p>
+            <p>Our founders, Alex Johnson (former library director) and Sarah Chen (full-stack developer), came together with a shared vision to modernize library operations. What started as a small startup in a garage has grown into a trusted partner for hundreds of libraries worldwide.</p>
+            <p>Today, we've helped transform traditional libraries into modern, efficient knowledge centers that can better serve their communities. Our platform has evolved from a simple book management system into a comprehensive library ecosystem that includes advanced analytics, mobile applications, and AI-powered features.</p>
+            <p>We're proud to serve libraries across 25+ countries, from small community libraries to large university systems, helping them manage millions of books and serve countless readers every day.</p>
+        </div>
+    </section>
+
+    <!-- Add section dividers between major sections -->
+    <!-- After Story -->
+    <div class="section-divider"></div>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section fade-in">
+        <h2>Our Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item card-anim">
+                <div class="timeline-date">2020</div>
+                <div class="timeline-content">
+                    <h3>Foundation</h3>
+                    <p>LibraTech was founded with a mission to modernize library management. Started with a team of 3 people working from a garage.</p>
+                    <ul class="timeline-details">
+                        <li>Company incorporated</li>
+                        <li>First prototype developed</li>
+                        <li>Initial funding secured</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-item card-anim">
+                <div class="timeline-date">2021</div>
+                <div class="timeline-content">
+                    <h3>First Launch</h3>
+                    <p>Released our first version with basic library management features. Gained our first 10 customers.</p>
+                    <ul class="timeline-details">
+                        <li>Beta version launched</li>
+                        <li>First 10 libraries onboarded</li>
+                        <li>Customer feedback integration</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-item card-anim">
+                <div class="timeline-date">2022</div>
+                <div class="timeline-content">
+                    <h3>Growth & Expansion</h3>
+                    <p>Expanded to serve 100+ libraries across different countries. Introduced advanced features and mobile app.</p>
+                    <ul class="timeline-details">
+                        <li>100+ libraries using LibraTech</li>
+                        <li>Mobile app launched</li>
+                        <li>International expansion began</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-item card-anim">
+                <div class="timeline-date">2023</div>
+                <div class="timeline-content">
+                    <h3>Innovation & Scale</h3>
+                    <p>Introduced advanced analytics, AI-powered features, and comprehensive reporting. Reached 300+ libraries.</p>
+                    <ul class="timeline-details">
+                        <li>AI features introduced</li>
+                        <li>Advanced analytics launched</li>
+                        <li>300+ libraries served</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-item card-anim">
+                <div class="timeline-date">2024</div>
+                <div class="timeline-content">
+                    <h3>Global Leadership</h3>
+                    <p>Now serving 500+ libraries with cutting-edge technology. Recognized as industry leader in library management solutions.</p>
+                    <ul class="timeline-details">
+                        <li>500+ libraries worldwide</li>
+                        <li>Industry awards received</li>
+                        <li>Partnerships established</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add section dividers between major sections -->
+    <!-- After Timeline -->
+    <div class="section-divider"></div>
+
+    <!-- Technology Stack Section -->
+    <section class="tech-section fade-in">
+        <h2>Technology Stack</h2>
+        <p class="tech-intro">Built with modern, scalable technologies to ensure reliability, security, and performance.</p>
+        <div class="tech-grid">
+            <div class="tech-card card-anim">
+                <div class="tech-icon">⚛️</div>
+                <h3>Frontend</h3>
+                <p>HTML5, CSS3, JavaScript, Responsive Design</p>
+                <ul class="tech-details">
+                    <li>Progressive Web App (PWA)</li>
+                    <li>Responsive design principles</li>
+                    <li>Modern CSS frameworks</li>
+                </ul>
+            </div>
+            <div class="tech-card card-anim">
+                <div class="tech-icon">🟢</div>
+                <h3>Backend</h3>
+                <p>Node.js, Express.js, RESTful APIs</p>
+                <ul class="tech-details">
+                    <li>Scalable microservices</li>
+                    <li>RESTful API design</li>
+                    <li>Real-time WebSocket support</li>
+                </ul>
+            </div>
+            <div class="tech-card card-anim">
+                <div class="tech-icon">🍃</div>
+                <h3>Database</h3>
+                <p>MongoDB, Mongoose ODM</p>
+                <ul class="tech-details">
+                    <li>NoSQL document storage</li>
+                    <li>Data indexing & optimization</li>
+                    <li>Backup & recovery systems</li>
+                </ul>
+            </div>
+            <div class="tech-card card-anim">
+                <div class="tech-icon">🔐</div>
+                <h3>Security</h3>
+                <p>JWT Authentication, bcrypt, HTTPS</p>
+                <ul class="tech-details">
+                    <li>End-to-end encryption</li>
+                    <li>GDPR compliance</li>
+                    <li>Regular security audits</li>
+                </ul>
+            </div>
+            <div class="tech-card card-anim">
+                <div class="tech-icon">☁️</div>
+                <h3>Cloud</h3>
+                <p>AWS, Docker, CI/CD Pipeline</p>
+                <ul class="tech-details">
+                    <li>AWS cloud infrastructure</li>
+                    <li>Container orchestration</li>
+                    <li>Automated deployments</li>
+                </ul>
+            </div>
+            <div class="tech-card card-anim">
+                <div class="tech-icon">📱</div>
+                <h3>Mobile</h3>
+                <p>Progressive Web App, Responsive Design</p>
+                <ul class="tech-details">
+                    <li>Cross-platform compatibility</li>
+                    <li>Offline functionality</li>
+                    <li>Native app features</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add section dividers between major sections -->
+    <!-- After Technology Stack -->
+    <div class="section-divider"></div>
+
+    <!-- Team Section -->
+    <section class="team-section fade-in">
+        <h2>Meet Our Team</h2>
+        <p class="team-intro">Passionate professionals dedicated to revolutionizing library management technology.</p>
+        <div class="team-grid">
+            <div class="team-card card-anim team-card-animated" data-delay="0">
+                <div class="team-avatar team-avatar-animated">👨‍💻</div>
+                <div class="team-card-overlay"></div>
+                <div class="team-card-content">
+                    <h3>RAUSHAN ARYA</h3>
+                    <p class="team-role">CEO & Founder</p>
+                    <p class="team-bio">Former library director with 2+ years of experience in library technology. Passionate about making libraries more efficient and accessible.</p>
+                    <div class="team-social">
+                        <span class="team-social-item">📧 arya@libratech.com</span>
+                        <span class="team-social-item">💼 2+ years experience</span>
+                    </div>
+                    <div class="team-skills">
+                        <span class="skill-tag">Leadership</span>
+                        <span class="skill-tag">Strategy</span>
+                        <span class="skill-tag">Innovation</span>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card card-anim team-card-animated" data-delay="0.1">
+                <div class="team-avatar team-avatar-animated">👩‍💻</div>
+                <div class="team-card-overlay"></div>
+                <div class="team-card-content">
+                    <h3>Shiphra</h3>
+                    <p class="team-role">CTO</p>
+                    <p class="team-bio">Full-stack developer passionate about creating scalable, user-friendly solutions. Expert in modern web technologies and cloud architecture.</p>
+                    <div class="team-social">
+                        <span class="team-social-item">📧 shiphra@libratech.com</span>
+                        <span class="team-social-item">💼 2+ years experience</span>
+                    </div>
+                    <div class="team-skills">
+                        <span class="skill-tag">Full-Stack</span>
+                        <span class="skill-tag">Cloud</span>
+                        <span class="skill-tag">Architecture</span>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card card-anim team-card-animated" data-delay="0.2">
+                <div class="team-avatar team-avatar-animated">👨‍🎨</div>
+                <div class="team-card-overlay"></div>
+                <div class="team-card-content">
+                    <h3>Arya Raushan</h3>
+                    <p class="team-role">Lead Designer</p>
+                    <p class="team-bio">UX/UI expert focused on creating intuitive and beautiful user experiences. Specializes in accessibility and user-centered design.</p>
+                    <div class="team-social">
+                        <span class="team-social-item">📧 raushan@libratech.com</span>
+                        <span class="team-social-item">💼 2+ years experience</span>
+                    </div>
+                    <div class="team-skills">
+                        <span class="skill-tag">UX/UI</span>
+                        <span class="skill-tag">Design</span>
+                        <span class="skill-tag">Accessibility</span>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card card-anim team-card-animated" data-delay="0.3">
+                <div class="team-avatar team-avatar-animated">👩‍🔬</div>
+                <div class="team-card-overlay"></div>
+                <div class="team-card-content">
+                    <h3>Kanhaiya Arya </h3>
+                    <p class="team-role">Product Manager</p>
+                    <p class="team-bio">Library science expert who ensures our product meets real library needs. Bridges the gap between technology and library operations.</p>
+                    <div class="team-social">
+                        <span class="team-social-item">📧 kanhaiya@libratech.com</span>
+                        <span class="team-social-item">💼 2+ years experience</span>
+                    </div>
+                    <div class="team-skills">
+                        <span class="skill-tag">Product</span>
+                        <span class="skill-tag">Library Science</span>
+                        <span class="skill-tag">Strategy</span>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card card-anim team-card-animated" data-delay="0.4">
+                <div class="team-avatar team-avatar-animated">👨‍🔧</div>
+                <div class="team-card-overlay"></div>
+                <div class="team-card-content">
+                    <h3>Tejas</h3>
+                    <p class="team-role">Senior Developer</p>
+                    <p class="team-bio">Backend specialist with expertise in database optimization and API development. Ensures our platform performs at peak efficiency.</p>
+                    <div class="team-social">
+                        <span class="team-social-item">📧 tejas@libratech.com</span>
+                        <span class="team-social-item">💼 2+ years experience</span>
+                    </div>
+                    <div class="team-skills">
+                        <span class="skill-tag">Backend</span>
+                        <span class="skill-tag">Database</span>
+                        <span class="skill-tag">API</span>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card card-anim team-card-animated" data-delay="0.5">
+                <div class="team-avatar team-avatar-animated">👩‍💼</div>
+                <div class="team-card-overlay"></div>
+                <div class="team-card-content">
+                    <h3>Harsha</h3>
+                    <p class="team-role">Customer Success</p>
+                    <p class="team-bio">Dedicated to ensuring every library succeeds with our platform. Provides training, support, and ongoing guidance to our customers.</p>
+                    <div class="team-social">
+                        <span class="team-social-item">📧 harsha@libratech.com</span>
+                        <span class="team-social-item">💼 2+ years experience</span>
+                    </div>
+                    <div class="team-skills">
+                        <span class="skill-tag">Support</span>
+                        <span class="skill-tag">Training</span>
+                        <span class="skill-tag">Success</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+      /* Team Section Special Effects and Animations */
+      .team-section {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .team-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 80%, rgba(79,140,255,0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(124,58,237,0.03) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+      }
+      
+      .team-card-animated {
+        position: relative;
+        overflow: hidden;
+        transform: translateY(30px);
+        opacity: 0;
+        animation: teamCardSlideIn 0.8s ease-out forwards;
+        animation-delay: calc(var(--delay, 0) * 0.2s);
+      }
+      
+      .team-card-animated[data-delay="0"] { --delay: 0; }
+      .team-card-animated[data-delay="0.1"] { --delay: 1; }
+      .team-card-animated[data-delay="0.2"] { --delay: 2; }
+      .team-card-animated[data-delay="0.3"] { --delay: 3; }
+      .team-card-animated[data-delay="0.4"] { --delay: 4; }
+      .team-card-animated[data-delay="0.5"] { --delay: 5; }
+      
+      @keyframes teamCardSlideIn {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      .team-card-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(79,140,255,0.05) 0%, rgba(124,58,237,0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+      }
+      
+      .team-card-animated:hover .team-card-overlay {
+        opacity: 1;
+      }
+      
+      .team-avatar-animated {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        display: block;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        filter: grayscale(0.3);
+      }
+      
+      .team-card-animated:hover .team-avatar-animated {
+        transform: scale(1.1) rotate(5deg);
+        filter: grayscale(0);
+        animation: avatarBounce 0.6s ease-out;
+      }
+      
+      @keyframes avatarBounce {
+        0%, 100% { transform: scale(1.1) rotate(5deg); }
+        50% { transform: scale(1.15) rotate(8deg); }
+      }
+      
+      .team-card-content h3 {
+        color: #2d3748;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+      }
+      
+      .team-card-animated:hover .team-card-content h3 {
+        color: #4f8cff;
+        transform: translateX(5px);
+        transition: all 0.3s ease;
+      }
+      
+      .team-role {
+        color: #7c3aed;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+      }
+      
+      .team-role::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #4f8cff, #7c3aed);
+        transition: width 0.3s ease;
+      }
+      
+      .team-card-animated:hover .team-role::after {
+        width: 100%;
+      }
+      
+      .team-bio {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #4a5568;
+        margin-bottom: 1.2rem;
+        transition: all 0.3s ease;
+      }
+      
+      .team-card-animated:hover .team-bio {
+        color: #2d3748;
+        transform: translateY(-2px);
+      }
+      
+      .team-social {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .team-social-item {
+        font-size: 0.85rem;
+        color: #718096;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .team-card-animated:hover .team-social-item {
+        color: #4a5568;
+        transform: translateX(3px);
+      }
+      
+      .team-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.4s ease;
+      }
+      
+      .team-card-animated:hover .team-skills {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      .skill-tag {
+        background: linear-gradient(135deg, #4f8cff, #7c3aed);
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        transform: scale(0.9);
+      }
+      
+      .team-card-animated:hover .skill-tag {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(79,140,255,0.3);
+      }
+      
+      .skill-tag:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(79,140,255,0.4);
+      }
+      
+      /* Floating particles effect */
+      .team-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 25% 25%, rgba(79,140,255,0.1) 1px, transparent 1px),
+          radial-gradient(circle at 75% 75%, rgba(124,58,237,0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: particleFloat 20s linear infinite;
+        pointer-events: none;
+        z-index: -1;
+      }
+      
+      @keyframes particleFloat {
+        0% { transform: translateY(0px); }
+        100% { transform: translateY(-50px); }
+      }
+      
+      /* Glow effect on hover */
+      .team-card-animated::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #4f8cff, #7c3aed, #ff7e5f, #4f8cff);
+        border-radius: 16px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-size: 400% 400%;
+        animation: gradientShift 3s ease infinite;
+      }
+      
+      .team-card-animated:hover::before {
+        opacity: 0.3;
+      }
+      
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .team-card-animated {
+          animation-delay: 0s !important;
+        }
+        
+        .team-skills {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .team-avatar-animated {
+          font-size: 3rem;
+        }
+      }
+    </style>
+
+    <!-- Add section dividers between major sections -->
+    <!-- After Team -->
+    <div class="section-divider"></div>
+
+    <!-- Achievements Section -->
+    <section class="achievements-section fade-in">
+        <h2>Our Achievements</h2>
+        <div class="achievements-grid">
+            <div class="achievement-card card-anim">
+                <div class="achievement-number">500+</div>
+                <div class="achievement-label">Libraries Served</div>
+                <div class="achievement-desc">Across 25+ countries worldwide</div>
+            </div>
+            <div class="achievement-card card-anim">
+                <div class="achievement-number">50K+</div>
+                <div class="achievement-label">Books Managed</div>
+                <div class="achievement-desc">Millions of books cataloged</div>
+            </div>
+            <div class="achievement-card card-anim">
+                <div class="achievement-number">99.9%</div>
+                <div class="achievement-label">Uptime</div>
+                <div class="achievement-desc">Reliable cloud infrastructure</div>
+            </div>
+            <div class="achievement-card card-anim">
+                <div class="achievement-number">24/7</div>
+                <div class="achievement-label">Support</div>
+                <div class="achievement-desc">Always here to help</div>
+            </div>
+            <div class="achievement-card card-anim">
+                <div class="achievement-number">15+</div>
+                <div class="achievement-label">Awards</div>
+                <div class="achievement-desc">Industry recognition</div>
+            </div>
+            <div class="achievement-card card-anim">
+                <div class="achievement-number">98%</div>
+                <div class="achievement-label">Satisfaction</div>
+                <div class="achievement-desc">Customer satisfaction rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add section dividers between major sections -->
+    <!-- After Achievements -->
+    <div class="section-divider"></div>
+
+    <!-- Values Section -->
+    <section class="values-section fade-in">
+        <h2>Our Core Values</h2>
+        <div class="values-grid">
+            <div class="value-card card-anim">
+                <div class="value-icon">🚀</div>
+                <h3>Innovation</h3>
+                <p>We constantly push boundaries to create better solutions for libraries, embracing new technologies and methodologies.</p>
+            </div>
+            <div class="value-card card-anim">
+                <div class="value-icon">🤝</div>
+                <h3>Community</h3>
+                <p>We believe in the power of libraries to build stronger communities and support their mission wholeheartedly.</p>
+            </div>
+            <div class="value-card card-anim">
+                <div class="value-icon">🔒</div>
+                <h3>Security</h3>
+                <p>We prioritize the security and privacy of library data, implementing industry best practices and regular audits.</p>
+            </div>
+            <div class="value-card card-anim">
+                <div class="value-icon">📚</div>
+                <h3>Knowledge</h3>
+                <p>We're passionate about making knowledge accessible to everyone, supporting the fundamental mission of libraries.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add section dividers between major sections -->
+    <!-- After Values -->
+    <div class="section-divider"></div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>LibraTech</h3>
+                <p>Modern solutions for modern libraries.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQs</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Community</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 LibraTech. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="utils.js"></script>
+    <script src="api.js"></script>
+    <script src="main.js"></script>
+    
+    <script>
+      // Enhanced Scroll Animations for About Us Page
+      class ScrollAnimations {
+        constructor() {
+          this.lastScrollY = window.scrollY;
+          this.scrollDirection = 'down';
+          this.init();
+        }
+        
+        init() {
+          this.setupScrollListener();
+          this.setupIntersectionObservers();
+          this.createScrollIndicators();
+        }
+        
+        setupScrollListener() {
+          let ticking = false;
+          
+          window.addEventListener('scroll', () => {
+            if (!ticking) {
+              requestAnimationFrame(() => {
+                this.handleScroll();
+                ticking = false;
+              });
+              ticking = true;
+            }
+          });
+        }
+        
+        handleScroll() {
+          const currentScrollY = window.scrollY;
+          this.scrollDirection = currentScrollY < this.lastScrollY ? 'up' : 'down';
+          this.lastScrollY = currentScrollY;
+          
+          // Parallax effects for different sections
+          this.applyParallaxEffects();
+          
+          // Scroll-up specific animations
+          if (this.scrollDirection === 'up') {
+            this.triggerScrollUpAnimations();
+          }
+          
+          // Update scroll progress indicator
+          this.updateScrollProgress();
+        }
+        
+        applyParallaxEffects() {
+          const scrolled = window.scrollY;
+          const parallaxElements = document.querySelectorAll('.parallax-bg, .parallax-content');
+          
+          parallaxElements.forEach(element => {
+            const speed = element.dataset.speed || 0.5;
+            const yPos = -(scrolled * speed);
+            element.style.transform = `translateY(${yPos}px)`;
+          });
+        }
+        
+        triggerScrollUpAnimations() {
+          // Add special effects when scrolling up
+          const sections = document.querySelectorAll('section');
+          sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              section.classList.add('scroll-up-active');
+              
+              // Trigger floating particles
+              this.createFloatingParticles(section);
+              
+              // Add glow effects
+              this.addGlowEffect(section);
+              
+              // Add dramatic scale and rotation effects
+              this.addDramaticEffects(section);
+              
+              // Trigger text animations
+              this.animateTextElements(section);
+            }
+          });
+          
+          // Add global scroll effects
+          this.addGlobalScrollEffects();
+        }
+        
+        addDramaticEffects(section) {
+          const cards = section.querySelectorAll('.card-anim, .mission-card-enhanced, .team-card-animated, .tech-card, .timeline-item, .achievement-card, .value-card');
+          cards.forEach((card, index) => {
+            if (!card.classList.contains('dramatic-effect-added')) {
+              card.classList.add('dramatic-effect-added');
+              card.style.animation = `dramaticCardEffect 0.8s ease-out ${index * 0.1}s both`;
+            }
+          });
+        }
+        
+        animateTextElements(section) {
+          const titles = section.querySelectorAll('h1, h2, h3');
+          const texts = section.querySelectorAll('p');
+          
+          titles.forEach((title, index) => {
+            if (!title.classList.contains('text-animated')) {
+              title.classList.add('text-animated');
+              title.style.animation = `textGlowEffect 1s ease-out ${index * 0.2}s both`;
+            }
+          });
+          
+          texts.forEach((text, index) => {
+            if (!text.classList.contains('text-animated')) {
+              text.classList.add('text-animated');
+              text.style.animation = `textSlideEffect 0.6s ease-out ${index * 0.1}s both`;
+            }
+          });
+        }
+        
+        addGlobalScrollEffects() {
+          // Add rainbow trail effect
+          this.createRainbowTrail();
+          
+          // Add color shift effect
+          this.addColorShift();
+        }
+        
+        createRainbowTrail() {
+          if (this.rainbowTrailCreated) return;
+          this.rainbowTrailCreated = true;
+          
+          const trail = document.createElement('div');
+          trail.className = 'rainbow-trail';
+          document.body.appendChild(trail);
+          
+          setTimeout(() => {
+            trail.remove();
+            this.rainbowTrailCreated = false;
+          }, 2000);
+        }
+        
+
+        
+        addColorShift() {
+          document.documentElement.style.filter = 'hue-rotate(30deg) saturate(1.2)';
+          setTimeout(() => {
+            document.documentElement.style.filter = '';
+          }, 500);
+        }
+        
+        createFloatingParticles(section) {
+          if (section.dataset.particlesCreated) return;
+          section.dataset.particlesCreated = 'true';
+          
+          const particleContainer = document.createElement('div');
+          particleContainer.className = 'scroll-particles';
+          section.appendChild(particleContainer);
+          
+          // Create more particles for dramatic effect
+          for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'scroll-particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 3 + 's';
+            particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            particleContainer.appendChild(particle);
+          }
+          
+          // Add special effect particles
+          for (let i = 0; i < 5; i++) {
+            const specialParticle = document.createElement('div');
+            specialParticle.className = 'scroll-particle special-particle';
+            specialParticle.style.left = Math.random() * 100 + '%';
+            specialParticle.style.top = Math.random() * 100 + '%';
+            specialParticle.style.animationDelay = Math.random() * 2 + 's';
+            particleContainer.appendChild(specialParticle);
+          }
+        }
+        
+        addGlowEffect(section) {
+          if (!section.classList.contains('glow-added')) {
+            section.classList.add('glow-added');
+            section.style.boxShadow = '0 0 50px rgba(255, 107, 157, 0.4), 0 0 100px rgba(255, 182, 193, 0.2)';
+            section.style.transform = 'scale(1.02)';
+            section.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+              section.style.boxShadow = '';
+              section.style.transform = 'scale(1)';
+            }, 1500);
+          }
+        }
+        
+        setupIntersectionObservers() {
+          const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+          };
+          
+          // Observer for fade-in animations
+          const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-visible');
+              }
+            });
+          }, observerOptions);
+          
+          // Observer for slide animations
+          const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('slide-in-visible');
+              }
+            });
+          }, observerOptions);
+          
+          // Apply observers to elements
+          document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+          document.querySelectorAll('.slide-in-left, .slide-in-right, .slide-in-up').forEach(el => slideObserver.observe(el));
+        }
+        
+        createScrollIndicators() {
+          const indicator = document.createElement('div');
+          indicator.className = 'scroll-indicator';
+          indicator.innerHTML = `
+            <div class="scroll-progress"></div>
+            <div class="scroll-direction-indicator">
+              <span class="scroll-arrow">↑</span>
+            </div>
+          `;
+          document.body.appendChild(indicator);
+        }
+        
+        updateScrollProgress() {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollPercent = (scrollTop / docHeight) * 100;
+          
+          const progressBar = document.querySelector('.scroll-progress');
+          if (progressBar) {
+            progressBar.style.width = scrollPercent + '%';
+          }
+          
+          const arrow = document.querySelector('.scroll-arrow');
+          if (arrow) {
+            arrow.textContent = this.scrollDirection === 'up' ? '↑' : '↓';
+            arrow.style.color = this.scrollDirection === 'up' ? '#ff8a65' : '#4a5568';
+          }
+        }
+      }
+      
+      // Initialize scroll animations when DOM is loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        new ScrollAnimations();
+      });
+    </script>
+
+    <style>
+      /* Scroll Animation Styles */
+      .scroll-up-active {
+        animation: scrollUpGlow 0.8s ease-out;
+      }
+      
+      @keyframes scrollUpGlow {
+        0% {
+          box-shadow: 0 0 0 rgba(255, 138, 101, 0);
+          transform: scale(1);
+        }
+        25% {
+          box-shadow: 0 0 50px rgba(255, 138, 101, 0.5);
+          transform: scale(1.05);
+        }
+        50% {
+          box-shadow: 0 0 80px rgba(255, 138, 101, 0.7);
+          transform: scale(1.02);
+        }
+        100% {
+          box-shadow: 0 0 0 rgba(255, 138, 101, 0);
+          transform: scale(1);
+        }
+      }
+      
+      /* Dramatic Card Effects */
+      @keyframes dramaticCardEffect {
+        0% {
+          transform: scale(1) rotate(0deg);
+          opacity: 1;
+        }
+        25% {
+          transform: scale(1.1) rotate(2deg);
+          opacity: 0.8;
+        }
+        50% {
+          transform: scale(0.95) rotate(-1deg);
+          opacity: 1;
+        }
+        75% {
+          transform: scale(1.05) rotate(1deg);
+          opacity: 0.9;
+        }
+        100% {
+          transform: scale(1) rotate(0deg);
+          opacity: 1;
+        }
+      }
+      
+      /* Text Animation Effects */
+      @keyframes textGlowEffect {
+        0% {
+          text-shadow: 0 0 5px rgba(255, 138, 101, 0.3);
+          transform: scale(1);
+        }
+        50% {
+          text-shadow: 0 0 20px rgba(255, 138, 101, 0.8), 0 0 30px rgba(255, 179, 71, 0.6);
+          transform: scale(1.05);
+        }
+        100% {
+          text-shadow: 0 0 5px rgba(255, 138, 101, 0.3);
+          transform: scale(1);
+        }
+      }
+      
+      @keyframes textSlideEffect {
+        0% {
+          transform: translateX(-20px);
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      
+
+      
+      /* Rainbow Trail Effect */
+      .rainbow-trail {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 9999;
+        background: linear-gradient(45deg, 
+          rgba(255, 138, 101, 0.1),
+          rgba(255, 179, 71, 0.1),
+          rgba(255, 204, 92, 0.1),
+          rgba(255, 138, 101, 0.1)
+        );
+        animation: rainbowTrailEffect 2s ease-out forwards;
+      }
+      
+      @keyframes rainbowTrailEffect {
+        0% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 0.3;
+          transform: scale(1.1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1.5);
+        }
+      }
+      
+      /* Parallax Background Elements */
+      .parallax-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+      
+      /* Scroll Particles */
+      .scroll-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 10;
+      }
+      
+      .scroll-particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: linear-gradient(45deg, #ff8a65, #ffb347);
+        border-radius: 50%;
+        animation: scrollParticleFloat 3s ease-in-out infinite;
+        opacity: 0;
+        box-shadow: 0 0 10px rgba(255, 138, 101, 0.5);
+      }
+      
+      .special-particle {
+        width: 12px;
+        height: 12px;
+        background: linear-gradient(45deg, #ff8a65, #ffb347, #ffcc5c);
+        animation: specialParticleFloat 4s ease-in-out infinite;
+        box-shadow: 0 0 20px rgba(255, 138, 101, 0.8);
+      }
+      
+      @keyframes scrollParticleFloat {
+        0% {
+          transform: translateY(100px) scale(0) rotate(0deg);
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+          transform: translateY(50px) scale(1) rotate(90deg);
+        }
+        50% {
+          transform: translateY(0px) scale(1.2) rotate(180deg);
+        }
+        80% {
+          opacity: 1;
+          transform: translateY(-50px) scale(1) rotate(270deg);
+        }
+        100% {
+          transform: translateY(-100px) scale(0) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      
+      @keyframes specialParticleFloat {
+        0% {
+          transform: translateY(100px) scale(0) rotate(0deg);
+          opacity: 0;
+        }
+        25% {
+          opacity: 1;
+          transform: translateY(25px) scale(1.5) rotate(90deg);
+        }
+        50% {
+          transform: translateY(-25px) scale(2) rotate(180deg);
+        }
+        75% {
+          opacity: 1;
+          transform: translateY(-75px) scale(1.5) rotate(270deg);
+        }
+        100% {
+          transform: translateY(-100px) scale(0) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      
+      /* Scroll Indicator */
+      .scroll-indicator {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .scroll-progress {
+        width: 4px;
+        height: 100px;
+        background: rgba(44, 62, 80, 0.1);
+        border-radius: 2px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .scroll-progress::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background: linear-gradient(to bottom, #ff8a65, #ffb347);
+        border-radius: 2px;
+        transition: height 0.1s ease;
+      }
+      
+      .scroll-direction-indicator {
+        width: 30px;
+        height: 30px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+      }
+      
+      .scroll-arrow {
+        font-size: 14px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+      
+      /* Enhanced Fade In Animations */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .fade-in-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Slide In Animations */
+      .slide-in-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .slide-in-right {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .slide-in-up {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .slide-in-visible {
+        opacity: 1;
+        transform: translateX(0) translateY(0);
+      }
+      
+      /* Section-specific scroll effects */
+      .mission-section {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .mission-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255,138,101,0.05) 0%, rgba(255,179,71,0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        z-index: 1;
+      }
+      
+      .mission-section.scroll-up-active::before {
+        opacity: 1;
+      }
+      
+      .story-section {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .story-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(255,138,101,0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        z-index: 1;
+      }
+      
+      .story-section.scroll-up-active::after {
+        opacity: 1;
+      }
+      
+      /* Timeline scroll effects */
+      .timeline-item {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255,138,101,0.1), rgba(255,179,71,0.1));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+      
+      .timeline-item.scroll-up-active::before {
+        opacity: 1;
+      }
+      
+      /* Tech section scroll effects */
+      .tech-card {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .tech-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255,138,101,0.1) 0%, rgba(255,179,71,0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+      
+      .tech-card.scroll-up-active::after {
+        opacity: 1;
+      }
+      
+      /* Team section scroll effects */
+      .team-card {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .team-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, rgba(255,138,101,0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+      
+      .team-card.scroll-up-active::before {
+        opacity: 1;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .scroll-indicator {
+          right: 10px;
+        }
+        
+        .scroll-progress {
+          height: 80px;
+        }
+        
+        .scroll-direction-indicator {
+          width: 25px;
+          height: 25px;
+        }
+        
+        .scroll-arrow {
+          font-size: 12px;
+        }
+      }
+    </style>
+</body>
+</html> 

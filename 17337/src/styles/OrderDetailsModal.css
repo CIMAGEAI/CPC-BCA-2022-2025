@@ -1,0 +1,91 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  color: #f5f5f5;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #444;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: #fff;
+}
+
+.modal-body > div {
+  margin-bottom: 1.5rem;
+}
+
+.modal-body h4 {
+  font-size: 1.1rem;
+  color: #f5f5f5;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+.order-summary-modal p, .shipping-details p {
+  margin: 0.25rem 0;
+  color: #b0b0b0;
+}
+
+.products-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-list th, .products-list td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid #333;
+}
+
+.products-list th {
+  color: #f5f5f5;
+}
+
+.products-list td {
+  color: #b0b0b0;
+}
+
+.products-list tbody tr:last-child td {
+  border-bottom: none;
+}
