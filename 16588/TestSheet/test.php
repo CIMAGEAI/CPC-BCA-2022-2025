@@ -274,7 +274,7 @@ $conn->close();
         <p style="color:black">You are trying to exit full-screen mode.</p>
         <p style="color:black">Click "Submit Test" to submit the test, or "Go Back to Full-Screen" to continue.</p>
         <button id="submitTest">Submit Test</button>
-        <button id="goFullScreen">Go Back to Full-Screen</button>
+        <button id="goFullScreen">Continue Test</button>
     </div>
 </div>
 
@@ -337,7 +337,7 @@ $conn->close();
 
     // Timer countdown function
     function startTimer() {
-        if (isFullScreen == true ){
+        if (isFullScreen && !timerInterval ){
         timerInterval = setInterval(function() {
             countdownTime--;
             const minutes = Math.floor(countdownTime / 60);
@@ -355,23 +355,19 @@ $conn->close();
 
     // Exit the test if full-screen is exited
     document.addEventListener('fullscreenchange', function() {
-        if (!document.fullscreenElement) {
-            // // Show a custom confirmation dialog to either go back to full-screen mode or submit the test
-            
-            // const exitConfirmation = confirm("You are attempting to exit full-screen mode. \nClick 'OK' to submit the test, or 'Cancel' to return to full-screen mode.");
+    if (!document.fullscreenElement) {
+        // Set modal content specific to fullscreen exit
+        document.querySelector('#modalContent p:first-child').innerText =
+          'You have exited Full-Screen mode.';
+        document.querySelector('#modalContent p:nth-child(2)').innerText =
+          'Click "Submit Test" to submit the test, or "Go Back to Full-Screen" to continue.';
 
-            // if (exitConfirmation) {
-            //     // If the user confirms, submit the form
-            //     document.getElementById('myForm').submit(); 
-            // } else if(!exitConfirmation) {
-            //     // Otherwise, go back to full-screen mode
-            //     openFullScreen();
-            // }
-            // If the user exits full-screen, show the custom modal
+        // Set specific activity status
+        document.getElementById('activity_status').value = 'Exited Full Screen';
         document.getElementById('exitModal').style.display = 'flex';
+    }
+});
 
-        }
-    });
 
     // Prevent user from using certain keys to exit full-screen mode
     document.addEventListener('keydown', preventExitFullScreen);

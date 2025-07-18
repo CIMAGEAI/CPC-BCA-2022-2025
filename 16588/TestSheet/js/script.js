@@ -1,7 +1,9 @@
 const video = document.getElementById("video");
 
 let noFaceCounter = 0;
-const warningTime = 10; // seconds
+let modalShown = false;
+
+const warningTime = 20; // seconds
 
 // Load the face-api models first
 Promise.all([
@@ -36,7 +38,9 @@ function startMonitoring() {
       openFullScreen();
       showForm();
     } else {
-      alert("Waiting for camera access. Please enable the camera to start the test.");
+      alert(
+        "Waiting for camera access. Please enable the camera to start the test."
+      );
     }
   });
 }
@@ -56,39 +60,26 @@ function monitorFace() {
         .withFaceLandmarks()
         .withFaceExpressions();
 
-      const resizedDetections = faceapi.resizeResults(
-        detections,
-        displaySize
-      );
-
-    //   const ctx = canvas.getContext("2d");
-    //   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw detections
-    //   faceapi.draw.drawDetections(canvas, resizedDetections);
-    //   faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-    //   faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-
-    // Number of persons detected
-    //   ctx.font = "30px Arial";
-    //   ctx.fillStyle = "red";
-    //   ctx.fillText(`Persons: ${detections.length}`, 10, 40);
+      const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
       // No face detection handling
       if (detections.length === 0) {
         noFaceCounter++;
         console.log(`No face detected for ${noFaceCounter} seconds`);
 
-        if (noFaceCounter === warningTime) {
-          // ✅ Show modal instead of alert
-          document.querySelector('#modalContent p:first-child').innerText =
-            'No Person Detected in front.';
-          document.querySelector('#modalContent p:nth-child(2)').innerText =
-            'Click "Submit Test" to submit the test, or "Go Back to Full-Screen" to continue.';
-          document.getElementById('exitModal').style.display = 'flex';
+        if (noFaceCounter === warningTime && !modalShown) {
+          modalShown = true; // prevent it from showing again
+          document.querySelector("#modalContent p:first-child").innerText =
+            "No Person Detected in front.";
+          document.querySelector("#modalContent p:nth-child(2)").innerText =
+            'Click "Submit Test" to submit the test, or "Make Sure To be Visible in Camera" to continue.';
+
+          document.getElementById("activity_status").value = "No Face Detected";
+          document.getElementById("exitModal").style.display = "flex";
         }
       } else {
         noFaceCounter = 0; // Reset counter if face is detected
+        modalShown = false; // Allow showing modal again in future if needed
       }
 
       // Multiple person detection handling
