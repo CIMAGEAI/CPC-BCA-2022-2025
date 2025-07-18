@@ -1,0 +1,177 @@
+/* ===== Global Reset ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* ===== Navbar Styles ===== */
+.navbar {
+  font-family: 'Inter', sans-serif;
+  margin-top: -2px !important;
+  top: 0;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+nav img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.navbar-nav {
+  gap: 0.75rem;
+}
+
+.navbar-nav .nav-link {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  margin-top: -2px;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-nav .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* ===== Section Scroll Adjustment ===== */
+section[id] {
+  scroll-margin-top: 55px;
+}
+
+/* ===== Custom Backgrounds ===== */
+.bg-blue-custom {
+  background-color: #1E40AF;
+}
+
+.bg-primary {
+  background: linear-gradient(to right, #2563EB, #1E40AF);
+}
+
+/* ===== Ticker & Badge ===== */
+.badge.bg-light {
+  background-color: #051c35 !important;
+  color: #ffffff !important;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  border-radius: 6px;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.ticker-content {
+  overflow: hidden;
+  white-space: nowrap;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  padding: 0 1rem;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.ticker-item {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll-left 20s linear infinite;
+  color: #000000;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* ===== Typography ===== */
+section.text-white {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== Buttons & Hover Effects ===== */
+button.btn-dark:hover,
+.btn.btn-dark:hover {
+  background-color: #0f172a;
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:focus, a:focus, input:focus, textarea:focus, select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* ===== Ticket Card (Used in Profile or Modal) ===== */
+.ticket-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.ticket-card:hover {
+  transform: scale(1.01);
+}
+
+/* ===== Responsive Fixes ===== */
+@media (max-width: 768px) {
+  .navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+  }
+
+  .ticker-content {
+    font-size: 0.9rem;
+  }
+}
+
+/* animation */
+
+.navbar-nav .nav-link {
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff; 
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #93c5fd; 
+}
