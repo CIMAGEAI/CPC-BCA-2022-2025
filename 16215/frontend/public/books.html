@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books | ReadHub</title>
+  <link rel="stylesheet" href="../src/css/books.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">📚 ReadHub</a></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="books.html" class="active">Books</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <!-- <li><a href="register.html">Register</a></li> -->
+      </ul>
+    </nav>
+  </header>
+  <main class="books-container">
+    <section class="search-section">
+      <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Search by title, author, or ISBN...">
+        <select id="categoryFilter" multiple style="min-width:120px;"></select>
+        <select id="sortFilter" style="min-width:120px;">
+          <option value="">Sort By</option>
+          <option value="title">Title (A-Z)</option>
+          <option value="author">Author (A-Z)</option>
+          <option value="year">Year (Newest)</option>
+          <option value="available">Availability</option>
+        </select>
+        <button type="submit" class="btn">Search</button>
+        <button type="button" id="clearFiltersBtn" class="btn" style="background:#eee;color:#222;margin-left:8px;">Clear Filters</button>
+      </form>
+    </section>
+    <section id="booksList" class="books-list">
+      <!-- Books will be rendered here by JS -->
+    </section>
+    <div id="booksError" class="error-message"></div>
+    <section class="feedback-section">
+      <h3><span class="feedback-icon">💬</span>Feedback & Suggestions</h3>
+      <form id="feedbackForm" class="feedback-form animated-form">
+        <input type="text" id="feedbackName" placeholder="Your Name (optional)" style="width:100%;">
+        <input type="email" id="feedbackEmail" placeholder="Your Email (optional)" style="width:100%;">
+        <select id="feedbackType" style="width:100%;">
+          <option value="feedback">Feedback</option>
+          <option value="suggestion">Book Suggestion</option>
+        </select>
+        <textarea id="feedbackInput" placeholder="Your feedback or book suggestion..." required style="width:100%;min-height:60px;"></textarea>
+        <button type="submit" class="btn animated-btn">Submit</button>
+      </form>
+      <div id="feedbackMessage" class="error-message animated-message"></div>
+    </section>
+  </main>
+  <footer>
+    <p><a href="contact.html"><strong>Contact Us</strong></a></p>
+    <p><strong>Contact:</strong> <a href="mailto:support@readhub.com">support@readhub.com</a> | <a href="tel:+12345678901">+1 234 567 8901</a> |patel,nagar,patna</p>
+    <p>&copy;</p>
+  </footer>
+  <script src="../src/js/config.js"></script>
+  <script src="../src/js/books.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+</body>
+</html> 

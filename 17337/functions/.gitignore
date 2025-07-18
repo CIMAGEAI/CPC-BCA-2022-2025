@@ -1,0 +1,11 @@
+node_modules/
+*.local
+.env.*
+
+# Firebase Emulator Data
+.firebase/
+firestore.rules
+storage.rules
+database.rules
+*.log
+*.crash.log

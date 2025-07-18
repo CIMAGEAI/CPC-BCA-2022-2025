@@ -1,0 +1,225 @@
+{% extends "Admin/AdminMaster.html" %}
+
+{% block title %}Preview ID Card | Admin Panel{% endblock %}
+
+{% block head %}
+<style>
+    .idcard {
+        max-width: 300px;
+        background-color: white;
+        box-shadow: 0 0 9px 1px #EB1616;
+        height: 400px;
+        margin: auto;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .background-logo {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .background-logo img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 150px;
+        height: 150px;
+        opacity: 0.4;
+    }
+
+    .schoolInformation {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background-color: #ffdda5;
+        opacity: 0.8;
+        border-radius: 10px;
+    }
+
+    .schoollogo {
+        position: absolute;
+        height: 90%;
+        width: 90%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 2;
+    }
+
+    .student-details-table th {
+        border: none;
+        border-width: 0;
+        color: black;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    .student-details-table td {
+        border: none;
+        border-width: 0;
+        color: black;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        font-size: 12px;
+        text-align: left;
+    }
+    
+    .validationarea {
+        width: 100%; 
+        background-color: coral; 
+        position: absolute; 
+        bottom: 38px; 
+        height: 28px;
+    }
+    
+    .addressarea {
+        width: 100%; 
+        position: absolute; 
+        bottom: -2px;
+    }
+</style>
+<script>
+    function printDiv() {
+        var printContents = document.getElementById('print').outerHTML;
+        var originalContents = document.body.innerHTML;
+        var printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write('<html><head><title>Student ID Card</title>');
+
+        printWindow.document.write('<style>');
+        printWindow.document.write('@media print { .idcard { max-width: 300px; background-color: white; box-shadow: 0 0 9px 1px #EB1616; height: 400px; margin: auto; border-radius: 10px; position: relative; } .background-logo { position: relative; width: 100%; height: 100%; } .background-logo img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 150px; opacity:0.3; } .schoolInformation { position: absolute; height: 100%; width: 100%; top: 0; left: 0; background-color: #ffdda5; opacity: 0.8; border-radius: 10px; } .schoollogo { position: absolute; height: 90%; width: 90%; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #ffdda5; opacity: 0.8; border-radius: 10px; opacity: 1; } .student-details-table th{text-align:left;} .student-details-table td{text-align:left;} h5{margin-bottom:15px !important; margin-top:0;} p{font-size:11px;} .validationarea{position:absolute; bottom:26px !important;} .addressarea{position:absolute; bottom:-2px !important} }');
+        printWindow.document.write('</style></head><body>');
+
+        printWindow.document.write(printContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.onload = function () {
+            printWindow.print();
+            printWindow.onafterprint = function () {
+                printWindow.close();
+            };
+        };
+        document.body.innerHTML = originalContents;
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row">
+        <div class="col-12">
+            <a href="{{ url_for('admin.student_details.student_details') }}" class="btn btn-secondary mb-3">Back</a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Student's ID Card</h6>
+                <div class="idcard" id="print">
+                    <div class="background-logo">
+                        {% if school and school.Image %}
+<img src="{{ url_for('static', filename='AdminAssets/Image/' + school.Image) }}" />
+                        {% endif %}
+                    </div>
+                    <div class="schoolInformation">
+                        <div class="schoollogo">
+                            {% if school %}
+                                <h5 style="color: black; text-align: center; margin-bottom: 10px; z-index: 22; background-color: coral; width: 100%">{{ school.Name }}</h5>
+                            {% endif %}
+                            
+                            {% if student_image %}
+                                <center>
+                                    <img src="{{ url_for('static', filename=student_image)}}" style="width: 100px; height: 100px; opacity: 1;" />
+                                </center>
+                            {% endif %}
+                            
+                            {% if id_card %}
+                                <table class="student-details-table" style="width: 100%; margin-top: 15px">
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>:</th>
+                                        <td>{{ id_card.Student_ID }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>:</th>
+                                        <td>{{ id_card.Name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Father Name</th>
+                                        <th>:</th>
+                                        <td>{{ id_card.FatherName }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Gaurdian's Mobile:</th>
+                                        <th>:</th>
+                                        <td>{{ id_card.FatherMobile }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>D.O.B</th>
+                                        <th>:</th>
+                                        <td>{{ id_card.Dob }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Class</th>
+                                        <th>:</th>
+                                        <td>{{ id_card.Class }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Section</th>
+                                        <th>:</th>
+                                        <td>{{ id_card.Section }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Roll No</th>
+                                        <th>:</th>
+                                        <td>{{ id_card.Roll }}</td>
+                                    </tr>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="validationarea">
+                        <p style="color: black; text-align: center; font-size: 10px; font-weight: bold; margin-top: 3px; line-height: 1; padding: 8px;">
+                            <b>Valid From:</b> {{ formatted_financial_year }}
+                        </p>
+                    </div>
+
+                    <div class="addressarea">
+                        {% if school %}
+                            <p style="color: black; font-size: 12px; text-align: center; font-weight: bold; text-align: center; margin-top: 1px; line-height: 1;">
+                                <b>Address:</b> {{ school.Address }} <b>Mobile:</b> {{ school.Mobile }}
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-2">
+                        <a href="{{ url_for('admin.preview_id_card.modify_id_card') }}" class="btn btn-primary w-100">Modify ID Card</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <form action="{{ url_for('admin.preview_id_card.delete_id_card') }}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-primary w-100">Delete ID Card</button>
+                        </form>
+                    </div>
+                    <div class="col-sm-2">
+                        <button onclick="printDiv()" class="btn btn-primary w-100">Print Report</button>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

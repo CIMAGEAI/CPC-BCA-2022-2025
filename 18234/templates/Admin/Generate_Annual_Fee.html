@@ -1,0 +1,202 @@
+{% extends "Admin/AdminMaster.html" %}
+{% block title %}Generate Annual Fee{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="container mt-2">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Fees Structure</h6>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <h4 class="text-center text-danger">{{ record if record else '' }}</h4>
+                            <table class="table table-hover table-bordered custom-grid-bg">
+                                <thead class="thead-dark">
+                                    <tr class="bg-primary text-white">
+                                        <th>S.No.</th>
+                                        <th>Student ID</th>
+                                        <th>Name</th>
+                                        <th>Class</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>{{ student.Student_ID }}</td>
+                                        <td>{{ student.Name }}</td>
+                                        <td>{{ student.Class }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered custom-grid-bg">
+                                <thead class="thead-dark">
+                                    <tr class="bg-primary text-white">
+                                        <th>S.No.</th>
+                                        <th>Fee Name</th>
+                                        <th>Fee Amount</th>
+                                        <th>Fee Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for fee in fees %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ fee.FeeName }}</td>
+                                        <td>{{ "₹{:,.2f}".format(fee.Fee|float) }}</td>
+                                        <td>{{ fee.FeeType }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Fees Calculation</h6>
+                <form method="POST" action="{{ url_for('admin.generate_annual_fee.generate_annual_fee') }}">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <label for="amount">Amount</label>
+                            <input type="text" class="form-control bg-dark" id="amount" name="amount"
+                                value="{{ form_data.amount }}" readonly>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="concession">Concession (If/Any)</label>
+                            <select class="form-control bg-dark" id="concession" name="concession"
+                                onchange="toggleConcessionFields()">
+                                <option value="No" {% if form_data.concession=='No' %}selected{% endif %}>No</option>
+                                <option value="Yes" {% if form_data.concession=='Yes' %}selected{% endif %}>Yes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2" id="con1"
+                            style="display: {% if form_data.concession == 'Yes' %}block{% else %}none{% endif %}">
+                            <label for="concession_amount">Concession Amount</label>
+                            <input type="text" class="form-control bg-dark" id="concession_amount" name="concession_amount"
+                                value="{{ form_data.concession_amount }}" onchange="calculateGross()">
+                        </div>
+                        <div class="col-md-3 mb-2" id="con2"
+                            style="display: {% if form_data.concession == 'Yes' %}block{% else %}none{% endif %}">
+                            <label for="concession_remarks">Concession Remarks</label>
+                            <input type="text" class="form-control bg-dark" id="concession_remarks" name="concession_remarks"
+                                value="{{ form_data.concession_remarks }}">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="gross_amount">Total Amount Payable</label>
+                            <input type="text" class="form-control bg-dark" id="gross_amount" name="gross_amount"
+                                value="{{ form_data.gross_amount }}" readonly>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="paid_amount">Amount Paid</label>
+                            <input type="text" class="form-control bg-dark" id="paid_amount" name="paid_amount"
+                                value="{{ form_data.paid_amount }}" onchange="calculateDues()">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="dues">Amount Dues</label>
+                            <input type="text" class="form-control bg-dark" id="dues" name="dues" value="{{ form_data.dues }}"
+                                readonly>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="payment_type">Payment Type</label>
+                            <select class="form-control bg-dark" id="payment_type" name="payment_type"
+                                onchange="toggleTransactionField()">
+                                <option value="">--Select Payment Type--</option>
+                                <option value="Cash" {% if form_data.payment_type=='Cash' %}selected{% endif %}>Cash
+                                </option>
+                                <option value="Online" {% if form_data.payment_type=='Online' %}selected{% endif %}>
+                                    Online</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2" id="trans"
+                            style="display: {% if form_data.payment_type == 'Online' %}block{% else %}none{% endif %}">
+                            <label for="transaction_number">Transaction Number</label>
+                            <input type="text" class="form-control" id="transaction_number" name="transaction_number"
+                                value="{{ form_data.transaction_number }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mt-2 mb-2">
+                            <button type="submit" class="btn btn-primary w-100">Take Fee</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleConcessionFields() {
+        const concession = document.getElementById('concession').value;
+        document.getElementById('con1').style.display = concession === 'Yes' ? 'block' : 'none';
+        document.getElementById('con2').style.display = concession === 'Yes' ? 'block' : 'none';
+        calculateGross();
+    }
+
+    function toggleTransactionField() {
+        const paymentType = document.getElementById('payment_type').value;
+        document.getElementById('trans').style.display = paymentType === 'Online' ? 'block' : 'none';
+    }
+
+    function calculateGross() {
+        const amount = parseFloat(document.getElementById('amount').value) || 0;
+        const concession = document.getElementById('concession').value;
+        const concessionAmount = concession === 'Yes' ? (parseFloat(document.getElementById('concession_amount').value) || 0) : 0;
+
+        if (concessionAmount > amount) {
+            alert('Concession amount cannot exceed the Total Amount!');
+            document.getElementById('concession_amount').value = '0';
+            document.getElementById('gross_amount').value = amount.toFixed(2);
+            return;
+        }
+
+        const grossAmount = amount - concessionAmount;
+        document.getElementById('gross_amount').value = grossAmount.toFixed(2);
+        calculateDues();
+    }
+
+    function calculateDues() {
+        const grossAmount = parseFloat(document.getElementById('gross_amount').value) || 0;
+        const paidAmount = parseFloat(document.getElementById('paid_amount').value) || 0;
+
+        if (paidAmount > grossAmount) {
+            alert('Paid amount cannot exceed the Total Payable Amount!');
+            document.getElementById('paid_amount').value = '0';
+            document.getElementById('dues').value = grossAmount.toFixed(2);
+            return;
+        }
+
+        const dues = grossAmount - paidAmount;
+        document.getElementById('dues').value = dues.toFixed(2);
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        calculateGross();
+        toggleTransactionField();
+    });
+</script>
+{% endblock %}

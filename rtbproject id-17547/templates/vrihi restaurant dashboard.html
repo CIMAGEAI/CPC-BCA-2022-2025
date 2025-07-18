@@ -1,0 +1,24 @@
+<h2>{{ restaurant_name }} - Bookings</h2>
+
+{% if bookings %}
+  <table border="1" cellpadding="10">
+    <tr>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Guests</th>
+      <th>Menu</th>
+    </tr>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.name }}</td>
+      <td>{{ booking.date }}</td>
+      <td>{{ booking.time }}</td>
+      <td>{{ booking.guests }}</td>
+      <td>{{ booking.menu }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>No bookings yet.</p>
+{% endif %}

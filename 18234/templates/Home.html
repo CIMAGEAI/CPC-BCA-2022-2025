@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Site Metas -->
+    <title>A.B.R Foundation School</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='Assets/img/abrfoundtaionlogo.jpeg') }}" type="image/x-icon" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='Assets/style.css') }}" rel="stylesheet" />
+
+    <style>
+        body.host_version .first-section {
+            overflow: visible;
+            position: relative;
+            background-position: center;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        #Academics .card img {
+            width: 100%;
+            height: 200px;
+        }
+
+        #Academics .card {
+            margin-bottom: 15px;
+        }
+
+        #Academics .card .card-body {
+            height: 135px;
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: rgba(0, 0, 0, 0.8);
+            font-weight: 500;
+        }
+
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #3498db;
+        }
+
+        .hover-btn-new {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #3498db;
+            color: #fff;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .hover-btn-new:hover {
+            background: #2ecc71;
+            color: #fff;
+        }
+
+        .hover-btn-new.orange {
+            background: #e67e22;
+        }
+
+        .hover-btn-new.orange:hover {
+            background: #d35400;
+        }
+
+        .timeline__content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: #fff;
+            padding: 40px 0;
+        }
+
+        footer a {
+            color: #3498db;
+        }
+
+        footer a:hover {
+            color: #2ecc71;
+        }
+
+        .footer-links-soi {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-links-soi a {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .copyrights {
+            background: #1a252f;
+            color: #fff;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body class="host_version">
+    <!-- Start header -->
+    <header class="top-navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light position-sticky top-0">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static', filename='Assets/img/abrfoundtaionlogo.jpeg') }}" style="height: 80px" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbars-host">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#About">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#Academics">Academics</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#facilities">Facilities</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav ms-3">
+                        <li><a class="hover-btn-new log orange" href="{{ url_for('auth.login') }}"><span>Login</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- End header -->
+
+    <div id="carouselExampleControls" class="carousel slide bs-slider box-slider" data-bs-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-bs-target="#carouselExampleControls" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#carouselExampleControls" data-bs-slide-to="1"></li>
+            <li data-bs-target="#carouselExampleControls" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+                    <div id="home" class="first-section" style='background-image: url("{{ url_for('static', filename="Assets/img/slider3.jpg") }}");'>
+                    <div class="dtab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 text-right">
+                                    <div class="big-tagline">
+                                        <h2><strong>A.B.R </strong>Foundation School</h2>
+                                        <p class="lead">Study with Video/Audio & Visual Method. </p>
+                                        <a href="#contact" class="hover-btn-new"><span>Contact Us</span></a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="#About" class="hover-btn-new"><span>Read More</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end row -->
+                        </div>
+                        <!-- end container -->
+                    </div>
+                </div>
+                <!-- end section -->
+            </div>
+            <div class="carousel-item">
+                    <div id="home" class="first-section" style='background-image: url("{{ url_for('static', filename="Assets/img/slider3.jpg") }}");'>
+                    <div class="dtab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 text-left">
+                                    <div class="big-tagline">
+                                        <h2><strong>A.B.R </strong>Foundation School</h2>
+                                        <p class="lead">Study with Video/Audio & Visual Method. </p>
+                                        <a href="#contact" class="hover-btn-new"><span>Contact Us</span></a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="#About" class="hover-btn-new"><span>Read More</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end row -->
+                        </div>
+                        <!-- end container -->
+                    </div>
+                </div>
+                <!-- end section -->
+            </div>
+            <div class="carousel-item">
+                    <div id="home" class="first-section" style='background-image: url("{{ url_for('static', filename="Assets/img/slider5.jpg") }}");'>
+                    <div class="dtab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 text-center">
+                                    <div class="big-tagline">
+                                        <h2><strong>A.B.R </strong>Foundation School</h2>
+                                        <p class="lead">Study with Video/Audio & Visual Method. </p>
+                                        <a href="#contact" class="hover-btn-new"><span>Contact Us</span></a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="#About" class="hover-btn-new"><span>Read More</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end row -->
+                        </div>
+                        <!-- end container -->
+                    </div>
+                </div>
+                <!-- end section -->
+            </div>
+            <!-- Left Control -->
+            <a class="new-effect carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+                <span class="fa fa-angle-left" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+
+            <!-- Right Control -->
+            <a class="new-effect carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+                <span class="fa fa-angle-right" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="About" class="section wb">
+        <div class="container">
+            <div class="section-title row text-center">
+                <div class="col-md-8 offset-md-2">
+                    <h3>About</h3>
+                </div>
+            </div>
+            <!-- end title -->
+
+            <div class="row align-items-center">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <div class="message-box">
+                        <h2>Welcome to A.B.R Foundation school</h2>
+                        <p>A.B.R Foundation School, Naraina, Patna was established in the year 2017 to serve the students to make their future brighter and provide them quality education which would led them to a better future. The school derives its name inspiration after observing international standard of education. The school is affiliated to Central Board of Secondary Education, New Delhi upto 10+2 level. A.B.R Foundation School, Patna is always eager to motivate Students and imparting education to its children so that focus should be on character building and creation of an environment conductive to learning.</p>
+                    </div>
+                    <!-- end messagebox -->
+                </div>
+                <!-- end col -->
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <div class="post-media">
+                        <img src="{{ url_for('static', filename='Assets/img/about.jpg') }}" alt="" class="img-fluid img-rounded" />
+                    </div>
+                    <!-- end media -->
+                </div>
+                <!-- end col -->
+            </div>
+            <br />
+            <br />
+            <br />
+            <div class="row align-items-center">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <div class="post-media">
+                        <h3>Director's Message</h3>
+                        <img src="{{ url_for('static', filename='Assets/img/director.jpeg') }}" alt="" class="img-fluid img-rounded" />
+                        <h3 class="text-center">Sanjay Kumar</h3>
+                        <p class="text-center">Director</p>
+                    </div>
+                    <!-- end media -->
+                </div>
+                <!-- end col -->
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <div class="message-box">
+                        <h4>“A person with a positive attitude is like a fruit of all seasons, always welcomed.”</h4>
+                        <p>A child which close and nurturing bonds with his parents, peer and society learns various skills that include positive attitude backed up with trust, self-reliance, compassion and confidence.</p>
+                        <p>As a Director of personally feel one of the responsibilities of a school that i foresee is to make a child's learning effective studying with equal focus on child's overall development and well-being.</p>
+                        <p>Schools especially Teachers and Principal act as great support system for their pupils as they teach, guide and motivate them in the best possible way. A Child, thus, in course of her academic achievement phase of School's life must be dealt tactfully creating a positive impact on tender mind. We must make a child first feel confident and prepared for learning. With a secured feeling, then it just require the right push. Besides our reinforcement positive relationship between him/her and us. Such relaxing technique should be resulting in making a learner happy, light headed, relaxed so that his mind is more receptive.</p>
+                        <p>A.B.R Foundation School with the avowed mission to make this school a center of vibrant learning and excellence, in a pleasant and attractive environment, with up-to-date facilities, teaching aids, and of course, a competent staff in all respects that our children require in order for them to achieve the full growth of their Intent potentials, is moving up hill on its journey. This school cannot flourish merely on its own resources. It needs the support of its alumni, friends and parents to ass capacity to keeps up with the times.</p>
+                        <p>May God continue to bless the School and all those associated with it now and the years to come.</p>
+                    </div>
+                    <!-- end messagebox -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end section -->
+
+    <div id="Academics" class="section wb" style="background-color:#ffc2c857">
+        <div class="container">
+            <div class="section-title row text-center">
+                <div class="col-md-8 offset-md-2">
+                    <h3>Academics</h3>
+                </div>
+            </div>
+            <div class="row gy-3 align-items-center">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ url_for('static', filename='Assets/img/academics1.jpg') }}" />
+                        <div class="card-body">
+                            <h3 class="card-title" style="line-height: 1; margin-bottom: 0">General Knowledge</h3>
+                            <p class="card-text" style="line-height: 1.2">General Knowledge for common awareness.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ url_for('static', filename='Assets/img/academics2.jpg') }}" />
+                        <div class="card-body">
+                            <h3 class="card-title" style="line-height: 1; margin-bottom: 0">Sports Competition</h3>
+                            <p class="card-text" style="line-height: 1.2">Stay fit and healthy by playing games in competition way.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ url_for('static', filename='Assets/img/academics3.jpg') }}"/>
+                        <div class="card-body">
+                            <h3 class="card-title" style="line-height: 1; margin-bottom: 0">Weekly Test</h3>
+                            <p class="card-text" style="line-height: 1.2">Every week follow a weekly test for progress of your child.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ url_for('static', filename='Assets/img/academics4.jpg') }}" />
+                        <div class="card-body">
+                            <h3 class="card-title" style="line-height: 1; margin-bottom: 0">Discussion</h3>
+                            <p class="card-text" style="line-height: 1.2">Discussion makes a students more confident for the challenges.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ url_for('static', filename='Assets/img/academics5.jpg') }}" />
+                        <div class="card-body">
+                            <h3 class="card-title" style="line-height: 1; margin-bottom: 0">Educational Tour</h3>
+                            <p class="card-text" style="line-height: 1.2">Education tours are the best way to make happy and surprising knowledge for students.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ url_for('static', filename='Assets/img/academics6.jpg') }}" />
+                        <div class="card-body">
+                            <h3 class="card-title" style="line-height: 1; margin-bottom: 0">Science Quiz</h3>
+                            <p class="card-text" style="line-height: 1.2">Science quiz are the deep knowledge for this world and every person want to know the story behind this.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end section -->
+
+    <section class="section lb page-section" id="facilities">
+        <div class="container">
+            <div class="section-title row text-center">
+                <div class="col-md-8 offset-md-2">
+                    <h3>Our Facilities</h3>
+                    <p class="lead">We provide world-class facilities to ensure our students have the best learning environment.</p>
+                </div>
+            </div>
+            <!-- end title -->
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-laptop fa-3x mb-3"></i>
+                            <h4>Computer Lab</h4>
+                            <p>State-of-the-art computer lab with latest technology and high-speed internet.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-flask fa-3x mb-3"></i>
+                            <h4>Science Lab</h4>
+                            <p>Well-equipped science labs for Physics, Chemistry and Biology experiments.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-running fa-3x mb-3"></i>
+                            <h4>Playground</h4>
+                            <p>Spacious playground for various sports and physical activities.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-bus fa-3x mb-3"></i>
+                            <h4>Transport</h4>
+                            <p>Safe and reliable transport facility covering all major routes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section cl">
+        <div class="container">
+            <div class="row text-left stat-wrap">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <span class="global-radius icon_wrap effect-1 alignleft"><i class="fas fa-users"></i></span>
+                    <p class="stat_count">1200</p>
+                    <h3>Students</h3>
+                </div>
+                <!-- end col -->
+
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <span class="global-radius icon_wrap effect-1 alignleft"><i class="fas fa-chalkboard-teacher"></i></span>
+                    <p class="stat_count">45</p>
+                    <h3>Teachers</h3>
+                </div>
+                <!-- end col -->
+
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <span class="global-radius icon_wrap effect-1 alignleft"><i class="fas fa-calendar-alt"></i></span>
+                    <p class="stat_count">6</p>
+                    <h3>Years Completed</h3>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end section -->
+
+    <div id="contact" class="section wb">
+        <div class="container">
+            <div class="section-title text-center">
+                <h3>Contact Us</h3>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="contact-form">
+                        <form id="contact-form">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="email" class="form-control" placeholder="Your Email" required>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <input type="text" class="form-control" placeholder="Subject">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="contact-info">
+                        <h4>Our Address</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> Naraina, Patna, Bihar - 800025</p>
+                        <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                        <p><i class="fas fa-envelope"></i> info@mahendrapublicschool.com</p>
+                        <p><i class="fas fa-globe"></i> www.mahendrapublicschool.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-xs-12">
+                    <div class="widget clearfix">
+                        <div class="widget-title">
+                            <h3>About US</h3>
+                        </div>
+                        <p>A.B.R Foundation School is committed to providing quality education and holistic development of students.</p>
+                        <div class="footer-right">
+                            <ul class="footer-links-soi">
+                                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                            </ul>
+                            <!-- end links -->
+                        </div>
+                    </div>
+                    <!-- end clearfix -->
+                </div>
+                <!-- end col -->
+
+                <div class="col-lg-4 col-md-4 col-xs-12">
+                    <div class="widget clearfix">
+                        <div class="widget-title">
+                            <h3>Information Link</h3>
+                        </div>
+                        <ul class="footer-links">
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#About">About</a></li>
+                            <li><a href="#Academics">Academics</a></li>
+                            <li><a href="#facilities">Facilities</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                        <!-- end links -->
+                    </div>
+                    <!-- end clearfix -->
+                </div>
+                <!-- end col -->
+
+                <div class="col-lg-4 col-md-4 col-xs-12">
+                    <div class="widget clearfix">
+                        <div class="widget-title">
+                            <h3>Contact Details</h3>
+                        </div>
+
+                        <ul class="footer-links">
+                            <li><i class="fas fa-envelope"></i> info@abrfoundationschool.com</li>
+                            <li><i class="fas fa-globe"></i> www.abrfoundationschool.com</li>
+                            <li><i class="fas fa-map-marker-alt"></i> Naraina, Patna, Bihar - 800025</li>
+                            <li><i class="fas fa-phone"></i> +91 1234567890</li>
+                        </ul>
+                        <!-- end links -->
+                    </div>
+                    <!-- end clearfix -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </footer>
+    <!-- end footer -->
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="footer-distributed">
+                <div class="footer-center">
+                    <p class="footer-company-name">All Rights Reserved. &copy; 2023 <a href="#">A.B.R Foundation School</a> Design By : <a href="https://globaldigitechservices.in/" target="_blank">Global Digitech Services</a></p>
+                </div>
+            </div>
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end copyrights -->
+
+    <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='Assets/js/custom.js') }}"></script>
+   <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+
+            // Skip if href is only "#"
+            if (targetId === '#') return;
+
+            e.preventDefault();
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

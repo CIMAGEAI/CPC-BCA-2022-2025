@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | ReadHub</title>
+  <link rel="stylesheet" href="../src/css/login.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .login-container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(102,126,234,0.18);
+      padding: 2.5rem 2rem 2rem 2rem;
+      max-width: 370px;
+      width: 100%;
+      margin: 3rem auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .login-container h2 {
+      color: #667eea;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .login-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .login-form input {
+      padding: 0.9rem 1.1rem;
+      border: 1.5px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .login-form input:focus {
+      border: 1.5px solid #667eea;
+    }
+    .login-form button {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    .login-form button:hover {
+      background: linear-gradient(45deg, #764ba2, #667eea);
+    }
+    .login-links {
+      margin-top: 1.2rem;
+      text-align: center;
+      font-size: 1rem;
+    }
+    .login-links a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      margin: 0 0.5rem;
+      transition: color 0.2s;
+    }
+    .login-links a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+    .error-message {
+      color: #d32f2f;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="login-container">
+      <h2>Login to ReadHub</h2>
+      <form id="loginForm" class="login-form">
+        <input type="email" id="email" placeholder="Email" required autocomplete="username">
+        <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+        <button type="submit">Login</button>
+        <div id="loginError" class="error-message"></div>
+      </form>
+      <div class="login-links">
+        <a href="register.html">Create an account</a>|
+        <a href="forgot-password.html">Forgot password?</a>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p><a href="contact.html"><strong>Contact Us</strong></a></p>
+    <p><strong>Contact:</strong> <a href="mailto:support@readhub.com">support@readhub.com</a> | <a href="tel:+12345678901">+1 234 567 8901</a> | patel,nagar,patna</p>
+    <p>&copy;</p>
+  </footer>
+  <script src="../src/js/config.js"></script>
+  <script src="../src/js/login.js"></script>
+  <script>
+    // Show/hide password toggle
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    if (togglePassword && passwordInput) {
+      togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('loginForm');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const errorDiv = document.getElementById('loginError');
+
+      function validateEmail(email) {
+        return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+      }
+      function validatePassword(password) {
+        return password.length >= 6;
+      }
+
+      emailInput.addEventListener('input', function() {
+        if (!validateEmail(emailInput.value)) {
+          errorDiv.textContent = 'Enter a valid email address.';
+        } else {
+          errorDiv.textContent = '';
+        }
+      });
+
+      passwordInput.addEventListener('input', function() {
+        if (!validatePassword(passwordInput.value)) {
+          errorDiv.textContent = 'Password must be at least 6 characters.';
+        } else {
+          errorDiv.textContent = '';
+        }
+      });
+
+      form.addEventListener('submit', function(e) {
+        let valid = true;
+        if (!validateEmail(emailInput.value)) {
+          errorDiv.textContent = 'Enter a valid email address.';
+          valid = false;
+        } else if (!validatePassword(passwordInput.value)) {
+          errorDiv.textContent = 'Password must be at least 6 characters.';
+          valid = false;
+        }
+        if (!valid) e.preventDefault();
+      });
+    });
+  </script>
+</body>
+</html> 

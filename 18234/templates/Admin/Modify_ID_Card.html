@@ -1,0 +1,112 @@
+{% extends "Admin/AdminMaster.html" %}
+
+{% block title %}Modify ID Card | Admin Panel{% endblock %}
+
+{% block head %}
+<script>
+    function validateNumber(event) {
+        var key = window.event ? event.keyCode : event.which;
+        if (event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 37 || event.keyCode === 39) {
+            return true;
+        } else if (key < 48 || key > 57) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+{% endblock %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h5 class="mb-4">Modify Student's ID Card</h5>
+                <h6 class="mb-4">Personal Info</h6>
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark" id="sid" name="sid" 
+                                       placeholder="Student ID" value="{{ student.Student_ID }}" readonly>
+                                <label for="sid">Student ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark" id="name" name="name" 
+                                       placeholder="Student Name" value="{{ student.id_name or student.Name }}" required>
+                                <label for="name">Student Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark" id="father_name" name="father_name" 
+                                       placeholder="Father's Name" value="{{ student.id_father_name or student.FatherName }}" required>
+                                <label for="father_name">Father's Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark" id="dob" name="dob" 
+                                       placeholder="D.O.B" value="{{ student.id_dob or student.Dob }}" required>
+                                <label for="dob">D.O.B</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark" id="class" name="class" 
+                                       placeholder="Class" value="{{ student.Class }}" readonly>
+                                <label for="class">Class</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark" id="section" name="section" 
+                                       placeholder="Section" value="{{ student.Section }}" readonly>
+                                <label for="section">Section</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark" id="roll" name="roll" 
+                                       placeholder="Roll Number" value="{{ student.Roll }}" readonly>
+                                <label for="roll">Roll No</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-dark" id="mobile" name="mobile" 
+                                       placeholder="Mobile Number" value="{{ student.id_mobile or student.FatherMobile }}" 
+                                       onkeypress="return validateNumber(event)" required>
+                                <label for="mobile">Mobile Number</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group mb-3">
+                                <button type="submit" class="btn btn-primary w-100">Modify Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
