@@ -1,0 +1,247 @@
+/* ================================
+   📱 Extra Small Devices (Phones)
+   ================================ */
+@media only screen and (max-width: 575px) {
+  .navbar-nav {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .navbar-nav .nav-item {
+    margin-bottom: 8px;
+  }
+
+  .navbar-brand img {
+    height: 28px;
+  }
+
+  .navbar-brand span {
+    font-size: 1rem;
+  }
+
+  .display-4,
+  h1, .fs-1 {
+    font-size: 1.6rem !important;
+  }
+
+  h2, .fs-2 {
+    font-size: 1.4rem !important;
+  }
+
+  h3, .fs-3 {
+    font-size: 1.2rem !important;
+  }
+
+  h4, .fs-4 {
+    font-size: 1.1rem !important;
+  }
+
+  p,
+  li,
+  .fs-5,
+  .fs-6,
+  label,
+  .form-check-label,
+  .lead {
+    font-size: 0.9rem !important;
+  }
+
+  .ticker-item {
+    font-size: 0.8rem;
+  }
+
+  #home h1 {
+    font-size: 1.5rem !important;
+  }
+
+  #home p {
+    font-size: 0.95rem !important;
+  }
+
+  #ticketResult canvas {
+    width: 180px !important;
+    height: 180px !important;
+  }
+
+  #ticketInfo {
+    font-size: 0.95rem;
+  }
+
+  #metroMap,
+  .map-container img {
+    height: 260px !important;
+  }
+
+  #map .col-lg-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  form .form-label,
+  form input,
+  form select,
+  .form-check-label {
+    font-size: 0.9rem;
+  }
+
+  form input,
+  form select {
+    padding: 0.5rem 0.75rem;
+  }
+
+  #ticketResult .border,
+  #fareResult {
+    padding: 1rem !important;
+  }
+
+  section[id] {
+    scroll-margin-top: 100px;
+  }
+}
+
+/* ==========================================
+   📲 Small Devices (Tablets - Portrait)
+   ========================================== */
+@media (min-width: 576px) and (max-width: 767px) {
+  .navbar-brand img {
+    height: 32px;
+  }
+
+  .display-4 {
+    font-size: 2.2rem;
+  }
+
+  .fs-5 {
+    font-size: 1rem;
+  }
+
+  .ticker-item {
+    font-size: 0.9rem;
+  }
+
+  h1, .fs-1 {
+    font-size: 2rem !important;
+  }
+
+  h2, .fs-2 {
+    font-size: 1.7rem !important;
+  }
+
+  h3, .fs-3 {
+    font-size: 1.5rem !important;
+  }
+
+  h4, .fs-4 {
+    font-size: 1.3rem !important;
+  }
+
+  p,
+  li,
+  .fs-5,
+  .fs-6,
+  label,
+  .form-check-label {
+    font-size: 1rem !important;
+  }
+
+  #home h1 {
+    font-size: 1.8rem !important;
+  }
+
+  #home p {
+    font-size: 1rem !important;
+  }
+
+  section[id] {
+    scroll-margin-top: 100px;
+  }
+}
+
+/* ========================================
+   💻 Medium Devices (Tablets - Landscape)
+   ======================================== */
+@media (min-width: 768px) and (max-width: 991px) {
+  .navbar-brand img {
+    height: 34px;
+  }
+
+  .display-4 {
+    font-size: 2.5rem;
+  }
+
+  .fs-5 {
+    font-size: 1.05rem;
+  }
+
+  .ticker-item {
+    font-size: 1rem;
+  }
+
+  .navbar-collapse {
+    margin-top: 10px;
+    border-top: 1px solid #ffffff33;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.75rem 1rem;
+  }
+
+  .navbar {
+    padding-bottom: 0.75rem;
+  }
+
+  h1, .fs-1 {
+    font-size: 2.3rem !important;
+  }
+
+  h2, .fs-2 {
+    font-size: 2rem !important;
+  }
+
+  p,
+  li,
+  .fs-5,
+  label,
+  .form-check-label {
+    font-size: 1.05rem !important;
+  }
+}
+
+/* ===================================
+   🖥️ Large Devices (Desktops)
+   =================================== */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .display-4 {
+    font-size: 2.8rem;
+  }
+
+  .fs-5 {
+    font-size: 1.1rem;
+  }
+}
+
+/* =======================================
+   🖥️ Extra Large Devices (Desktops+)
+   ======================================= */
+@media (min-width: 1200px) {
+  .display-4 {
+    font-size: 3.2rem;
+  }
+
+  .fs-5 {
+    font-size: 1.15rem;
+  }
+
+  .ticker-item {
+    font-size: 1.05rem;
+  }
+}
+
+/* ===============================
+   🖥️ Super Wide Screens
+   =============================== */
+@media (min-width: 1400px) {
+  .container,
+  .container-xxl {
+    max-width: 1170px;
+  }
+}
