@@ -1,0 +1,75 @@
+.purchase-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #f9f9f9;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.purchase-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.purchase-container form p {
+  margin-bottom: 15px;
+}
+
+.purchase-container input,
+.purchase-container select,
+.purchase-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.purchase-container .btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  background-color: #008080;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.purchase-container .btn:hover {
+  background-color: #006666;
+}
+
+.message-box {
+  position: relative;
+  padding: 15px 40px 15px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.message-box.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message-box.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+}
