@@ -1,0 +1,72 @@
+{% extends 'frontend/base.html' %}
+{% block title %}Plans | FitZone{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/plans.css' %}">
+
+<section class="plans-section">
+  <h2 class="plans-heading">Our Membership Plans</h2>
+  <div class="plans-container">
+    <div class="plan-card" onclick="handlePlanClick('Basic')">
+      <h3>Basic Plan</h3>
+      <p>₹500 / month</p>
+      <ul>
+        <li>✔ Gym access (limited)</li>
+        <li>❌ No trainer</li>
+        <li>❌ No diet chart</li>
+        <li>🕒 8 AM - 5 PM</li>
+      </ul>
+    </div>
+
+    <div class="plan-card" onclick="handlePlanClick('Standard')">
+      <h3>Standard Plan</h3>
+      <p>₹1000 / month</p>
+      <ul>
+        <li>✔ Gym + trainer</li>
+        <li>✔ Basic diet chart</li>
+        <li>✔ More equipment</li>
+        <li>🕒 6 AM - 9 PM</li>
+      </ul>
+    </div>
+
+    <div class="plan-card" onclick="handlePlanClick('Premium')">
+      <h3>Premium Plan</h3>
+      <p>₹2000 / month</p>
+      <ul>
+        <li>✔ Personal trainer</li>
+        <li>✔ Custom diet chart</li>
+        <li>✔ Full gym access</li>
+        <li>🕒 24/7 access</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% if user.is_authenticated %}
+<script>const isLoggedIn = true;</script>
+{% else %}
+<script>isLoggedIn = false;</script>
+{% endif %}
+
+<section class="why-section">
+  <h2>Why Choose Us?</h2>
+  <div class="why-container">
+    <div class="why-box">
+      <h4>💪 Certified Trainers</h4>
+      <p>Certified, passionate, and professional trainers to guide your fitness journey.</p>
+    </div>
+    <div class="why-box">
+      <h4>🏋 Modern Equipment</h4>
+      <p>Top-class fitness equipment to support your workout goals.</p>
+    </div>
+    <div class="why-box">
+      <h4>🧼 Hygienic Environment</h4>
+      <p>Daily cleaning and safety measures to ensure your health.</p>
+    </div>
+  </div>
+</section>
+
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

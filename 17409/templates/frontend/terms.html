@@ -1,0 +1,52 @@
+{% extends 'frontend/base.html' %}
+{% block title %}Terms & Conditions | FitZone{% endblock %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/terms.css' %}">
+
+<section class="terms-section">
+  <div class="terms-container">
+    <h1>Terms & Conditions</h1>
+    <p>Effective Date: June 29, 2025</p>
+
+    <hr>
+
+    <h3>1. Acceptance of Terms</h3>
+    <p>By accessing or using the FitZone website and services, you agree to be bound by these terms. If you do not agree, please do not use our site or services.</p>
+
+    <h3>2. Membership & Access</h3>
+    <p>Members must be at least 13 years old. Your account must be accurate and kept updated. FitZone reserves the right to suspend accounts for violations or suspicious activity.</p>
+
+    <h3>3. Payments & Billing</h3>
+    <p>All payments must be made on time via accepted methods. Memberships are non-transferable and non-refundable unless otherwise stated.</p>
+
+    <h3>4. Health Disclaimer</h3>
+    <p>Our programs are designed for healthy individuals. Consult a physician before beginning any new workout. FitZone is not responsible for health issues arising from misuse.</p>
+
+    <h3>5. Intellectual Property</h3>
+    <p>All content, designs, and media are the property of FitZone and may not be reused or distributed without written permission.</p>
+
+    <h3>6. User Conduct</h3>
+    <p>You agree not to misuse our site, post harmful content, or disrupt services. Abuse will result in account termination.</p>
+
+    <h3>7. Modifications</h3>
+    <p>We may revise these terms anytime. Changes will be posted here with updated effective dates.</p>
+
+    <h3>8. Limitation of Liability</h3>
+    <p>FitZone shall not be liable for indirect, incidental, or consequential damages resulting from your use of the website or services.</p>
+
+    <h3>9. Contact Us</h3>
+    <p>If you have questions about these terms, contact us at:</p>
+    <ul>
+      <li><strong>Email:</strong> support@fitzonegym.com</li>
+      <li><strong>Phone:</strong> +91 7870970709</li>
+      <li><strong>Address:</strong> FitZone Gym, 109A Indrapuri Road, Patna, Bihar 800024</li>
+    </ul>
+  </div>
+  <div class="back-home">
+  <a href="{% url 'home' %}" class="btn-home">← Back to Home</a>
+</div>
+</section>
+
+{% endblock %}

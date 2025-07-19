@@ -1,0 +1,55 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block title %}BMI Calculator | FitZone{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/bmi.css' %}">
+
+<div class="bmi-container">
+  <h2><i class="fas fa-weight"></i> BMI Calculator</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} fade-in">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="POST" id="bmi-form">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_height_cm"><i class="fas fa-arrows-alt-v"></i> Height (in cm):</label>
+      <input type="number" step="0.1" id="id_height_cm" name="height_cm" placeholder="Enter your height" required>
+    </div>
+    <div class="form-group">
+      <label for="id_weight_kg"><i class="fas fa-dumbbell"></i> Weight (in kg):</label>
+      <input type="number" step="0.1" id="id_weight_kg" name="weight_kg" placeholder="Enter your weight" required>
+    </div>
+    <button type="submit" class="btn"><i class="fas fa-calculator"></i> Calculate BMI</button>
+  </form>
+
+  <hr>
+
+  <div class="history-section">
+    <h3><i class="fas fa-history"></i> Your BMI History</h3>
+    {% if bmi_history %}
+      <ul>
+        {% for record in bmi_history %}
+          <li>
+            <strong>Date:</strong> {{ record.date }} |
+            <strong>Height:</strong> {{ record.height_cm }} cm |
+            <strong>Weight:</strong> {{ record.weight_kg }} kg |
+            <strong>BMI:</strong> {{ record.bmi }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No BMI records found.</p>
+    {% endif %}
+  </div>
+</div>
+
+<script src="{% static 'js/bmi.js' %}"></script>
+{% endblock %}
