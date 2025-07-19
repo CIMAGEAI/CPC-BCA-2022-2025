@@ -13,10 +13,3 @@ How to run the Online Notes Sharing System Project using PHP and MySQL
 6. Import onssdb.sql file(given inside the zip package in SQL file folder)
 
 7. Run the script http://localhost/onss
-
-Credential for Employee/User panel :
-
-Username: john12@gmail.com
-Password: Test@123
-
-or Register a new user.
