@@ -1,0 +1,94 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+{% block title %}Contact Us | SmartStudy{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+
+<section class="contact-section">
+  <div class="container">
+    <h2 class="section-title">Contact Us</h2>
+    <p class="section-subtitle">Have questions or suggestions? We'd love to hear from you.</p>
+
+    {% if messages %}
+    <div id="message-container">
+      {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="contact-grid">
+      <!-- Contact Form -->
+      <div class="contact-form-box">
+        <h3>Send us a message</h3>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          <div class="form-group">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+          </div>
+          <div class="form-group">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+          </div>
+          <div class="form-group">
+            {{ form.subject.label_tag }}
+            {{ form.subject }}
+          </div>
+          <div class="form-group">
+            {{ form.message.label_tag }}
+            {{ form.message }}
+          </div>
+          <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="contact-info-box">
+        <h3>Reach Us</h3>
+        <ul class="contact-info-list">
+          <li><i class="fas fa-envelope"></i> contact@smartstudy.com</li>
+          <li><i class="fas fa-phone"></i> +91 9876543210</li>
+          <li><i class="fas fa-map-marker-alt"></i> 74 Indrapuri Road 2, Patna</li>
+        </ul>
+
+        <h3>Office Hours</h3>
+        <p>Monday - Friday: 9 AM to 6 PM</p>
+        <p>Saturday: 10 AM to 2 PM</p>
+        <p>Sunday: Closed</p>
+        <img src="{% static 'images/contact_image.png' %}" alt="smartstudy" style="height: 300px; width: 300px;">
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-card">
+        <h4>Can I access courses after enrollment?</h4>
+        <p>Yes, once you enroll in a course, you will have access to it for the duration mentioned.</p>
+      </div>
+      <div class="faq-card">
+        <h4>Is there any refund policy?</h4>
+        <p>Yes, we offer a refund within 7 days of enrollment if you're not satisfied.</p>
+      </div>
+      <div class="faq-card">
+        <h4>Can I speak to an instructor before enrolling?</h4>
+        <p>You can reach out to us via the contact form, and we’ll help you get in touch with the instructor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Google Map -->
+    <section class="map-section">
+      <div class="container">
+        <h2 class="map-title">Our Location</h2>
+        <div class="map-container">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1123.5879890438289!2d85.09969621055009!3d25.626714875978312!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed57826a95a225%3A0x83f14740c2b30ce0!2s74%2C%20Indrapuri%20Rd%20Number%202%2C%20Indrapuri%2C%20Keshri%20Nagar%2C%20Patna%2C%20Bihar%20800024!5e0!3m2!1sen!2sin!4v1751688173947!5m2!1sen!2sin"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </section>
+{% endblock %}

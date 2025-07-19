@@ -1,0 +1,65 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <h1>Welcome to SmartStudy</h1>
+  <p>Your one-stop platform for online learning and growth</p>
+  <a href="#" class="btn">Get Started</a>
+</section>
+
+
+<!-- Features Section -->
+<section class="container">
+  <h2 class="section-title">Why Choose SmartStudy?</h2>
+  <div class="course-grid">
+    <div class="course-card">
+      <i class="fas fa-chalkboard-teacher icon"></i>
+      <h3>Expert Instructors</h3>
+      <p>Learn from industry professionals with years of experience.</p>
+    </div>
+    <div class="course-card">
+      <i class="fas fa-laptop icon"></i>
+      <h3>Flexible Learning</h3>
+      <p>Access courses anytime, anywhere with lifetime access.</p>
+    </div>
+    <div class="course-card">
+      <i class="fas fa-wallet icon"></i>
+      <h3>Affordable Pricing</h3>
+      <p>High-quality courses at a price that fits your budget.</p>
+    </div>
+  </div>
+</section>
+<!-- Testimonials Section -->
+<section class="container testimonial-section">
+  <h2 class="section-title">What Our Students Say</h2>
+  
+  <div class="testimonial-grid">
+    <div class="testimonial-card">
+      <i class="fas fa-quote-left quote-icon"></i>
+      <p>"SmartStudy helped me get my first job! The courses are top-notch."</p>
+      <strong>- Priya, Data Analyst</strong>
+    </div>
+    <div class="testimonial-card">
+      <i class="fas fa-quote-left quote-icon"></i>
+      <p>"The flexibility and depth of content is unmatched from others."</p>
+      <strong>- Rahul, Software Developer</strong>
+    </div>
+    <div class="testimonial-card">
+      <i class="fas fa-quote-left quote-icon"></i>
+      <p>"I love how interactive and beginner-friendly the platform is- Just amazing!"</p>
+      <strong>- Neha, UI/UX Designer</strong>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+  <h2>Start Learning Today!</h2>
+  <p>Join thousands of learners who are building their future with SmartStudy.</p>
+  <a href="{% url 'course-list' %}" class="btn">Browse Courses</a>
+</section>
+{% endblock %}

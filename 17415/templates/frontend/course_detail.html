@@ -1,0 +1,48 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block title %}{{ course.title }} | SmartStudy{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/course_detail.css' %}">
+
+<section class="course-detail">
+  <div class="course-header">
+    <img src="{{ course.image.url }}" alt="{{ course.title }}">
+    <div class="course-meta">
+      <h1>{{ course.title }}</h1>
+      <p class="instructor"><strong>Instructor:</strong> {{ course.instructor }}</p>
+      <p class="price"><strong>Price:</strong> ₹{{ course.price }}</p>
+      <a href="#" class="btn enroll-btn">Enroll Now</a>
+    </div>
+  </div>
+
+  <div class="course-description">
+    <h2>Course Overview</h2>
+    <p>{{ course.description }}</p>
+  </div>
+
+  <div class="course-content">
+    <h2>What You'll Learn</h2>
+    <ul>
+      <li>Interactive Video Lessons</li>
+      <li>Real-time Quizzes and Assignments</li>
+      <li>Downloadable Resources</li>
+      <li>Certificate of Completion</li>
+    </ul>
+  </div>
+
+  <div class="course-requirements">
+    <h2>Requirements</h2>
+    <ul>
+      <li>Basic understanding of subject (if any)</li>
+      <li>Internet connection</li>
+      <li>Willingness to learn</li>
+    </ul>
+  </div>
+  <div class="back-button">
+    <a href="{% url 'course-list' %}"><i class="fas fa-arrow-left"></i> Back to All Courses</a>
+  </div>
+
+</section>
+{% endblock %}
