@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Bike Service - Bike Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Watermark */
+        body::after {
+            content: "Praveen Kumar";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.07);
+            z-index: 0;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        /* Header with gradient text */
+        header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: linear-gradient(45deg, #ff4081, #ff9100);
+            position: relative;
+            z-index: 1;
+            border-bottom: 5px solid #fff;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(45deg, #23fc02, #067ff1, #e6fb05, #4c02fa);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                2px 2px 6px rgba(0, 0, 0, 0.3),
+                -2px -2px 6px rgba(255, 255, 255, 0.15);
+            animation: gradientShift 8s ease infinite;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: #ccc;
+            font-weight: bold;
+        }
+
+        /* Navigation bar */
+        nav {
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            z-index: 1;
+            position: relative;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ffd700, #ff9100);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .hero-logo {
+            width: 200px;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        }
+
+        /* Booking Form */
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .booking-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #ffd700;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .form-group select option {
+            background: #2a5298;
+            color: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff4081, #ff9100);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 64, 129, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Bike Models Info */
+        .models-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .models-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .model-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .model-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .model-item h4 {
+            color: #ffd700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .model-item p {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        /* Modern Footer */
+        .modern-footer {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            color: white;
+            padding: 40px 20px 20px;
+            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modern-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4081, #ff9100, #23fc02, #067ff1);
+            animation: rainbowShift 3s ease infinite;
+        }
+
+        @keyframes rainbowShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section {
+            padding: 0 15px;
+        }
+
+        .footer-section h3 {
+            color: #ffd700;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, #ff4081, #ff9100);
+            transition: width 0.3s ease;
+        }
+
+        .footer-section:hover h3::after {
+            width: 50px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            padding: 2px 0;
+        }
+
+        .footer-links a::before {
+            content: '→';
+            margin-right: 8px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffd700;
+            transform: translateX(5px);
+        }
+
+        .footer-links a:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .contact-info {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-info li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            color: #e0e0e0;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: #ffd700;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icon i {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .social-icon:hover::before {
+            left: 100%;
+        }
+
+        .social-icon.facebook {
+            background: linear-gradient(45deg, #1877f2, #42a5f5);
+        }
+
+        .social-icon.instagram {
+            background: linear-gradient(45deg, #e4405f, #f06292);
+        }
+
+        .social-icon.whatsapp {
+            background: linear-gradient(45deg, #25d366, #4caf50);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom strong {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            .main-container {
+                padding: 15px;
+            }
+
+            .booking-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .booking-form,
+            .models-info {
+                padding: 20px;
+            }
+
+            .form-title,
+            .models-title {
+                font-size: 1.5rem;
+            }
+
+            .hero-section h2 {
+                font-size: 2rem;
+            }
+
+            .modern-footer {
+                padding: 30px 15px 15px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .footer-section {
+                text-align: center;
+                padding: 0 10px;
+            }
+
+            .social-icons {
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .social-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            .contact-info li {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .booking-form,
+            .models-info {
+                padding: 15px;
+            }
+
+            .form-title,
+            .models-title {
+                font-size: 1.3rem;
+            }
+
+            .hero-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .modern-footer {
+                padding: 25px 10px 10px;
+            }
+
+            .footer-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .social-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 20px;
+            padding: 0;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(45deg, #ff4081, #ff9100);
+            color: white;
+            padding: 20px;
+            border-radius: 18px 18px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.2);
+            color: #ffd700;
+        }
+
+        .modal-body {
+            padding: 30px;
+            color: white;
+        }
+
+        .confirmation-details {
+            margin-bottom: 30px;
+        }
+
+        .token-display {
+            background: linear-gradient(45deg, #23fc02, #4caf50);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .service-date-display {
+            background: linear-gradient(45deg, #ff9100, #ffa726);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .booking-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-row {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #ffd700;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #e0e0e0;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .download-pdf-btn, .close-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-pdf-btn {
+            background: linear-gradient(45deg, #23fc02, #4caf50);
+            color: white;
+        }
+
+        .download-pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(35, 252, 2, 0.4);
+        }
+
+        .close-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+
+            .modal-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .booking-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>The Bike Solution</h1>
+        <p>Hero Bike Service</p>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="aboutus.html">About Us</a>
+        <a href="contactus.html">Contact Us</a>
+        <a href="dashboard.html" id="dashboardNav" style="display: none;">Dashboard</a>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <img src="hero-logo.png" alt="Hero Logo" class="hero-logo">
+            <h2>Hero Bike Service</h2>
+            <p>Professional service for all Hero bikes. Book your service now and get expert care for your Hero motorcycle.</p>
+        </div>
+
+        <!-- Booking Container -->
+        <div class="booking-container">
+            <!-- Booking Form -->
+            <div class="booking-form">
+                <h3 class="form-title">Book Your Service</h3>
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="customerName">Full Name</label>
+                        <input type="text" id="customerName" name="customerName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bikeModel">Bike Model</label>
+                        <select id="bikeModel" name="bikeModel" required>
+                            <option value="">Select Hero Bike Model</option>
+                            <option value="Hero Splendor Plus">Hero Splendor Plus</option>
+                            <option value="Hero Splendor iSmart">Hero Splendor iSmart</option>
+                            <option value="Hero Passion Pro">Hero Passion Pro</option>
+                            <option value="Hero Passion XPro">Hero Passion XPro</option>
+                            <option value="Hero HF Deluxe">Hero HF Deluxe</option>
+                            <option value="Hero HF Deluxe i3S">Hero HF Deluxe i3S</option>
+                            <option value="Hero Glamour">Hero Glamour</option>
+                            <option value="Hero Glamour 125">Hero Glamour 125</option>
+                            <option value="Hero Xtreme 160R">Hero Xtreme 160R</option>
+                            <option value="Hero Xtreme 200S">Hero Xtreme 200S</option>
+                            <option value="Hero Karizma ZMR">Hero Karizma ZMR</option>
+                            <option value="Hero Karizma R">Hero Karizma R</option>
+                            <option value="Hero Achiever">Hero Achiever</option>
+                            <option value="Hero Hunk">Hero Hunk</option>
+                            <option value="Hero Super Splendor">Hero Super Splendor</option>
+                            <option value="Hero Pleasure Plus">Hero Pleasure Plus</option>
+                            <option value="Hero Maestro Edge">Hero Maestro Edge</option>
+                            <option value="Hero Destini 125">Hero Destini 125</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registrationNumber">Registration Number</label>
+                        <input type="text" id="registrationNumber" name="registrationNumber" placeholder="Enter bike registration number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" placeholder="Enter your complete address..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="problem">Problem Description</label>
+                        <textarea id="problem" name="problem" placeholder="Describe the problem with your bike..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-tools"></i> Book Service
+                    </button>
+                </form>
+            </div>
+
+            <!-- Hero Models Info -->
+            <div class="models-info">
+                <h3 class="models-title">Popular Hero Models</h3>
+                <div class="models-grid">
+                    <div class="model-item">
+                        <h4>Hero Splendor Plus</h4>
+                        <p>Best selling commuter bike</p>
+                    </div>
+                    <div class="model-item">
+                        <h4>Hero Passion Pro</h4>
+                        <p>Stylish and efficient</p>
+                    </div>
+                    <div class="model-item">
+                        <h4>Hero HF Deluxe</h4>
+                        <p>Reliable daily commuter</p>
+                    </div>
+                    <div class="model-item">
+                        <h4>Hero Glamour</h4>
+                        <p>Premium commuter segment</p>
+                    </div>
+                    <div class="model-item">
+                        <h4>Hero Xtreme 160R</h4>
+                        <p>Sporty performance bike</p>
+                    </div>
+                    <div class="model-item">
+                        <h4>Hero Karizma ZMR</h4>
+                        <p>Legendary performance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 Hero Service Booked Successfully!</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="confirmation-details">
+                    <div class="token-display" id="modalToken"></div>
+                    <div class="service-date-display" id="modalServiceDate"></div>
+                    <div class="booking-details-grid" id="modalBookingDetails"></div>
+                </div>
+                <div class="modal-actions">
+                    <button class="download-pdf-btn" id="downloadPdfBtn">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                    <button class="close-btn" onclick="closeModal()">
+                        <i class="fas fa-check"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Footer -->
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <!-- Quick Links Section -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">🏠 Home</a></li>
+                    <li><a href="aboutus.html">👥 About Us</a></li>
+                    <li><a href="contactus.html">📞 Contact Us</a></li>
+                    <li><a href="admin.php">⚙️ Admin Panel</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul class="contact-info">
+                    <li><i>📞</i> +91 6202019630</li>
+                    <li><i>📧</i> info@bikesolutions.com</li>
+                    <li><i>📍</i> Near P&M mall Patliputra,Patna, 800011</li>
+                    <li><i>🕒</i> Mon-Sat: 9AM-7PM</li>
+                </ul>
+            </div>
+
+            <!-- Social Media -->
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/bikesolution" target="_blank" class="social-icon facebook" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/bikesolution" target="_blank" class="social-icon instagram" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/916202019630" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Services -->
+            <div class="footer-section">
+                <h3>Our Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#">🔧 Bike Repair</a></li>
+                    <li><a href="#">🛠️ Maintenance</a></li>
+                    <li><a href="#">🚿 Bike Wash</a></li>
+                    <li><a href="#">🔋 Battery Service</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>&copy; 2024 <strong>The Bike Solution</strong>. All rights reserved. | Designed and Developed by <strong>Praveen Kumar</strong> 🚀 | Passionate about Bikes & Code</p>
+        </div>
+    </footer>
+
+    <!-- jsPDF Library for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    
+    <script>
+        // Check authentication status
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const dashboardNav = document.getElementById('dashboardNav');
+            
+            if (currentUser) {
+                dashboardNav.style.display = 'inline';
+            } else {
+                dashboardNav.style.display = 'none';
+            }
+        }
+
+        // Generate random token (1-100)
+        function generateToken() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+
+        // Calculate service date (1-2 days from now)
+        function calculateServiceDate() {
+            const today = new Date();
+            const daysToAdd = Math.floor(Math.random() * 2) + 1; // 1 or 2 days
+            const serviceDate = new Date(today);
+            serviceDate.setDate(today.getDate() + daysToAdd);
+            
+            // Format: Monday, 12-07-2025 AT: 10:00 AM
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayName = days[serviceDate.getDay()];
+            const date = serviceDate.getDate().toString().padStart(2, '0');
+            const month = (serviceDate.getMonth() + 1).toString().padStart(2, '0');
+            const year = serviceDate.getFullYear();
+            const hours = '10';
+            const minutes = '00';
+            
+            return `${dayName}, ${date}-${month}-${year} AT: ${hours}:${minutes} AM`;
+        }
+
+        // Show confirmation modal
+        function showConfirmationModal(booking) {
+            const modal = document.getElementById('confirmationModal');
+            const modalToken = document.getElementById('modalToken');
+            const modalServiceDate = document.getElementById('modalServiceDate');
+            const modalBookingDetails = document.getElementById('modalBookingDetails');
+
+            // Set modal content
+            modalToken.textContent = `Token Number: ${booking.token}`;
+            modalServiceDate.textContent = `Service Date: ${booking.serviceDate}`;
+
+            // Set booking details
+            modalBookingDetails.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Customer Name:</span>
+                    <span class="detail-value">${booking.customerName}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Mobile Number:</span>
+                    <span class="detail-value">${booking.mobile}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Bike Model:</span>
+                    <span class="detail-value">${booking.bikeModel}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Registration No:</span>
+                    <span class="detail-value">${booking.registrationNumber}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Address:</span>
+                    <span class="detail-value">${booking.address}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Problem Description:</span>
+                    <span class="detail-value">${booking.problem}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Booking Date:</span>
+                    <span class="detail-value">${new Date().toLocaleDateString()}</span>
+                </div>
+            `;
+
+            // Set up PDF download button
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            downloadBtn.onclick = () => generatePDF(booking);
+
+            // Show modal
+            modal.style.display = 'flex';
+
+            // Close modal when clicking on X or outside
+            const closeModal = document.querySelector('.close-modal');
+            closeModal.onclick = () => {
+                modal.style.display = 'none';
+            };
+
+            window.onclick = (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        // Close modal function
+        function closeModal() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
+
+        // Generate proper PDF with jsPDF
+        function generatePDF(booking) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Set up the document
+            doc.setFontSize(20);
+            doc.setTextColor(42, 82, 152); // #2a5298
+            doc.text('The Bike Solution', 105, 20, { align: 'center' });
+
+            doc.setFontSize(16);
+            doc.setTextColor(255, 64, 129); // #ff4081
+            doc.text('Hero Bike Service Booking', 105, 35, { align: 'center' });
+
+            // Token section
+            doc.setFillColor(35, 252, 2); // #23fc02
+            doc.rect(20, 45, 170, 15, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.text(`Token Number: ${booking.token}`, 105, 55, { align: 'center' });
+
+            // Service date section
+            doc.setFillColor(255, 145, 0); // #ff9100
+            doc.rect(20, 65, 170, 12, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(12);
+            doc.text(`Service Date: ${booking.serviceDate}`, 105, 73, { align: 'center' });
+
+            // Booking details
+            doc.setTextColor(42, 82, 152);
+            doc.setFontSize(12);
+            let yPos = 90;
+
+            const details = [
+                ['Customer Name:', booking.customerName],
+                ['Mobile Number:', booking.mobile],
+                ['Bike Model:', booking.bikeModel],
+                ['Registration No:', booking.registrationNumber],
+                ['Address:', booking.address],
+                ['Problem Description:', booking.problem],
+                ['Booking Date:', new Date().toLocaleDateString()]
+            ];
+
+            details.forEach(([label, value]) => {
+                doc.setFontSize(11);
+                doc.setTextColor(42, 82, 152); // #2a5298 - Dark blue for labels
+                doc.text(label, 20, yPos);
+                
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(10);
+                
+                // Handle long text by wrapping
+                const maxWidth = 150;
+                const lines = doc.splitTextToSize(value, maxWidth);
+                doc.text(lines, 20, yPos + 5);
+                
+                yPos += Math.max(15, lines.length * 5 + 5);
+            });
+
+            // Footer
+            doc.setFontSize(10);
+            doc.setTextColor(128, 128, 128);
+            doc.text('Thank you for choosing The Bike Solution!', 105, yPos + 10, { align: 'center' });
+            doc.text('Contact: +91 6202019630 | Address: Near P&M mall Patliputra, Patna, 800011', 105, yPos + 20, { align: 'center' });
+            doc.text('Please bring this confirmation and your Hero bike for service on the scheduled date.', 105, yPos + 30, { align: 'center' });
+
+            // Save the PDF
+            doc.save(`hero_booking_${booking.token}_${booking.customerName.replace(/\s+/g, '_')}.pdf`);
+        }
+
+        // Handle booking form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const customerName = formData.get('customerName').trim();
+            const mobile = formData.get('mobile').trim();
+            const bikeModel = formData.get('bikeModel');
+            const registrationNumber = formData.get('registrationNumber').trim();
+            const address = formData.get('address').trim();
+            const problem = formData.get('problem').trim();
+
+            if (!customerName || !mobile || !bikeModel || !registrationNumber || !address || !problem) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Generate token and service date
+            const token = generateToken();
+            const serviceDate = calculateServiceDate();
+
+            // Create booking object
+            const booking = {
+                customerName: customerName,
+                mobile: mobile,
+                bikeModel: bikeModel,
+                registrationNumber: registrationNumber,
+                address: address,
+                problem: problem,
+                token: token,
+                serviceDate: serviceDate,
+                company: 'Hero'
+            };
+
+            // Save to database
+            saveBookingToDatabase(booking);
+
+            // Reset form
+            this.reset();
+
+            // Show confirmation modal
+            showConfirmationModal(booking);
+        });
+
+        // Save booking to database
+        function saveBookingToDatabase(booking) {
+            const formData = new FormData();
+            formData.append('name', booking.customerName);
+            formData.append('mobile', booking.mobile);
+            formData.append('bike_model', booking.bikeModel);
+            formData.append('regno', booking.registrationNumber);
+            formData.append('address', booking.address);
+            formData.append('problem', booking.problem);
+            formData.append('company', booking.company);
+            formData.append('token', booking.token);
+            formData.append('service_date', booking.serviceDate);
+
+            fetch('submit.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Booking saved to database:', data);
+            })
+            .catch(error => {
+                console.error('Error saving booking:', error);
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+        });
+    </script>
+</body>
+</html>
