@@ -1,5 +1,0 @@
-Flask
-flask-restful
-Flask-SQLAlchemy
-pymysql
-requests
