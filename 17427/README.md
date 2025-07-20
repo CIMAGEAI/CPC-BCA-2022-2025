@@ -1,5 +1,5 @@
 <div align="center"> 
-<h4 align="center">✦ Your Al Interviewer That Prepares You Better Than Any Human Can. ✦</h4>
+<h2 align="center">✦ Your Al Interviewer That Prepares You Better Than Any Human Can. ✦</h2>
 </div></br>
 
 <div align="center"> 
@@ -7,7 +7,7 @@
 <img src="./public/thisisantriview.png" width="750px" /><br>
 <h1 align="center"><a href="https://antriview.systems/"><strong>✦ antriview.systems ✦</strong></a></h1>
 
-<h4 align="center">Practice Real Interviews. In Real Time. With a Real Al Powered Voice.</h4>
+<h2 align="center">Practice Real Interviews. In Real Time. With a Real Al Powered Voice.</h2>
 
 <!--<h4 align="center">✦ Transform your GitHub journey into a professional resume in seconds! ✦</h4>-->
   
