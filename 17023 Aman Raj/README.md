@@ -1,54 +1,239 @@
-# Getting Started with Create React App
+# 📸 Imagify — Your Ultimate Image Upload & Sharing Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Imagify is a modern full-stack image management web application that allows users to effortlessly upload, transform, manage, and share images across various platforms. Designed with scalability, speed, and user-friendliness in mind, Imagify leverages cloud storage, Firebase, and modern UI/UX principles to deliver a seamless experience.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### 👤 User-Side
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 🔐 Signup/Login with Email, Google, **GitHub OAuth via Firebase**
+- ☁️ Drag-and-drop image uploading
+- ✨ Resize, crop, compress, apply filters
+- 🏷️ Add descriptions, tags, titles
+- 📤 One-click social sharing
+- 🔍 Search & filter by tags, name, date
+- 🗂️ Organize with albums/folders
+- 🔗 Copy image URL & download
+- 💳 Razorpay integration for credit purchase
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## 🧠 Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Category      | Tools & Libraries                                                                 |
+| ------------- | --------------------------------------------------------------------------------- |
+| Frontend      | React.js, Tailwind CSS, React Router, Axios, React Query, Toastify, Framer Motion |
+| Backend       | Node.js, Express.js, Multer, JWT                                                  |
+| Database      | MongoDB + Mongoose                                                                |
+| Image Hosting | Cloudinary                                                                        |
+| Auth          | JWT, Google OAuth2, **Firebase (Email, Google & GitHub sign-in)**                 |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🧬 System Design Overview
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Here’s a visual representation of Imagify's high-level architecture:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![Low Level Design](System%20Design/LLD.png)
 
-### `npm run eject`
+## 📁 Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+imagify/
+├── client/              # React frontend
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── stores/
+│   │   ├── auth/         # Firebase auth integration (Email, Google, GitHub)
+│   │   ├── ui/           # UI-specific components
+│   │   └── App.jsx
+│   └── index.html
+├── server/              # Express backend
+│   ├── config/           # Firebase service key + DB config
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   └── index.js
+├── README.md
+└── package.json
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 🔑 Environment Variables
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Backend (`/server/.env`)
 
-## Learn More
+```env
+PORT=5000
+MONGODB_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+CLIPDROP_API=your_clipdrop_api_key
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_secret
+CURRENCY=INR
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Firebase Admin SDK
+# ✅ Option 1: Local dev using file path
+VITE_FIREBASE_ADMIN_KEY_PATH=./config/firebaseServiceKey.json
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# 🔐 Option 2: Production environment, paste minified JSON
+FIREBASE_SERVICE_ACCOUNT={...}
+```
 
-# 👨‍💻 GitHub Contribution Graph for Shubham Raj
+### Frontend (`/client/.env`)
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=shubhcoding01&show_icons=true&theme=radical)
+```env
+VITE_BACKEND_URL=http://localhost:5000
+VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+VITE_API_KEY=your_custom_api_key
+```
 
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=shubhcoding01&theme=radical)
+---
 
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=shubhcoding01&layout=compact&theme=radical)
+## 🌐 API Endpoints
+
+### 🔐 Auth & User (`/user`)
+
+```js
+POST   /register          → registerUser
+POST   /login             → loginUser
+POST   /forget-password   → forgetPassword
+POST   /social-login      → social login via Firebase (Google/GitHub)
+POST   /update-user       → updateUser
+GET    /credits           → userCredits (protected)
+POST   /pay-razor         → paymentRazorPay (protected)
+POST   /verify-razor      → verifyRazorPay (protected)
+GET    /saved-images      → getSavedImages (protected)
+POST   /save-image        → saveImage (protected)
+GET    /all-users         → getAllUsers (protected/admin)
+GET    /all-transactions  → getAllTransaction (protected/admin)
+```
+
+### 🖼️ Image Processing (`/image`)
+
+```js
+POST   /generate-image        → generateImage (protected)
+POST   /reImagine             → reImagine (protected, multipart)
+POST   /removebackground      → removeBackGround (protected, multipart)
+POST   /productphotography    → productPhotography (protected, multipart)
+POST   /removetext            → removeText (protected, multipart)
+POST   /upscaling             → upscaling (protected, multipart)
+POST   /replace-background    → replaceBackground (protected, multipart)
+POST   /cleanup               → cleanup (protected, multipart with mask + image)
+```
+
+---
+
+## ▶️ Running the App Locally
+
+### Backend
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
+### Frontend
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Visit: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🐳 Dockerize Imagify
+
+**1. Backend `Dockerfile`:**
+
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY ./server ./
+RUN npm install
+CMD ["npm","run","dev"]
+EXPOSE 5000
+```
+
+**2. Frontend `Dockerfile`:**
+
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY ./client ./
+RUN npm install && npm run build
+RUN npm install -g serve
+CMD ["serve","-s","dist"]
+EXPOSE 5173
+```
+
+**3. `docker-compose.yml`:**
+
+```yaml
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URL=${MONGODB_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      # include all backend env vars
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+```
+
+**4. Bring it up:**
+
+```bash
+docker-compose up --build
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+See the [LICENSE](./LICENSE) file for more details.
+
+---
+
+## 🌐 Connect with Me
+
+- 💼 [LinkedIn](https://linkedin.com/in/amanpoddar12)
+- 🔙 [GitHub](https://github.com/amanpoddar-dev12)
+- 🧵 [Twitter](https://twitter.com/amanpoddarr)
+
+---
+
+> Built with ❤️ using the MERN Stack, Tailwind CSS, Firebase, Cloudinary, and Docker
