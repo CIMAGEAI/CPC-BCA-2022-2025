@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cybersecurity Tutorial</title>
+    <style>/* Reset default browser styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* Body styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    
+    /* Header styling */
+    header {
+        background-color: #0073e6;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+    
+    /* Main content styling */
+    main {
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Section styling */
+    section {
+        margin-bottom: 20px;
+    }
+    
+    section h2 {
+        color: #0073e6;
+        margin-bottom: 10px;
+    }
+    
+    ul {
+        list-style-type: none;
+        padding-left: 20px;
+    }
+    
+    ul li {
+        margin-bottom: 5px;
+    }
+    
+    pre {
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+    
+    /* Chart styling */
+    .chart {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .bar {
+        width: 30px;
+        background-color: #0073e6;
+        border-radius: 4px;
+        transition: height 0.3s ease;
+    }
+    
+    /* Footer styling */
+    footer {
+        background-color: #0073e6;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+    }</style>
+    </head>
+    <body>
+    <header>
+        <h1>Cybersecurity Tutorial</h1>
+        <p>Understanding the Basics of Cybersecurity</p>
+    </header>
+
+    <main>
+        <section id="introduction">
+        <h2>Introduction</h2>
+        <p>Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks. These cyberattacks are usually aimed at accessing, changing, or destroying sensitive information; extorting money from users; or interrupting normal business processes.</p>
+        </section>
+
+        <section id="types">
+        <h2>Types of Cybersecurity</h2>
+        <ul>
+            <li><strong>Network Security:</strong> Protects the integrity and usability of network and data.</li>
+            <li><strong>Information Security:</strong> Protects the integrity and privacy of data, both in storage and in transit.</li>
+            <li><strong>Application Security:</strong> Ensures that software and applications are free of threats that could compromise data or functionality.</li>
+            <li><strong>Operational Security:</strong> Includes the processes and decisions for handling and protecting data assets.</li>
+            <li><strong>Disaster Recovery and Business Continuity Planning:</strong> Defines how an organization responds to cybersecurity incidents or any other event that causes the loss of operations or data.</li>
+        </ul>
+        </section>
+
+        <section id="example">
+        <h2>Simple Example: Secure Login Form</h2>
+        <p>Here's a basic example of a secure login form using HTML and CSS:</p>
+        <pre>
+            &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            &lt;head&gt;
+            &lt;title&gt;Secure Login&lt;/title&gt;
+            &lt;style&gt;
+                body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+                .container { width: 300px; margin: 100px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+                h2 { text-align: center; color: #333; }
+                label { display: block; margin-bottom: 8px; color: #555; }
+                input[type="text"], input[type="password"] { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+                button { width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+                button:hover { background-color: #45a049; }
+            &lt;/style&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+            &lt;div class="container"&gt;
+                &lt;h2&gt;Login&lt;/h2&gt;
+                &lt;form action="/submit_form" method="POST"&gt;
+                &lt;label for="username"&gt;Username&lt;/label&gt;
+                &lt;input type="text" id="username" name="username" required&gt;
+                &lt;label for="password"&gt;Password&lt;/label&gt;
+                &lt;input type="password" id="password" name="password" required&gt;
+                &lt;button type="submit"&gt;Login&lt;/button&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+        </pre>
+        </section>
+
+        <section id="resources">
+        <h2>Further Resources</h2>
+        <ul>
+            <li><a href="https://www.cybersecurityventures.com/20-best-cybersecurity-website-designs/" target="_blank">20 Best Cybersecurity Website Designs - Cybersecurity Ventures</a></li>
+            <li><a href="https://www.cyberoptik.net/blog/best-cybersecurity-website-designs/" target="_blank">20 Best Cybersecurity Website Designs - CyberOptik</a></li>
+            <li><a href="https://www.themeforest.net/category/site-templates?srsltid=AfmBOooPVxmUw1VI0iCTkslCrbUp-RMZW9LvDtoqomUvJtaGZkSk6v-g&term=cyber+security" target="_blank">Cyber Security HTML Website Templates - ThemeForest</a></li>
+        </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Cybersecurity Tutorial</p>
+    </footer>
+    </body>
+    </html>

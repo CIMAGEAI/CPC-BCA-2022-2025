@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>LearnEase | Home</title>
+   <style>
+    /* Reset and Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8f8f8;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Header */
+header {
+    background: #004080;
+    color: white;
+    padding: 20px 0;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+    color: #ffcc00;
+}
+
+/* Hero */
+.hero {
+    background: linear-gradient(to right, #0073e6, #00bcd4);
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.btn-primary {
+    background: #ffcc00;
+    color: #000;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #e6b800;
+}
+
+/* Features */
+.features {
+    padding: 60px 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.feature-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.feature-item {
+    background: #f2f2f2;
+    padding: 30px;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.feature-item h4 {
+    margin-bottom: 15px;
+    color: #004080;
+}
+
+/* Testimonials */
+.testimonials {
+    padding: 60px 20px;
+    background: #e6f0ff;
+    text-align: center;
+}
+
+.testimonial-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.testimonial {
+    background: white;
+    padding: 20px;
+    width: 280px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.testimonial span {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    background: #004080;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+   </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+     <header>
+        <div class="container">
+            <h1 class="logo">LearnEase</h1>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="course.html">Courses</a></li>
+                    <li><a href="testseries.html">Test Series</a></li>
+                    <li><a href="video.html">Videos</a></li>
+                    <li><a href="service.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                   
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Learn Anytime, Anywhere</h2>
+            <p>Join thousands of learners and take your skills to the next level.</p>
+            <a href="course.html" class="btn-primary">Explore Courses</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h3 class="section-title">Why LearnEase?</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>Expert Instructors</h4>
+                    <p>Learn from certified professionals with real-world experience.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Live Classes</h4>
+                    <p>Interact with instructors in real-time and clear your doubts instantly.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Certifications</h4>
+                    <p>Earn industry-recognized certificates after course completion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h3 class="section-title">What Our Students Say</h3>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <p>"LearnEase helped me crack my competitive exams with ease. Highly recommended!"</p>
+                    <span>- Sandeep Kumar</span>
+                </div>
+                <div class="testimonial">
+                    <p>"The courses are detailed, interactive, and incredibly helpful for beginners."</p>
+                    <span>- Our Team</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+   <footer>
+        <div class="container">
+            <p>&copy;  2025 Idea and Creation by Ankit Kishore Sen.</p>
+             <p>&copy; 2025 Designed and Implemented by Ankit Kishore Sen & All Contributing Students.</p>
+              <p>&copy; 2025 Project Titled: Learn Ease .</p>
+        </div>
+    </footer>
+
+</body>
+</html>

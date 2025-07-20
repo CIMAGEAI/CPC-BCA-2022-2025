@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C Language MCQ Quiz</title>
+  <style>
+    body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f4f8;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 60%;
+  margin: 10px auto;
+  display: block;
+}
+
+button {
+  background-color: #004080;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0066cc;
+}
+
+.hidden {
+  display: none;
+}
+
+.question-block {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+canvas {
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>C Programming Quiz</h1>
+    <p>Enter your name to start the quiz:</p>
+    <input type="text" id="username" placeholder="Your Full Name" />
+    <button onclick="startQuiz()">Start Quiz</button>
+
+    <form id="quizForm" class="hidden">
+      <div id="questionsContainer"></div>
+      <button type="button" onclick="submitQuiz()">Submit Quiz</button>
+    </form>
+
+    <div id="result" class="hidden">
+      <h2>Congratulations, <span id="nameDisplay"></span>!</h2>
+      <p>Your Score: <span id="scoreDisplay"></span>/5</p>
+      <button onclick="downloadCertificate()">Download Certificate</button>
+      <canvas id="certificateCanvas" width="800" height="600" class="hidden"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+  {
+    question: "1. What is the correct syntax to output 'Hello World' in C?",
+    options: ["print('Hello')", "cout << 'Hello'", "printf('Hello')", "echo 'Hello'"],
+    answer: "printf('Hello')"
+  },
+  {
+    question: "2. What is the size of an int on a 32-bit system?",
+    options: ["2 bytes", "4 bytes", "8 bytes", "Depends"],
+    answer: "4 bytes"
+  },
+  {
+    question: "3. Which keyword is used to define a constant?",
+    options: ["define", "static", "const", "final"],
+    answer: "const"
+  },
+  {
+    question: "4. What symbol is used to comment a single line in C?",
+    options: ["//", "#", "--", "%%"],
+    answer: "//"
+  },
+  {
+    question: "5. What does the 'scanf' function do?",
+    options: ["Print output", "Scan strings", "Take input", "None"],
+    answer: "Take input"
+  }
+];
+
+function startQuiz() {
+  const name = document.getElementById("username").value.trim();
+  if (!name) {
+    alert("Please enter your name to start.");
+    return;
+  }
+
+  document.getElementById("quizForm").classList.remove("hidden");
+  document.querySelector("input").disabled = true;
+  generateQuestions();
+}
+
+function generateQuestions() {
+  const container = document.getElementById("questionsContainer");
+  questions.forEach((q, index) => {
+    const block = document.createElement("div");
+    block.classList.add("question-block");
+
+    const title = document.createElement("p");
+    title.textContent = q.question;
+    block.appendChild(title);
+
+    q.options.forEach(option => {
+      const label = document.createElement("label");
+      label.innerHTML = `
+        <input type="radio" name="q${index}" value="${option}" />
+        ${option}
+      `;
+      block.appendChild(label);
+    });
+
+    container.appendChild(block);
+  });
+}
+
+function submitQuiz() {
+  let score = 0;
+  questions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected && selected.value === q.answer) score++;
+  });
+
+  document.getElementById("scoreDisplay").textContent = score;
+  document.getElementById("nameDisplay").textContent = document.getElementById("username").value;
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("quizForm").classList.add("hidden");
+}
+
+function downloadCertificate() {
+  const name = document.getElementById("username").value;
+  const score = document.getElementById("scoreDisplay").textContent;
+  const canvas = document.getElementById("certificateCanvas");
+  const ctx = canvas.getContext("2d");
+
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw background
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+  // Text
+  ctx.fillStyle = "#000";
+  ctx.font = "30px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Certificate of Completion", canvas.width / 2, 100);
+
+  ctx.font = "22px Arial";
+  ctx.fillText(`This certifies that`, canvas.width / 2, 160);
+
+  ctx.font = "26px Arial";
+  ctx.fillText(name, canvas.width / 2, 210);
+
+  ctx.font = "22px Arial";
+  ctx.fillText(`has successfully completed the C Programming Quiz`, canvas.width / 2, 260);
+
+  ctx.fillText(`with a score of ${score}/5`, canvas.width / 2, 300);
+
+  ctx.font = "18px Arial";
+  ctx.fillText(`Date: ${new Date().toLocaleDateString()}`, canvas.width / 2, 380);
+  ctx.fillText(`Authorized by: LearnEase`, canvas.width / 2, 420);
+
+  // Show canvas
+  canvas.classList.remove("hidden");
+
+  // Download
+  const link = document.createElement("a");
+  link.download = "certificate.png";
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+  </script>
+</body>
+</html>

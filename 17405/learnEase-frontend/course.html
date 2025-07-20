@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LearnEase | Courses</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      color: #333;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    /* Header */
+    header {
+      background: #004080;
+      color: white;
+      padding: 20px 0;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .nav-menu a:hover {
+      color: #ffcc00;
+    }
+
+    /* Courses Section */
+    .courses {
+      padding: 50px 0;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .course-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .course-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      background-color: #f9fbff;
+      padding: 10px;
+    }
+
+    .course-card-content {
+      padding: 20px;
+    }
+
+    .course-card h2 {
+      color: #004080;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .course-card p {
+      font-size: 0.95em;
+      margin-bottom: 15px;
+    }
+
+    .course-card a {
+      display: inline-block;
+      background-color: #004080;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .footer {
+      background-color: #00264d;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+        <div class="container">
+            <h1 class="logo">LearnEase</h1>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="course.html">Courses</a></li>
+                    <li><a href="testseries.html">Test Series</a></li>
+                    <li><a href="video.html">Videos</a></li>
+                    <li><a href="service.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                   
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+  <!-- Courses -->
+  <section class="courses">
+    <div class="container">
+      <div class="course-grid">
+
+        <div class="course-card">
+          <img src="ML.png" alt="Machine Learning">
+          <div class="course-card-content">
+            <h2>Machine Learning</h2>
+            <p>Build smart systems using supervised and unsupervised learning techniques.</p>
+            <a href="Machinelearning.html">Start Now</a>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <img src="webD1.png" alt="Web Development">
+          <div class="course-card-content">
+            <h2>Web Development</h2>
+            <p>Design responsive websites using HTML, CSS, JavaScript, and backend tools.</p>
+            <a href="WebDev.html">Start Now</a>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <img src="mobileapp.png" alt="Mobile App Development">
+          <div class="course-card-content">
+            <h2>Mobile App Development</h2>
+            <p>Create Android and iOS apps using Flutter or React Native.</p>
+            <a href="mobileapp.html">Start Now</a>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <img src="data.jpg" alt="Data Science">
+          <div class="course-card-content">
+            <h2>Data Science</h2>
+            <p>Analyze and visualize large datasets with Python, Pandas, and Matplotlib.</p>
+            <a href="datasci.html">Start Now</a>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <img src="cloud.jpg" alt="Cloud Computing">
+          <div class="course-card-content">
+            <h2>Cloud Computing</h2>
+            <p>Learn AWS, Azure, and cloud architecture for scalable applications.</p>
+            <a href="cloud.html">Start Now</a>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <img src="cyber.jpg" alt="Cybersecurity">
+          <div class="course-card-content">
+            <h2>Cybersecurity</h2>
+            <p>Understand ethical hacking, encryption, and securing digital systems.</p>
+            <a href="cyber.html">Start Now</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Designed and Implemented by Vikash Kumar</p>
+      <p>&copy; 2025 Project Titled: Learn Ease.</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+        
