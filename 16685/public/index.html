@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Official Patna Metro website. Book metro tickets, check maps, calculate fare, and stay updated.">
+  <meta name="keywords" content="Patna Metro, PMRC, metro tickets, Patna transport, metro map, fare calculator">
+  <meta property="og:title" content="Patna Metro – Official Website" />
+  <meta property="og:image" content="/images/metro-banner.jpg" />
+  <meta property="og:url" content="https://patnametro.in" />
+
+  <meta name="author" content="PMRC">
+
+  <title>Patna Metro</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- Font Style-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Leaflet Control Geocoder CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+  <!-- Favicon and Web Manifest -->
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+  <link rel="shortcut icon" href="favicon/favicon.ico" type="image/x-icon">
+
+
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-1" style="background-color: #1E40AF;">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="#home" style="padding: 0;" aria-label="Patna Metro Home Page">
+      <img src="/images/Metro_logo.png" alt="Patna Metro Logo" class="me-2" height="30" />
+      <span class="fw-bold text-white fs-5">PMRC</span>
+    </a>
+
+    <!-- Toggler for small screens -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-3">
+        <li class="nav-item"><a class="nav-link text-white fw-medium" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link text-white fw-medium" href="#map">Map</a></li>
+        <li class="nav-item"><a class="nav-link text-white fw-medium" href="#book-tickets">Book Tickets</a></li>
+        <li class="nav-item"><a class="nav-link text-white fw-medium" href="#fare">Fare Calculator</a></li>
+        <li class="nav-item"><a class="nav-link text-white fw-medium" href="#about">About</a></li>
+
+        <!-- Login Button -->
+        <li class="nav-item" id="loginBtnWrapper">
+          <a class="btn btn-light btn-sm fw-semibold px-3 py-1 ms-lg-2" href="login.html" style="border-radius: 20px;">
+            Login / Sign Up
+          </a>
+        </li>
+
+        <!-- User Dropdown -->
+        <li class="nav-item dropdown d-none" id="userDropdown">
+          <button class="btn btn-outline-light btn-sm dropdown-toggle px-3 py-1 fw-semibold ms-lg-2"
+            id="userBtn" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 20px;">
+            <i class="fa-solid fa-user me-1"></i><span id="userNameLabel">User</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item active" href="profile.html">My Tickets</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item text-danger" href="#" onclick="logout()">Logout</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!-- /Navbar -->
+
+
+<main>
+  
+  <!-- Hero Section with ID -->
+    <section id="home" class="text-white py-5" 
+      style="background: linear-gradient(to right, #2563EB, #1E40AF); min-height: 50vh; padding-top: 100px;">
+      <div class="container text-center px-4 d-flex flex-column justify-content-center h-100">
+        <h1 class="display-4 fw-bold mb-4">
+          Patna Metro Rail Corporation
+        </h1>
+        <p class="lead mb-5 lh-1">
+          Connecting Patna with Modern, Efficient, and Sustainable Transportation
+        </p>
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <p class="fs-5 mb-4 lh-1">
+              Transform your journey across Bihar’s capital with our advanced metro system.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  <!-- Ticker Section -->
+    <section class="py-2" style="background: linear-gradient(to right, #2563EB, #1E40AF);">
+    <div class="container">
+      <div class="d-flex align-items-center">
+        <span class="badge me-2 fw-semibold" style="background-color: #ffffff; color: #1E40AF; display: flex; align-items: center; height: 36px; border-radius: 6px; padding: 0 0.75rem; font-size: 0.8rem;">
+          LATEST NEWS
+        </span>
+        <div class="ticker-content" style="background-color: #ffffff; color: #000000; height: 36px; display: flex; align-items: center; border-radius: 6px; padding: 0 0.75rem; overflow: hidden; white-space: nowrap; font-size: 0.85rem; font-weight: 500;">
+          <span class="ticker-item">
+            🚇 The first Patna Metro train will run from 15th August, connecting Malahi Pakri to ISBT |
+            🚧 Construction progresses rapidly at Malahi Pakri Station |
+            🛤 Patna Metro Phase 1 scheduled for completion by 2026
+          </span>
+        </div>
+      </div>
+    </div>
+    </section>
+
+  <!-- Map Section -->
+    <section id="map" class="py-5" style="background: linear-gradient(to right, #2563EB, #1E40AF);">
+  <div class="container">
+    <div class="p-4 p-md-5 shadow-sm rounded bg-white">
+      <h2 class="text-center mb-5" style="color: #1E40AF; font-size: 2.5rem; font-weight: 700;">
+        METRO MAP
+      </h2>
+      <div class="row align-items-center">
+        <!-- Leaflet Live Map -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="position-relative" style="height: 360px; border: 3px solid #1E40AF; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+            <div id="metroMap" style="width: 100%; height: 100%;"></div>
+            <button class="btn btn-outline-primary position-absolute top-0 end-0 m-2 shadow-sm"
+              onclick="toggleFullScreen()" style="border-radius: 20px; font-size: 0.9rem;">
+              🔍 Fullscreen
+            </button>
+          </div>
+        </div>
+
+        <!-- Static Metro Route Image -->
+        <div class="col-lg-6 d-flex align-items-center justify-content-center">
+          <img src="/images/Patna-metro-map.png" alt="Patna Metro Map"
+            style="width: 100%; height: 360px; object-fit: contain; background-color: #ffffff;
+                   border: 3px solid #1E40AF; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+        </div>
+      </div>
+    </div>
+  </div>
+    </section>
+
+  <!-- Book Ticket -->
+    <section id="book-tickets" class="py-5" style="background: linear-gradient(to right, #2563EB, #1E40AF);">
+  <div class="container">
+    <div class="p-4 p-md-5 shadow-sm rounded bg-white border" style="border: 1px solid #ccc;">
+      <h2 class="text-center mb-4 fw-bold text-primary">Book Your Metro Ticket</h2>
+
+      <form class="row g-3" id="ticketForm" novalidate>
+        <!-- From Station -->
+        <div class="col-md-6">
+          <label for="fromStation" class="form-label">From Station</label>
+          <select class="form-select" id="fromStation" required>
+            <option selected disabled value="">Select departure station</option>
+            <optgroup label="🚇 LINE 1">
+              <option>Danapur Cantonment</option>
+              <option>Saguna Mor</option>
+              <option>RPS Mor</option>
+              <option>Patliputra</option>
+              <option>Rukanpura</option>
+              <option>Raja Bazar</option>
+              <option>Patna Zoo</option>
+              <option>Vikas Bhawan</option>
+              <option>Vidyut Bhawan</option>
+              <option>Patna Junction</option>
+              <option>CNLU</option>
+              <option>Mithapur</option>
+              <option>Ramkrishna Nagar</option>
+              <option>Jaganpura</option>
+              <option>Khemni Chak</option>
+            </optgroup>
+            <optgroup label="🚇 LINE 2">
+              <option>Patna Junction</option>
+              <option>Akashvani</option>
+              <option>Gandhi Maidan</option>
+              <option>PMCH</option>
+              <option>Patna University</option>
+              <option>Moin-ul-Haq Stadium</option>
+              <option>Rajendra Nagar</option>
+              <option>Malahi Pakri</option>
+              <option>Khemni Chak</option>
+              <option>Bhoothnath</option>
+              <option>Zero Mile</option>
+              <option>New ISBT</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- To Station -->
+        <div class="col-md-6">
+          <label for="toStation" class="form-label">To Station</label>
+          <select class="form-select" id="toStation" required>
+            <option selected disabled value="">Select destination station</option>
+            <optgroup label="🚇 LINE 1">
+              <option>Danapur Cantonment</option>
+              <option>Saguna Mor</option>
+              <option>RPS Mor</option>
+              <option>Patliputra</option>
+              <option>Rukanpura</option>
+              <option>Raja Bazar</option>
+              <option>Patna Zoo</option>
+              <option>Vikas Bhawan</option>
+              <option>Vidyut Bhawan</option>
+              <option>Patna Junction</option>
+              <option>CNLU</option>
+              <option>Mithapur</option>
+              <option>Ramkrishna Nagar</option>
+              <option>Jaganpura</option>
+              <option>Khemni Chak</option>
+            </optgroup>
+            <optgroup label="🚇 LINE 2">
+              <option>Patna Junction</option>
+              <option>Akashvani</option>
+              <option>Gandhi Maidan</option>
+              <option>PMCH</option>
+              <option>Patna University</option>
+              <option>Moin-ul-Haq Stadium</option>
+              <option>Rajendra Nagar</option>
+              <option>Malahi Pakri</option>
+              <option>Khemni Chak</option>
+              <option>Bhoothnath</option>
+              <option>Zero Mile</option>
+              <option>New ISBT</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- Passenger Count (Adult + Children) -->
+        <div class="col-md-6">
+          <label for="passengers" class="form-label">Number of Passengers (Adult)</label>
+          <input type="number" class="form-control" id="passengers" min="1" value="1" required />
+        </div>
+        <div class="col-md-6">
+          <label for="children" class="form-label">Number of Children</label>
+          <input type="number" class="form-control" id="children" min="0" value="0" required />
+        </div>
+
+
+        <!-- Ticket Types -->
+        <div class="col-12">
+          <label class="form-label">Ticket Type</label>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-check border p-3 rounded shadow-sm">
+                <input class="form-check-input" type="radio" name="ticketType" id="single" value="single" checked>
+                <label class="form-check-label w-100" for="single">
+                  <div class="d-flex justify-content-between">
+                    <span><strong>Single Journey</strong><br><small class="text-muted">One-way ticket</small></span>
+                    <span class="badge bg-dark">Variable</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check border p-3 rounded shadow-sm">
+                <input class="form-check-input" type="radio" name="ticketType" id="return" value="return">
+                <label class="form-check-label w-100" for="return">
+                  <div class="d-flex justify-content-between">
+                    <span><strong>Return Journey</strong><br><small class="text-muted">Round-trip ticket</small></span>
+                    <span class="badge bg-dark">Variable</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check border p-3 rounded shadow-sm">
+                <input class="form-check-input" type="radio" name="ticketType" id="day" value="day">
+                <label class="form-check-label w-100" for="day">
+                  <div class="d-flex justify-content-between">
+                    <span><strong>Day Pass</strong><br><small class="text-muted">Unlimited rides for one day</small></span>
+                    <span class="badge bg-success">₹100</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check border p-3 rounded shadow-sm">
+                <input class="form-check-input" type="radio" name="ticketType" id="weekly" value="weekly">
+                <label class="form-check-label w-100" for="weekly">
+                  <div class="d-flex justify-content-between">
+                    <span><strong>Weekly Pass</strong><br><small class="text-muted">Unlimited rides for one week</small></span>
+                    <span class="badge bg-success">₹500</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12 text-center mt-4">
+          <button id="payBtn" class="btn btn-dark btn-lg px-4 py-2 shadow-sm" type="button">
+             Book Ticket
+          </button>
+        </div>
+      </form>
+
+      <!-- Ticket Output -->
+      <div id="ticketResult" class="mt-5 d-none">
+        <h4 class="text-center mb-3 fw-bold text-success">Your Ticket</h4>
+        <div class="border rounded shadow-sm p-4 bg-white text-center">
+          <p id="ticketInfo" class="mb-3"></p>
+          <canvas id="qrCode"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+    </section>
+
+  <!-- Fare Calculator -->
+  <section id="fare" class="py-5" style="background: linear-gradient(to right, #2563EB, #1E40AF);">
+    <div class="container">
+      <div class="p-4 p-md-5 shadow-sm rounded bg-white">
+        <h2 class="text-center mb-4 fw-bold text-primary">Fare Calculator</h2>
+
+        <form id="fareCalculatorForm" class="row g-3 needs-validation px-2 px-sm-3 px-md-4" novalidate aria-label="Fare calculator form">
+          <div class="col-md-6">
+            <label for="fareFrom" class="form-label">From Station</label>
+            <select class="form-select" id="fareFrom" required>
+              <option disabled selected value="">Select starting station</option>
+              <optgroup label="🚇 LINE 1">
+                <option>Danapur Cantonment</option>
+                <option>Saguna Mor</option>
+                <option>RPS Mor</option>
+                <option>Patliputra</option>
+                <option>Rukanpura</option>
+                <option>Raja Bazar</option>
+                <option>Patna Zoo</option>
+                <option>Vikas Bhawan</option>
+                <option>Vidyut Bhawan</option>
+                <option>Patna Junction</option>
+                <option>CNLU</option>
+                <option>Mithapur</option>
+                <option>Ramkrishna Nagar</option>
+                <option>Jaganpura</option>
+                <option>Khemni Chak</option>
+              </optgroup>
+              <optgroup label="🚇 LINE 2">
+                <option>Patna Junction</option>
+                <option>Akashvani</option>
+                <option>Gandhi Maidan</option>
+                <option>PMCH</option>
+                <option>Patna University</option>
+                <option>Moin Ul Haq Stadium</option>
+                <option>Rajendra Nagar</option>
+                <option>Malahi Pakri</option>
+                <option>Khemni Chak</option>
+                <option>Bhoothnath</option>
+                <option>Zero Mile</option>
+                <option>New ISBT</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="fareTo" class="form-label">To Station</label>
+            <select class="form-select" id="fareTo" required>
+              <option disabled selected value="">Select destination station</option>
+              <optgroup label="🚇 LINE 1">
+                <option>Danapur Cantonment</option>
+                <option>Saguna Mor</option>
+                <option>RPS Mor</option>
+                <option>Patliputra</option>
+                <option>Rukanpura</option>
+                <option>Raja Bazar</option>
+                <option>Patna Zoo</option>
+                <option>Vikas Bhawan</option>
+                <option>Vidyut Bhawan</option>
+                <option>Patna Junction</option>
+                <option>CNLU</option>
+                <option>Mithapur</option>
+                <option>Ramkrishna Nagar</option>
+                <option>Jaganpura</option>
+                <option>Khemni Chak</option>
+              </optgroup>
+              <optgroup label="🚇 LINE 2">
+                <option>Patna Junction</option>
+                <option>Akashvani</option>
+                <option>Gandhi Maidan</option>
+                <option>PMCH</option>
+                <option>Patna University</option>
+                <option>Moin Ul Haq Stadium</option>
+                <option>Rajendra Nagar</option>
+                <option>Malahi Pakri</option>
+                <option>Khemni Chak</option>
+                <option>Bhoothnath</option>
+                <option>Zero Mile</option>
+                <option>New ISBT</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- New Inputs: Passengers -->
+          <div class="col-md-6">
+            <label for="fareAdults" class="form-label">Adults</label>
+            <input type="number" id="fareAdults" class="form-control" min="1" value="1" required>
+          </div>
+          <div class="col-md-6">
+            <label for="fareChildren" class="form-label">Children</label>
+            <input type="number" id="fareChildren" class="form-control" min="0" value="0" required>
+          </div>
+
+          <!-- Ticket Type -->
+          <div class="col-12">
+            <label class="form-label">Ticket Type</label><br />
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="fareTicketType" id="fareSingle" value="single" checked>
+              <label class="form-check-label" for="fareSingle">Single</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="fareTicketType" id="fareReturn" value="return">
+              <label class="form-check-label" for="fareReturn">Return</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="fareTicketType" id="fareDay" value="day">
+              <label class="form-check-label" for="fareDay">Day Pass</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="fareTicketType" id="fareWeekly" value="weekly">
+              <label class="form-check-label" for="fareWeekly">Weekly Pass</label>
+            </div>
+          </div>
+
+          <div class="col-12 text-center mt-2">
+            <button type="submit" class="btn btn-dark btn-lg px-4 py-2 shadow-sm">Calculate Fare</button>
+          </div>
+        </form>
+
+        <div id="fareLoading" class="text-center mt-4 d-none">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Calculating...</span>
+          </div>
+        </div>
+
+        <div id="fareResult" class="text-center mt-5 d-none">
+          <h5 class="text-success fw-bold mb-2">Estimated Fare:</h5>
+          <p id="fareOutput" class="fs-5 text-dark">₹ --</p>
+          <p id="fareDistance" class="text-muted fst-italic">Approx. distance: -- km</p>
+          <p id="fareTime" class="text-muted fst-italic">Estimated time: -- mins</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+    <section id="about" class="py-5" style="background: linear-gradient(to right, #2563EB, #1E40AF);">
+  <div class="container">
+    <div class="p-4 p-md-5 shadow-sm rounded bg-white">
+      <h2 class="text-center mb-4 fw-bold text-primary">About Patna Metro</h2>
+
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+          <p class="fs-5 text-muted mb-3">
+            <strong>Patna Metro Rail Corporation (PMRC)</strong> is an ambitious urban transit project aiming to
+            transform public transportation in Bihar’s capital. The metro system is designed to provide fast,
+            reliable, and eco-friendly commuting options to the people of Patna.
+          </p>
+          <ul class="list-unstyled text-muted fs-6">
+            <li>✅ Phase 1 includes two corridors spanning over 30 km</li>
+            <li>✅ Designed for over 5 lakh daily commuters</li>
+            <li>✅ Integrated smart ticketing with seamless booking experience</li>
+            <li>✅ Estimated completion: <strong>2026</strong></li>
+          </ul>
+          <p class="text-muted mt-3 fs-6">
+            Our vision is to ease traffic congestion, reduce pollution, and provide modern urban mobility to citizens.
+            Stay connected with us for updates and station-wise progress!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+    </section>
+
+  <!-- Footer Section -->
+    <footer class="text-center text-white py-4" style="background-color: #1E40AF;">
+      <div class="container">
+        <p class="mb-0">© 2025 Patna Metro Rail Corporation. All rights reserved.</p>
+        <small>Contact: info@patnametro.in</small>
+      </div>
+      <a href="admin/admin-login.html" style="font-size: 13px; color: rgba(255, 255, 255, 0.5); text-decoration: none;">
+      Admin Login
+      </a>
+
+    </footer>
+
+    
+
+</main>
+
+<!-- Bootstrap & other dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+
+
+
+<!-- ========== My Tickets Modal ========== -->
+<div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content shadow-sm rounded-4">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="ticketModalLabel">🎫 My Booked Tickets</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="userTicketsContent" class="text-center text-muted">
+          <p>Loading your tickets...</p>
+          <!-- This will be filled by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Logout Confirmation Modal ========== -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-sm rounded-4">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-3">Are you sure you want to log out?</p>
+        <button class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" onclick="logout()">Yes, Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Confirmation Modal -->
+<div class="modal fade" id="bookingConfirmationModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content shadow rounded-4">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title fw-bold" id="bookingModalLabel">🎉 Booking Confirmed</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body text-center p-4">
+        <p class="lead">Your ticket has been successfully booked!</p>
+
+        <div class="row justify-content-center align-items-center mt-4">
+          <div class="col-md-6 mb-3 mb-md-0">
+            <canvas id="qrCanvas" class="img-fluid border border-2 rounded p-2"></canvas>
+          </div>
+          <div class="col-md-6 text-start">
+            <p><strong>From:</strong> <span id="confirmFrom" class="text-primary fw-semibold"></span></p>
+            <p><strong>To:</strong> <span id="confirmTo" class="text-primary fw-semibold"></span></p>
+            <p><strong>Fare:</strong> ₹<span id="confirmFare" class="text-success fw-bold"></span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer justify-content-between px-4 pb-4">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Done</button>
+        <button type="button" class="btn btn-primary" onclick="goToMyTickets()">My Tickets</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
