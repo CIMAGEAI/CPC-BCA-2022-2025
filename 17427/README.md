@@ -3,7 +3,7 @@
 </div></br>
 
 <div align="center"> 
-<a href="https://antriview.systems/" target="_blank"><img src="./public/antriviewtext.png" width="350px" style="filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));" /></a><br><br>
+<a href="https://antriview.systems/" target="_blank"><img src="./public/antriviewtext.png" width="350px" style="filter: drop-shadow(6px 6px 6px rgba(0,0,0,0.5));" /></a><br><br>
 <img src="./public/thisisantriview.png" width="750px" /><br>
 <h1 align="center"><a href="https://antriview.systems/"><strong>✦ antriview.systems ✦</strong></a></h1>
 
