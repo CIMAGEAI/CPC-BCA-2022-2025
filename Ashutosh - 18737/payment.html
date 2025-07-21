@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ridewave Bike Store - Payment</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f2f5;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 500px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      div h2 {
+        text-align: center;
+        color: #2c3e50;
+      }
+
+      div h1 {
+        color: green;
+      }
+
+      label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 12px;
+        background: orange;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background: white;
+        color: orange;
+        border: 1px solid orange;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="heading">
+        <h2>Ridewave Bike Store</h2>
+        <h1 id="price-of-bike"></h1>
+      </div>
+      <form action="#" method="POST">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required />
+
+        <!-- <label for="payment-method">Payment Method</label>
+        <select id="payment-method" name="payment-method" required>
+          <option value="">--Select--</option>
+          <option value="card">Credit/Debit Card</option>
+          <option value="upi">UPI</option>
+          <option value="netbanking">Net Banking</option>
+          <option value="wallet">Wallet</option>
+        </select> -->
+
+        <!-- <label for="card-number">Card Number / UPI ID</label>
+        <input type="text" id="card-number" name="card-number" required />
+
+        <label for="expiry">Expiry Date (MM/YY)</label>
+        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" />
+
+        <label for="cvv">CVV</label>
+        <input type="password" id="cvv" name="cvv" /> -->
+
+        <button type="submit">Pay Now</button>
+      </form>
+    </div>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const price = params.get('price');
+        if (price) {
+          const priceElement = document.getElementById('price-of-bike');
+          priceElement.textContent = `Rs.${price}`;
+        }
+        const paymentForm = document.querySelector('form');
+        paymentForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          // Map prices to URLs
+          const paymentLinks = {
+            "1799": "https://razorpay.me/@xyberweb?amount=N3FC4r7uD3DNAg9EH0MDNw%3D%3D",
+            "1999": "https://razorpay.me/@xyberweb?amount=UQXm6JwtQ1bplHyCJN9ubQ%3D%3D",
+            "850": "https://razorpay.me/@xyberweb?amount=vy%2F7jJNxh9pvHsb2%2Bqs52w%3D%3D",
+            "999": "https://razorpay.me/@xyberweb?amount=hs5%2BhsUaIlsmW%2BfZKlAvnw%3D%3D",
+            "1299": "https://razorpay.me/@xyberweb?amount=N6UC2nLxOlAFTrRn0HmYgw%3D%3D",
+            "799": "https://razorpay.me/@xyberweb?amount=ouka7pPo%2Fz198lsjyH%2BoeQ%3D%3D",
+            "899": "https://razorpay.me/@xyberweb?amount=NIt3xHCNPNi%2BgrwecRISoA%3D%3D",
+            "699": "https://razorpay.me/@xyberweb?amount=sIVBxHOzXntdIH1q7%2FFnVA%3D%3D",
+            "599": "https://razorpay.me/@xyberweb?amount=QmsUqSRscbBFbActEhLNwg%3D%3D"
+          };
+
+          const redirectUrl = paymentLinks[price];
+
+          if (redirectUrl) {
+            // window.location.href = redirectUrl;
+            window.open(redirectUrl, '_blank');
+          } else {
+            alert("Payment link not available for this price.");
+          }
+        });
+      });
+    </script>
+
+  </body>
+
+  </html>
