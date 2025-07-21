@@ -1,0 +1,474 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Advanced Search - Crime Reports{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    .search-filters {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .filter-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    .map-container {
+        height: 300px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .export-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .btn-export {
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: none;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .btn-export.csv {
+        background: #28a745;
+        color: white;
+    }
+    .btn-export.excel {
+        background: #17a2b8;
+        color: white;
+    }
+    .btn-export:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .results-stats {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .location-filter {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    .radius-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .radius-slider {
+        flex: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card" style="margin: 100px">
+                <div class="card-header">
+                    <h3 class="mb-0 advanced-title">
+                        <i class="fas fa-search me-2"></i>Advanced Search
+                    </h3>
+                </div>
+                <div class="card-body" style="background: #c4b289;" >
+                    
+                    <!-- Search Filters -->
+                    <div class="search-filters">
+                        <form method="get" id="searchForm">
+                            <!-- Basic Search -->
+                            <div class="filter-row">
+                                <div>
+                                    <label for="search" class="form-label">Search Query</label>
+                                    <input type="text" class="form-control" id="search" name="search" 
+                                           value="{{ current_filters.search }}" placeholder="Search case number, description, location...">
+                                </div>
+                                <div>
+                                    <label for="category" class="form-label">Category</label>
+                                    <select class="form-control" id="category" name="category">
+                                        <option value="">All Categories</option>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}" {% if current_filters.category == category.id|stringformat:"s" %}selected{% endif %}>
+                                                {{ category.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="">All Status</option>
+                                        {% for status_code, status_name in status_choices %}
+                                            <option value="{{ status_code }}" {% if current_filters.status == status_code %}selected{% endif %}>
+                                                {{ status_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="priority" class="form-label">Priority</label>
+                                    <select class="form-control" id="priority" name="priority">
+                                        <option value="">All Priorities</option>
+                                        {% for priority_code, priority_name in priority_choices %}
+                                            <option value="{{ priority_code }}" {% if current_filters.priority == priority_code %}selected{% endif %}>
+                                                {{ priority_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Date Range -->
+                            <div class="filter-row">
+                                <div>
+                                    <label for="date_from" class="form-label">Date From</label>
+                                    <input type="date" class="form-control" id="date_from" name="date_from" 
+                                           value="{{ current_filters.date_from|default:'' }}">
+                                </div>
+                                <div>
+                                    <label for="date_to" class="form-label">Date To</label>
+                                    <input type="date" class="form-control" id="date_to" name="date_to" 
+                                           value="{{ current_filters.date_to|default:'' }}">
+                                </div>
+                                <div>
+                                    <label for="sort" class="form-label">Sort By</label>
+                                    <select class="form-control" id="sort" name="sort">
+                                        <option value="-created_at" {% if current_filters.sort == '-created_at' %}selected{% endif %}>Newest First</option>
+                                        <option value="created_at" {% if current_filters.sort == 'created_at' %}selected{% endif %}>Oldest First</option>
+                                        <option value="-incident_date" {% if current_filters.sort == '-incident_date' %}selected{% endif %}>Incident Date (Newest)</option>
+                                        <option value="incident_date" {% if current_filters.sort == 'incident_date' %}selected{% endif %}>Incident Date (Oldest)</option>
+                                        <option value="case_number" {% if current_filters.sort == 'case_number' %}selected{% endif %}>Case Number (A-Z)</option>
+                                        <option value="-case_number" {% if current_filters.sort == '-case_number' %}selected{% endif %}>Case Number (Z-A)</option>
+                                        <option value="priority" {% if current_filters.sort == 'priority' %}selected{% endif %}>Priority</option>
+                                        <option value="status" {% if current_filters.sort == 'status' %}selected{% endif %}>Status</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Location Filter -->
+                            <div class="location-filter" style="background: antiquewhite;">
+                                <h6><i class="fas fa-map-marker-alt me-2"></i>Location Filter</h6>
+                                <div class="filter-row">
+                                    <div>
+                                        <label for="latitude" class="form-label">Latitude</label>
+                                        <input type="number" step="any" class="form-control" id="latitude" name="latitude" 
+                                               value="{{ current_filters.latitude|default:'' }}" placeholder="e.g., 20.5937">
+                                    </div>
+                                    <div>
+                                        <label for="longitude" class="form-label">Longitude</label>
+                                        <input type="number" step="any" class="form-control" id="longitude" name="longitude" 
+                                               value="{{ current_filters.longitude|default:'' }}" placeholder="e.g., 78.9629">
+                                    </div>
+                                    <div>
+                                        <label for="radius" class="form-label">Radius (km)</label>
+                                        <div class="radius-control">
+                                            <input type="range" class="form-range radius-slider" id="radius" name="radius" 
+                                                   min="1" max="50" value="{{ current_filters.radius|default:10 }}">
+                                            <span id="radiusValue">{{ current_filters.radius|default:10 }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="map" class="map-container"></div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="getCurrentLocation()">
+                                        <i class="fas fa-location-arrow me-1"></i>Use My Location
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="clearLocation()">
+                                        <i class="fas fa-times me-1"></i>Clear Location
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                    <a href="{% url 'advanced_search' %}" class="btn btn-outline-secondary ms-2">
+                                        <i class="fas fa-times me-2"></i>Clear All
+                                    </a>
+                                </div>
+                                
+                                <!-- Export Buttons -->
+                                {% if user.role in 'admin,officer,supervisor' %}
+                                <div class="export-buttons">
+                                    <a href="{% url 'export_reports_csv' %}?{{ request.GET.urlencode }}" class="btn-export csv">
+                                        <i class="fas fa-file-csv me-1"></i>Export CSV
+                                    </a>
+                                    <a href="{% url 'export_reports_excel' %}?{{ request.GET.urlencode }}" class="btn-export excel">
+                                        <i class="fas fa-file-excel me-1"></i>Export Excel
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Results Statistics -->
+                    {% if page_obj %}
+                    <div class="results-stats">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6>Total Results</h6>
+                                <h4>{{ page_obj.paginator.count }}</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Current Page</h6>
+                                <h4>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Results Per Page</h6>
+                                <h4>{{ page_obj.paginator.per_page }}</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Active Filters</h6>
+                                <h4>{{ current_filters|length }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Search Results -->
+                    {% if page_obj %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Case Number</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Priority</th>
+                                        <th>Incident Date</th>
+                                        <th>Location</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for report in page_obj %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ report.case_number }}</strong>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">{{ report.category.name }}</span>
+                                        </td>
+                                        <td>
+                                            {% if report.status == 'resolved' %}
+                                                <span class="badge bg-success">{{ report.get_status_display }}</span>
+                                            {% elif report.status == 'submitted' %}
+                                                <span class="badge bg-warning">{{ report.get_status_display }}</span>
+                                            {% elif report.status == 'investigating' %}
+                                                <span class="badge bg-primary">{{ report.get_status_display }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ report.get_status_display }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if report.priority == 'urgent' %}
+                                                <span class="badge bg-danger">{{ report.get_priority_display }}</span>
+                                            {% elif report.priority == 'high' %}
+                                                <span class="badge bg-warning">{{ report.get_priority_display }}</span>
+                                            {% elif report.priority == 'medium' %}
+                                                <span class="badge bg-info">{{ report.get_priority_display }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ report.get_priority_display }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ report.incident_date|date:"M d, Y H:i" }}</td>
+                                        <td>
+                                            <small>{{ report.incident_location|truncatechars:50 }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{% url 'report_detail' report.id %}" class="btn btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                {% if user.role in 'admin,officer,supervisor' %}
+                                                <a href="{% url 'export_report_pdf' report.id %}" class="btn btn-outline-success">
+                                                    <i class="fas fa-file-pdf"></i>
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        {% if page_obj.has_other_pages %}
+                        <nav aria-label="Search results pagination">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{{ request.GET.urlencode }}&page=1">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ page_obj.previous_page_number }}">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ page_obj.next_page_number }}">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ page_obj.paginator.num_pages }}">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <h4 class="text-muted">No reports found</h4>
+                            <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let map;
+let marker;
+let isMapInitialized = false;
+
+function initMap() {
+    if (isMapInitialized) return;
+    
+    // Initialize map
+    map = L.map('map').setView([20.5937, 78.9629], 5);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    // Add click event to map
+    map.on('click', function(e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+        
+        updateLocationMarker(lat, lng);
+        updateLocationInputs(lat, lng);
+    });
+    
+    // Initialize with existing coordinates if available
+    const lat = document.getElementById('latitude').value;
+    const lng = document.getElementById('longitude').value;
+    if (lat && lng) {
+        updateLocationMarker(parseFloat(lat), parseFloat(lng));
+        map.setView([parseFloat(lat), parseFloat(lng)], 12);
+    }
+    
+    isMapInitialized = true;
+}
+
+function updateLocationMarker(lat, lng) {
+    if (marker) {
+        map.removeLayer(marker);
+    }
+    marker = L.marker([lat, lng]).addTo(map);
+    map.setView([lat, lng], 12);
+}
+
+function updateLocationInputs(lat, lng) {
+    document.getElementById('latitude').value = lat.toFixed(6);
+    document.getElementById('longitude').value = lng.toFixed(6);
+}
+
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                
+                updateLocationMarker(lat, lng);
+                updateLocationInputs(lat, lng);
+            },
+            function(error) {
+                alert('Unable to get your location. Please select location manually on the map.');
+            }
+        );
+    } else {
+        alert('Geolocation is not supported by this browser.');
+    }
+}
+
+function clearLocation() {
+    if (marker) {
+        map.removeLayer(marker);
+        marker = null;
+    }
+    document.getElementById('latitude').value = '';
+    document.getElementById('longitude').value = '';
+}
+
+// Initialize map when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initMap();
+    
+    // Update radius value display
+    const radiusSlider = document.getElementById('radius');
+    const radiusValue = document.getElementById('radiusValue');
+    
+    radiusSlider.addEventListener('input', function() {
+        radiusValue.textContent = this.value;
+    });
+    
+    // Auto-submit form when filters change (optional)
+    const autoSubmitFilters = ['category', 'status', 'priority', 'sort'];
+    autoSubmitFilters.forEach(filterId => {
+        const element = document.getElementById(filterId);
+        if (element) {
+            element.addEventListener('change', function() {
+                document.getElementById('searchForm').submit();
+            });
+        }
+    });
+});
+</script>
+{% endblock %} 

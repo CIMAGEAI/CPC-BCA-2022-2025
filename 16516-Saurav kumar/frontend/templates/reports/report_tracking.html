@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Track Case #{{ report.case_number }} | Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-search me-2"></i>Case Tracking
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <h5>Case #{{ report.case_number }}</h5>
+                    <span class="status-badge status-{{ report.status }}">
+                        {{ report.get_status_display }}
+                    </span>
+                </div>
+
+                <!-- Basic Information -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <strong>Category:</strong> {{ report.category.name }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Submitted:</strong> {{ report.created_at|date:"F d, Y" }}
+                    </div>
+                </div>
+
+                <!-- Status Timeline -->
+                <div class="mb-4">
+                    <h6><i class="fas fa-history me-2"></i>Status Updates</h6>
+                    {% if status_history %}
+                        <div class="timeline">
+                            {% for status in status_history %}
+                                <div class="timeline-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">{{ status.get_status_display }}</h6>
+                                                {% if status.notes %}
+                                                    <p class="mb-1">{{ status.notes }}</p>
+                                                {% endif %}
+                                                <small class="text-muted">
+                                                    Updated by {{ status.changed_by.first_name }} {{ status.changed_by.last_name }}
+                                                </small>
+                                            </div>
+                                            <small class="text-muted">{{ status.changed_at|date:"M d, Y g:i A" }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No status updates available.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Estimated Timeline -->
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-clock me-2"></i>Estimated Timeline</h6>
+                    <p class="mb-0">
+                        Based on the current status, this case is being processed according to standard procedures. 
+                        You will be notified of any significant updates.
+                    </p>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-phone me-2"></i>Need Help?</h6>
+                    <p class="mb-0">
+                        If you have additional information or questions about this case, 
+                        please contact the law enforcement department directly.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tracking Form -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-search me-2"></i>Track Another Case</h5>
+            </div>
+            <div class="card-body">
+                <form method="get" action="{% url 'report_tracking' 'PLACEHOLDER' %}" id="tracking-form">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="text" name="case_number" class="form-control" 
+                                   placeholder="Enter case number (e.g., CR2024000001)" required>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-1"></i>Track Case
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Timeline CSS -->
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -35px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--info-color);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--info-color);
+}
+
+.timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 17px;
+    width: 2px;
+    height: calc(100% + 10px);
+    background-color: #dee2e6;
+}
+</style>
+
+<script>
+// Handle tracking form submission
+document.getElementById('tracking-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const caseNumber = this.querySelector('input[name="case_number"]').value.trim();
+    if (caseNumber) {
+        const url = this.action.replace('PLACEHOLDER', caseNumber);
+        window.location.href = url;
+    }
+});
+</script>
+{% endblock %} 

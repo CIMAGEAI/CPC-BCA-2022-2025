@@ -1,0 +1,653 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Submit Crime Report{% endblock %}
+
+{% block extra_css %}
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" integrity="sha512-0sWvzJtbO1Jjq8P9Dsq9utuT6WMJjz70sDk/7BV02aoN+3c0o5a7zTfD7cZZXzQGqmBRQoswQ068yfb4zAvWjw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    #map {
+        height: 300px;
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 2px solid #e9ecef;
+    }
+    .map-container {
+        margin-bottom: 20px;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+    }
+    .map-controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+    .btn-map {
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: none;
+        background: var(--primary-color);
+        color: white;
+        cursor: pointer;
+        font-size: 0.9rem;
+        flex: 1;
+        min-width: 120px;
+    }
+    .btn-map:hover {
+        background: #1e40af;
+    }
+    .search-container {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #dee2e6;
+    }
+    .map-container .card {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border: 1px solid #e9ecef;
+    }
+    .map-container .card-title {
+        color: #495057;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    .map-container .btn {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+    .location-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    .map-container {
+        margin-bottom: 20px;
+    }
+    .map-controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .btn-map {
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: none;
+        background: var(--primary-color);
+        color: white;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    .btn-map:hover {
+        background: #1e40af;
+    }
+    /* Add white background for required fields */
+    #id_category,
+    #id_priority,
+    #id_incident_date,
+    input[name="incident_date"],
+    input#id_incident_date,
+    .form-control[type="datetime-local"] {
+        background: #fff !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Submit Crime Report
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" id="crimeReportForm">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="id_reporter_name" class="form-label"><i class="fas fa-user me-1"></i>Victim/Complainant Name (पीड़ित/शिकायतकर्ता का नाम)</label>
+                            {{ report_form.reporter_name }}
+                            {% if report_form.reporter_name.errors %}
+                                <div class="text-danger">{{ report_form.reporter_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_reporter_email" class="form-label"><i class="fas fa-envelope me-1"></i>Email (ईमेल)</label>
+                            {{ report_form.reporter_email }}
+                            {% if report_form.reporter_email.errors %}
+                                <div class="text-danger">{{ report_form.reporter_email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_reporter_phone" class="form-label"><i class="fas fa-phone me-1"></i>Phone (फोन नंबर)</label>
+                            {{ report_form.reporter_phone }}
+                            {% if report_form.reporter_phone.errors %}
+                                <div class="text-danger">{{ report_form.reporter_phone.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_category" class="form-label"><i class="fas fa-flag me-1"></i>Case Type *</label>
+                            {{ report_form.category }}
+                            {% if report_form.category.errors %}
+                                <div class="text-danger">{{ report_form.category.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_priority" class="form-label"><i class="fas fa-exclamation-circle me-1"></i>Case Priority Level *</label>
+                            {{ report_form.priority }}
+                            {% if report_form.priority.errors %}
+                                <div class="text-danger">{{ report_form.priority.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="id_station" class="form-label"><i class="fas fa-building me-1"></i>Station *</label>
+                            {{ report_form.station }}
+                            {% if report_form.station.errors %}
+                                <div class="text-danger">{{ report_form.station.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="map-container">
+                            <h5><i class="fas fa-map-marker-alt me-2"></i>Incident Location</h5>
+                            
+                            <!-- Location Search Section -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title"><i class="fas fa-search me-2"></i>Search Location</h6>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <input type="text" id="locationSearch" class="form-control" 
+                                                   placeholder="Search location (e.g., Delhi, Mumbai, Bangalore)">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-primary w-100" onclick="searchLocation()">
+                                                <i class="fas fa-search me-1"></i>Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Map Controls Section -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title"><i class="fas fa-cogs me-2"></i>Map Controls</h6>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <button type="button" class="btn btn-success w-100" onclick="getCurrentLocation()">
+                                                <i class="fas fa-location-arrow me-1"></i>Use My Location
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <button type="button" class="btn btn-warning w-100" onclick="clearMap()">
+                                                <i class="fas fa-times me-1"></i>Clear Map
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <button type="button" class="btn btn-info w-100" onclick="setDefaultLocation()">
+                                                <i class="fas fa-map-marker-alt me-1"></i>Set Default
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Map Display Section -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title"><i class="fas fa-map me-2"></i>Interactive Map</h6>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Instructions:</strong> Click on the map to select location, or use the search/controls above.
+                                    </div>
+                                    <div id="map">
+                                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px;">
+                                            <div style="text-align: center; color: #6c757d;">
+                                                <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
+                                                <p>Loading map...</p>
+                                                <small>Please wait while the map loads</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="location-inputs">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="id_latitude" class="form-label">Latitude</label>
+                                    {{ report_form.latitude }}
+                                    {% if report_form.latitude.errors %}
+                                        <div class="text-danger">{{ report_form.latitude.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Will be auto-filled when you select location on map</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_longitude" class="form-label">Longitude</label>
+                                    {{ report_form.longitude }}
+                                    {% if report_form.longitude.errors %}
+                                        <div class="text-danger">{{ report_form.longitude.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Will be auto-filled when you select location on map</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_incident_date" class="form-label">
+                                <i class="fas fa-calendar me-1"></i>Incident Date & Time *
+                            </label>
+                            {{ report_form.incident_date }}
+                            {% if report_form.incident_date.errors %}
+                                <div class="text-danger">{{ report_form.incident_date.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_incident_location" class="form-label">
+                                <i class="fas fa-map-marker-alt me-1"></i>Incident Location *
+                            </label>
+                            {{ report_form.incident_location }}
+                            <small class="text-muted">If address is not auto-filled, please enter it manually.</small>
+                            {% if report_form.incident_location.errors %}
+                                <div class="text-danger">{{ report_form.incident_location.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_description" class="form-label">
+                                <i class="fas fa-file-alt me-1"></i>Main Complaint / FIR Details (मुख्य शिकायत)
+                            </label>
+                            {{ report_form.description }}
+                            {% if report_form.description.errors %}
+                                <div class="text-danger">{{ report_form.description.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_additional_details" class="form-label">
+                                <i class="fas fa-plus-circle me-1"></i>Additional Details
+                            </label>
+                            {{ report_form.additional_details }}
+                            {% if report_form.additional_details.errors %}
+                                <div class="text-danger">{{ report_form.additional_details.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <!-- Evidence Upload -->
+                        <div class="form-group">
+                            <label for="id_file" class="form-label">
+                                <i class="fas fa-paperclip me-1"></i>Upload Evidence (Optional)
+                            </label>
+                            {{ evidence_form.file }}
+                            {% if evidence_form.file.errors %}
+                                <div class="text-danger">{{ evidence_form.file.errors }}</div>
+                            {% endif %}
+                            <small class="text-muted">Supported formats: Images, Videos, Documents (Max 10MB)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_file_type" class="form-label">
+                                <i class="fas fa-file me-1"></i>Evidence File Type
+                            </label>
+                            {{ evidence_form.file_type }}
+                            {% if evidence_form.file_type.errors %}
+                                <div class="text-danger">{{ evidence_form.file_type.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_evidence_description" class="form-label">
+                                <i class="fas fa-comment me-1"></i>Evidence Description
+                            </label>
+                            {{ evidence_form.description }}
+                            {% if evidence_form.description.errors %}
+                                <div class="text-danger">{{ evidence_form.description.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <!-- Privacy Options -->
+                        <div class="form-check mb-3">
+                            {{ report_form.is_anonymous }}
+                            <label class="form-check-label" for="id_is_anonymous">
+                                Submit anonymously
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            {{ report_form.is_sensitive }}
+                            <label class="form-check-label" for="id_is_sensitive">
+                                Mark as sensitive case
+                            </label>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Leaflet Map Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" integrity="sha512-7cAptPP2SzqYnxG1QgX64t6Q8jix1CDXpPQ5lqIZ3UpWZLl9WknMR2Pbr7jIy8QAbqqP1U0DTH2rb31mZ41WpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+let map;
+let marker;
+let isMapInitialized = false;
+
+function initMap() {
+    try {
+        if (isMapInitialized) return;
+        
+        // Check if Leaflet is loaded
+        if (typeof L === 'undefined') {
+            console.error('Leaflet library not loaded, attempting to load...');
+            
+            // Try multiple CDN sources
+            const cdnSources = [
+                'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js',
+                'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+                'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'
+            ];
+            
+            let currentIndex = 0;
+            
+            function tryLoadScript() {
+                if (currentIndex >= cdnSources.length) {
+                    console.error('All CDN sources failed');
+                    showMapError('Map library failed to load from all sources. Please check your internet connection.');
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = cdnSources[currentIndex];
+                script.onload = function() {
+                    console.log('Leaflet loaded from:', cdnSources[currentIndex]);
+                    setTimeout(() => initMap(), 100);
+                };
+                script.onerror = function() {
+                    console.error('Failed to load from:', cdnSources[currentIndex]);
+                    currentIndex++;
+                    tryLoadScript();
+                };
+                document.head.appendChild(script);
+            }
+            
+            tryLoadScript();
+            return;
+        }
+        
+        // Clear loading message
+        const mapContainer = document.getElementById('map');
+        mapContainer.innerHTML = '';
+        
+        // Initialize map
+        map = L.map('map').setView([20.5937, 78.9629], 5);
+        
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Add click event
+        map.on('click', function(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+            if (marker) { map.removeLayer(marker); }
+            marker = L.marker([lat, lng]).addTo(map);
+            document.getElementById('id_latitude').value = lat.toFixed(6);
+            document.getElementById('id_longitude').value = lng.toFixed(6);
+            reverseGeocode(lat, lng);
+            console.log('Map clicked:', lat, lng);
+        });
+        
+        isMapInitialized = true;
+        console.log('Map initialized successfully');
+        
+    } catch (err) {
+        console.error('Map initialization error:', err);
+        showMapError('Map failed to load: ' + err.message);
+    }
+}
+
+function showMapError(message) {
+    const mapContainer = document.getElementById('map');
+    mapContainer.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f8d7da; border: 2px dashed #dc3545; border-radius: 8px;">
+            <div style="text-align: center; color: #721c24;">
+                <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                <h6>Map Error</h6>
+                <p>${message}</p>
+                <div style="margin-top: 10px;">
+                    <button onclick="initMap()" class="btn btn-sm btn-danger me-2">
+                        <i class="fas fa-sync-alt me-1"></i>Retry Map
+                    </button>
+                    <button onclick="useSimpleLocation()" class="btn btn-sm btn-warning">
+                        <i class="fas fa-map-marker-alt me-1"></i>Use Simple Location
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function useSimpleLocation() {
+    const mapContainer = document.getElementById('map');
+    mapContainer.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #e7f3ff; border: 2px dashed #007bff; border-radius: 8px;">
+            <div style="text-align: center; color: #0056b3;">
+                <i class="fas fa-map-marker-alt fa-2x mb-2"></i>
+                <h6>Simple Location Mode</h6>
+                <p>Map is not available. Please enter your location manually.</p>
+                <div style="margin-top: 10px;">
+                    <button onclick="setDefaultLocation()" class="btn btn-sm btn-primary">
+                        <i class="fas fa-map-marker-alt me-1"></i>Set Default Location
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Set default coordinates
+    document.getElementById('id_latitude').value = '20.5937';
+    document.getElementById('id_longitude').value = '78.9629';
+    if(document.getElementById('id_incident_location')){
+        document.getElementById('id_incident_location').value = 'India (Default Location)';
+    }
+}
+
+function searchLocation() {
+    const searchInput = document.getElementById('locationSearch');
+    const query = searchInput.value.trim();
+    
+    if (!query) {
+        alert('Please enter a location to search.');
+        return;
+    }
+    
+    // Show loading
+    searchInput.disabled = true;
+    const searchBtn = searchInput.nextElementSibling;
+    const originalText = searchBtn.innerHTML;
+    searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Searching...';
+    searchBtn.disabled = true;
+    
+    // Use OpenStreetMap Nominatim API for geocoding
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1&countrycodes=in`;
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                const location = data[0];
+                const lat = parseFloat(location.lat);
+                const lng = parseFloat(location.lon);
+                const address = location.display_name;
+                
+                // Update form fields
+                document.getElementById('id_latitude').value = lat.toFixed(6);
+                document.getElementById('id_longitude').value = lng.toFixed(6);
+                if(document.getElementById('id_incident_location')){
+                    document.getElementById('id_incident_location').value = address;
+                }
+                
+                // Update map if available
+                if (map && typeof L !== 'undefined') {
+                    map.setView([lat, lng], 12);
+                    if (marker) { map.removeLayer(marker); }
+                    marker = L.marker([lat, lng]).addTo(map);
+                }
+                
+                console.log('Location found:', lat, lng, address);
+                alert(`Location found: ${address}\nCoordinates: ${lat}, ${lng}`);
+                
+            } else {
+                alert('Location not found. Please try a different search term.');
+                console.log('No location found for:', query);
+            }
+        })
+        .catch(error => {
+            console.error('Search error:', error);
+            alert('Search failed. Please try again or enter location manually.');
+        })
+        .finally(() => {
+            // Reset search button
+            searchInput.disabled = false;
+            searchBtn.innerHTML = originalText;
+            searchBtn.disabled = false;
+        });
+}
+
+// Add enter key support for search
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('locationSearch');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchLocation();
+            }
+        });
+    }
+});
+function getCurrentLocation() {
+    console.log('getCurrentLocation called');
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                map.setView([lat, lng], 15);
+                if (marker) { map.removeLayer(marker); }
+                marker = L.marker([lat, lng]).addTo(map);
+                document.getElementById('id_latitude').value = lat.toFixed(6);
+                document.getElementById('id_longitude').value = lng.toFixed(6);
+                reverseGeocode(lat, lng);
+                alert('Location found: ' + lat + ', ' + lng);
+                console.log('Location found:', lat, lng);
+            },
+            function(error) {
+                alert('Unable to get your location. Please select location manually on the map. Error: ' + error.message);
+                console.error('Geolocation error:', error);
+            }
+        );
+    } else {
+        alert('Geolocation is not supported by this browser.');
+        console.error('Geolocation not supported');
+    }
+}
+function clearMap() {
+    if (marker) { map.removeLayer(marker); marker = null; }
+    document.getElementById('id_latitude').value = '';
+    document.getElementById('id_longitude').value = '';
+    if(document.getElementById('id_incident_location')){
+        document.getElementById('id_incident_location').value = '';
+    }
+    console.log('Map cleared');
+}
+
+function setDefaultLocation() {
+    // Set default coordinates for India
+    const defaultLat = 20.5937;
+    const defaultLng = 78.9629;
+    
+    document.getElementById('id_latitude').value = defaultLat.toFixed(6);
+    document.getElementById('id_longitude').value = defaultLng.toFixed(6);
+    
+    // Add marker on map
+    if (marker) { map.removeLayer(marker); }
+    marker = L.marker([defaultLat, defaultLng]).addTo(map);
+    map.setView([defaultLat, defaultLng], 5);
+    
+    // Set default location text
+    if(document.getElementById('id_incident_location')){
+        document.getElementById('id_incident_location').value = 'India (Default Location)';
+    }
+    
+    console.log('Default location set');
+    alert('Default location set to India. You can modify the address manually.');
+}
+function reverseGeocode(lat, lng) {
+    fetch(`/reports/reverse-geocode/?lat=${lat}&lng=${lng}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.address) {
+                if(document.getElementById('id_incident_location')){
+                    document.getElementById('id_incident_location').value = data.address;
+                }
+                console.log('Reverse geocode:', data.address);
+            } else {
+                alert('Address auto-fill nahi ho paaya, kripya address manually daalein.');
+            }
+        })
+        .catch(error => { 
+            console.log('Error getting address:', error); 
+            alert('Address auto-fill nahi ho paaya, kripya address manually daalein.\nError: ' + error);
+        });
+}
+document.addEventListener('DOMContentLoaded', function() {
+    // Add enter key support for search
+    const searchInput = document.getElementById('locationSearch');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchLocation();
+            }
+        });
+    }
+    
+    // Initialize map with a small delay to ensure everything is loaded
+    setTimeout(() => {
+        initMap();
+    }, 500);
+    document.getElementById('crimeReportForm').addEventListener('submit', function(e) {
+        const lat = document.getElementById('id_latitude').value;
+        const lng = document.getElementById('id_longitude').value;
+        const location = document.getElementById('id_incident_location').value;
+        
+        // Check if location is provided (either coordinates or address)
+        if (!lat && !lng && !location) {
+            e.preventDefault();
+            alert('Please either select a location on the map OR enter the incident location manually.');
+            return false;
+        }
+        
+        // If coordinates are missing but location is provided, set default coordinates
+        if ((!lat || !lng) && location) {
+            // Set default coordinates for India if not provided
+            if (!lat) document.getElementById('id_latitude').value = '20.5937';
+            if (!lng) document.getElementById('id_longitude').value = '78.9629';
+        }
+        
+        // If coordinates are provided but location is missing, try to get address
+        if ((lat && lng) && !location) {
+            reverseGeocode(parseFloat(lat), parseFloat(lng));
+        }
+    });
+    console.log('DOMContentLoaded, map should be initialized');
+});
+</script>
+{% endblock %} 

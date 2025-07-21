@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+*.egg
+*.log
+*.pot
+*.mo
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+media/
+staticfiles/
+.env
+.env.*
+local_settings.py
+settings_local.py
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Test/coverage
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+
+# Misc
+*.bak
+*.swp
+*.tmp
+
+# Build
+build/
+dist/
+
+# Frontend
+frontend/static/js/bundle.js
+frontend/static/js/bundle.js.map
+frontend/static/css/*.css.map
+
+# Backup
+*~
+
+# Ignore database
+backend/db.sqlite3
+db.sqlite3 
