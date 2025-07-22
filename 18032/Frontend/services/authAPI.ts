@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 async function getOTP(phoneNumber:string){
-    const result=await axios.post('https://bd7t5d9s-5000.inc1.devtunnels.ms/user/sendOTP',{
+    const result=await axios.post('http://your-backend-url/user/sendOTP',{
         phoneNumber:`+91${phoneNumber}`
     });
 }
 
 async function verifyOTP(phoneNumber:string,otp:string) {
-    const result=await axios.post('https://bd7t5d9s-5000.inc1.devtunnels.ms/user/verifyOTP',{
+    const result=await axios.post('http://your-backend-url/user/verifyOTP',{
         phoneNumber:`+91${phoneNumber}`,
         otp
     })
@@ -16,7 +16,7 @@ async function verifyOTP(phoneNumber:string,otp:string) {
 }
 
 async function login(phoneNumber: string, otp: string) {
-    const result = await axios.post('https://bd7t5d9s-5000.inc1.devtunnels.ms/user/login', {
+    const result = await axios.post('http://your-backend-url/user/login', {
         phoneNumber: `+91${phoneNumber}`,
         otp
     });
@@ -31,7 +31,7 @@ async function login(phoneNumber: string, otp: string) {
 }
 
 async function logout(sessionId:string){
-    const res=await axios.post('https://bd7t5d9s-5000.inc1.devtunnels.ms/user/logout',{sessionId});
+    const res=await axios.post('http://your-backend-url/user/logout',{sessionId});
     if(res.status===200){
         return res.data;
     }
@@ -39,7 +39,7 @@ async function logout(sessionId:string){
 }
 
 async function signUp(data: any) {
-    const result = await axios.post('https://bd7t5d9s-5000.inc1.devtunnels.ms/user/signUp', data);
+    const result = await axios.post('http://your-backend-url/user/signUp', data);
     return {
         status: result.status,
         message: result.data.message,
