@@ -1,0 +1,100 @@
+.product-section {
+    background-color: #f9f9f9;
+    padding: 4rem 2rem;
+    max-width: 100%;
+}
+
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.product-header h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.product-header span {
+    color: #222;
+}
+
+.nav-buttons button {
+    background: transparent;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    font-size: 1rem;
+    font-weight: 800;
+    color: rgb(242, 105, 55);
+    width: 46px;
+    height: 46px;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.product-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    scroll-behavior: smooth;
+    padding-bottom: 1rem;
+}
+
+.product-section-card {
+    min-width: 260px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    padding: 1rem;
+}
+.product-section-card a{
+    text-decoration: none;
+}
+
+.product-section-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-section-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.product-section-card h3 {
+    font-size: 1rem;
+    margin: 0.8rem 0 0.5rem;
+    color: #222;
+}
+
+.product-section-card .price {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+}
+
+.product-section-card .price span {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #000;
+}
+
+.see-more {
+    background: transparent;
+    color: #e76f51;
+    border: 1px solid #e76f51;
+    padding: 0.4rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.see-more:hover {
+    background: #e76f51;
+    color: white;
+}
