@@ -5,7 +5,7 @@ export async function getMerchantTransactionHistory(
 ) {
   try {
     const response = await axios.get(
-      'https://bd7t5d9s-5000.inc1.devtunnels.ms/merchant/getMerchantTransactionHistoryOfUser',
+      'http://your-backend-url/merchant/getMerchantTransactionHistoryOfUser',
       {
         params: { upa },
         headers: { Authorization: `Bearer ${jwt}` },
@@ -44,7 +44,7 @@ export async function makeMerchantPayment(
 ) {
   try {
     const response = await axios.post(
-      'https://bd7t5d9s-5000.inc1.devtunnels.ms/merchant/makeMerchantPayment',
+      'http://your-backend-url/merchant/makeMerchantPayment',
       {
         amount,
         customerUPA,
@@ -72,7 +72,7 @@ export async function getFullTransactionHistory(
 ) {
   try {
     const response = await axios.get(
-      'https://bd7t5d9s-5000.inc1.devtunnels.ms/transaction/getFullTransactionHistory',
+      'http://your-backend-url/transaction/getFullTransactionHistory',
       {
         params: { upa },
         headers: { Authorization: `Bearer ${jwt}` },
@@ -106,7 +106,7 @@ export async function getTransactionHistory(
 ) {
   try {
     const response = await axios.get(
-      'https://bd7t5d9s-5000.inc1.devtunnels.ms/transaction/getPaymentHistoryOfUser',
+      'http://your-backend-url/transaction/getPaymentHistoryOfUser',
       {
         params: { upa },
         headers: { Authorization: `Bearer ${jwt}` },
@@ -141,7 +141,7 @@ export async function makePayment(
     transactionPIN:string|null|undefined,
     jwt:string|null|undefined) {
   try {
-    const response = await axios.post('https://bd7t5d9s-5000.inc1.devtunnels.ms/transaction/makePayment',
+    const response = await axios.post('http://your-backend-url/transaction/makePayment',
       {
         amount,
         senderID,
