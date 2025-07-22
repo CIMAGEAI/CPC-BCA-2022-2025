@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Logo from "@/components/logo";
-
+//This is coding file
 export default function AboutUs() {
   const [ref, inView] = useInView({
     threshold: 0.1,
