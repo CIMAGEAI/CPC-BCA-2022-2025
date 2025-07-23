@@ -63,7 +63,7 @@ $('.navbar-light .dmenu').hover(function () {
             <div class="row h-100">
                 <div class="col-12 h-100">
                     <nav class="h-100 navbar navbar-expand-lg">
-                        <a class="navbar-brand" href="index.php">ONLINE MEDICINE STORE</a>
+                        <a class="navbar-brand" href="index.php">ONLINE ELECTRONIC SHOP</a>
                        
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#dorneNav" aria-controls="dorneNav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars"></span></button>
                         <!-- Nav -->
@@ -135,13 +135,13 @@ $('.navbar-light .dmenu').hover(function () {
   <div class="form-group ">
 <select class="form-control" name="category">
 <option>Select</option>
-<option value="HOMEOPATHY">HOMEOPATHY</option>
-<option value="VITAMINSSUPPLEMENTS">VITAMINS & SUPPLEMENTS</option>
-<option value="AYURVEDA">AYURVEDA</option>
-<option value="HEALTHFOOdDRINKS">HEALTH FOOD & DRINKS</option>
-<option value="HEALTHCAREDEVICES">HEALTHCARE DEVICES</option>
-<option value="SKINCARE">SKIN CARE</option>
-</select>
+<option value="CamerasPhotography">Cameras & Photography</option>
+<option value="CarVehicleElectronics">Car & Vehicle Electronics</option>
+<option value="ComputersAccessories">Computers & Accessories</option>
+<option value="Headphones">Headphones</option>
+<option value="HomeTheaterTVVideo">Home Theater, TV & Video</option>
+<option value="MobilesAccessories">Mobiles & Accessories</option>
+<option value="Tablets">Tablets</option>
 
 
 
@@ -199,19 +199,18 @@ $('.navbar-light .dmenu').hover(function () {
                 <div class="col-12">
                     <div class="section-heading dark text-center">
                         <span></span>
-                        <h4>OUR MEDICINE Collection</h4>
+                        <h4>ELECTRONICS Collection</h4>
                         <p>Best Items</p>
                     </div>
                 </div>
             </div>
-<h4 style="background-color:#362175;color:white;text-align:center">HOMEOPATHY</h4>
-                    
+
             <div class="row">
                 <div class="col-12">
                     <div class="features-slides owl-carousel">
-                      
+                     
 					 <?php
-					 $result=select("select * from items where category='HOMEOPATHY'");
+					 $result=select("select * from items where category='CamerasPhotography'");
 					 while($r=mysqli_fetch_array($result))
 					 {
 						 extract($r);
@@ -243,14 +242,12 @@ $('.navbar-light .dmenu').hover(function () {
                     </div>
                 </div>
             </div></br></br>
-			<h4 style="background-color:#362175;color:white;text-align:center">VITAMINS & SUPPLEMENTS</h4>
- 
 			<div class="row">
                 <div class="col-12">
                     <div class="features-slides owl-carousel">
                      
 					 <?php
-					 $result=select("select * from items where category='VITAMINSSUPPLEMENTS'");
+					 $result=select("select * from items where category='CarVehicleElectronics'");
 					 while($r=mysqli_fetch_array($result))
 					 {
 						 extract($r);
@@ -282,14 +279,12 @@ $('.navbar-light .dmenu').hover(function () {
                     </div>
                 </div>
             </div></br></br>
-			<h4 style="background-color:#362175;color:white;text-align:center">AYURVEDA</h4>
- 
 			<div class="row">
                 <div class="col-12">
                     <div class="features-slides owl-carousel">
                      
 					 <?php
-					 $result=select("select * from items where category='AYURVEDA'");
+					 $result=select("select * from items where category='HomeTheaterTVVideo'");
 					 while($r=mysqli_fetch_array($result))
 					 {
 						 extract($r);
@@ -321,14 +316,12 @@ $('.navbar-light .dmenu').hover(function () {
                     </div>
                 </div>
             </div></br></br>
-			<h4 style="background-color:#362175;color:white;text-align:center">HEALTH FOOD & DRINKS</h4>
- 
 			<div class="row">
                 <div class="col-12">
                     <div class="features-slides owl-carousel">
                      
 					 <?php
-					 $result=select("select * from items where category='HEALTHFOOdDRINKS'");
+					 $result=select("select * from items where category='ComputersAccessories'");
 					 while($r=mysqli_fetch_array($result))
 					 {
 						 extract($r);
@@ -360,53 +353,12 @@ $('.navbar-light .dmenu').hover(function () {
                     </div>
                 </div>
             </div></br></br>
-			<h4 style="background-color:#362175;color:white;text-align:center">HEALTHCARE DEVICES</h4>
- 
 			<div class="row">
                 <div class="col-12">
                     <div class="features-slides owl-carousel">
                      
 					 <?php
-					 $result=select("select * from items where category='HEALTHCAREDEVICES'");
-					 while($r=mysqli_fetch_array($result))
-					 {
-						 extract($r);
-					 ?>
-					    <a href="view_detail.php?id=<?=$elecid?>"><div class="single-features-area">
-                            <img src="admin/images/<?=$image?>" style="height:200px;width:400px">
-                            <!-- Price -->
-                            <div class="price-start">
-                                </div>
-                            <div class="feature-content d-flex align-items-center justify-content-between" style="height:150px">
-                                <div class="feature-title">
-								 <p><?=$Title?></p>
-                               
-                                   <h5><?=$price?>/-</h5>
-                                    </div>
-                                
-								<?php for($i=1;$i<=$elec_rating;$i++) :  ?>
-
-								<i class="fa fa-star" style="color:red" aria-hidden="true"></i>
-                               <?php  endfor; ?>
-                                     
-                            </div>
-                        </div></a>
-						<?php
-					 }
-						?>
-                        
-                        
-                    </div>
-                </div>
-            </div></br></br>
-			<h4 style="background-color:#362175;color:white;text-align:center">SKINCARE</h4>
- 
-			<div class="row">
-                <div class="col-12">
-                    <div class="features-slides owl-carousel">
-                     
-					 <?php
-					 $result=select("select * from items where category='SKINCARE'");
+					 $result=select("select * from items where category='Tablets'");
 					 while($r=mysqli_fetch_array($result))
 					 {
 						 extract($r);
@@ -438,7 +390,80 @@ $('.navbar-light .dmenu').hover(function () {
                     </div>
                 </div>
             </div></br></br>
-			
+			<div class="row">
+                <div class="col-12">
+                    <div class="features-slides owl-carousel">
+                     
+					 <?php
+					 $result=select("select * from items where category='Headphones'");
+					 while($r=mysqli_fetch_array($result))
+					 {
+						 extract($r);
+					 ?>
+                        <a href="view_detail.php?id=<?=$elecid?>"><div class="single-features-area">
+                            <img src="admin/images/<?=$image?>" style="height:200px;width:400px">
+                            <!-- Price -->
+                            <div class="price-start">
+                                </div>
+                            <div class="feature-content d-flex align-items-center justify-content-between" style="height:150px">
+                                <div class="feature-title">
+								 <p><?=$Title?></p>
+                               
+                                   <h5><?=$price?>/-</h5>
+                                    </div>
+                                
+								<?php for($i=1;$i<=$elec_rating;$i++) :  ?>
+
+								<i class="fa fa-star" style="color:red" aria-hidden="true"></i>
+                               <?php  endfor; ?>
+                                     
+                            </div>
+                        </div></a>
+						<?php
+					 }
+						?>
+                        
+                        
+                    </div>
+                </div>
+            </div></br></br>
+			<div class="row">
+                <div class="col-12">
+                    <div class="features-slides owl-carousel">
+                     
+					 <?php
+					 $result=select("select * from items where category='MobilesAccessories'");
+					 while($r=mysqli_fetch_array($result))
+					 {
+						 extract($r);
+					 ?>
+                        <a href="view_detail.php?id=<?=$elecid?>"><div class="single-features-area">
+                            <img src="admin/images/<?=$image?>" style="height:200px;width:400px">
+                            <!-- Price -->
+                            <div class="price-start">
+                                </div>
+                            <div class="feature-content d-flex align-items-center justify-content-between" style="height:150px">
+                                <div class="feature-title">
+								 <p><?=$Title?></p>
+                               
+                                   <h5><?=$price?>/-</h5>
+                                    </div>
+                                
+								<?php for($i=1;$i<=$elec_rating;$i++) :  ?>
+
+								<i class="fa fa-star" style="color:red" aria-hidden="true"></i>
+                               <?php  endfor; ?>
+                                     
+                            </div>
+                        </div></a>
+						<?php
+					 }
+						?>
+                        
+                        
+                    </div>
+                </div>
+            </div></br></br>
         </div>
     </section>
     
@@ -454,7 +479,7 @@ $('.navbar-light .dmenu').hover(function () {
                     <div class="footer-text">
                         <p>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made  <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">Mritunjay Singh</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made  <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">Abhash Kumar</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </p>
                     </div>

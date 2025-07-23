@@ -47,7 +47,7 @@ require_once"dbconfig.php";
 							<div class="col-lg-12">
 								<form id="login-form"  method="post" role="form" style="display: block;">
 									<div class="form-group">
-										<input type="email" name="email" id="username" tabindex="1" class="form-control" placeholder="Email" value="">
+										<input type="email" name="email" id="username" tabindex="1" class="form-control" placeholder="Email" value="" required>
 									</div>
 									<div class="form-group">
 										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
@@ -64,18 +64,17 @@ require_once"dbconfig.php";
 								</form>
 								<form id="register-form" action="" method="post" role="form" style="display: none;">
 									<div class="form-group">
-										<input type="text" name="name" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+										<input type="text" name="name" id="username" tabindex="1" class="form-control" placeholder="Username" value="" required>
 									</div>
 									<div class="form-group">
 										<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="" required>
 									</div>
 									<div class="form-group">
-										<input type="tel" name="mobile" id="password" tabindex="2" class="form-control" placeholder="Mobile" pattern="[0-9]{10}" required>
+										<input type="tel" name="mobile" id="password" tabindex="2" class="form-control" placeholder="Mobile"  pattern="[0-9]{10}" required>
 									</div>
 									<div class="form-group">
 										<input type="password" name="password" id="confirm-password" tabindex="2" class="form-control" placeholder="Password">
 									</div>
-									
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
