@@ -1,0 +1,513 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - eHelp Emergency Bed Booking</title>
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+
+        /* ============ Navbar ============ */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(45deg, #007bff, #00d4ff);
+  padding: 3px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 6px 16px rgba(214, 96, 193, 0.25);
+}
+
+.navbar {
+  ...
+  position: relative;
+  z-index: 1000;
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-text {
+  font-size: 42px;
+  font-weight: bold;
+  color: #070707;
+  font-family: Georgia, serif;
+}
+
+.logo-icon {
+  font-size: 30px;
+  color: red;
+}
+
+.navbar-brand {
+  font-family: 'Rubik', sans-serif;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.1);
+  color: #eb1111;
+}
+
+.navbar-brand span {
+  color: #0dbcf1;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover span {
+  color: #00ffea;
+}
+
+.navbar-brand .plus {
+  color: red;
+  transition: text-shadow 0.3s ease;
+}
+
+.navbar-brand:hover .plus {
+  text-shadow: 0 0 8px rgba(18, 18, 18, 0.6);
+}
+
+.navbar-links {
+  transition: all 0.3s ease-in-out;
+}
+
+
+.navbar-links {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: #050505;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.navbar-links a:hover {
+  background-color: #fff;
+  color: #4b6cb7;
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-links a[href="/emergency"] {
+  color: red;
+}
+
+.hamburger {
+  display: none;
+  font-size: 26px;
+  color: white;
+  cursor: pointer;
+}
+
+.navbar .group:hover .group-hover\:block {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    background: linear-gradient(45deg, #007bff, #00d4ff);
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+        .gradient-bg {
+            background: white;
+        }
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-800">
+    <!-- Navigation -->
+     <nav class="navbar ">
+  <div class="navbar-brand">
+    <div class="logo-wrapper">
+      <h1 class="logo-text">eHelp</h1>
+      <i class="fas fa-hand-holding-medical logo-icon"></i>
+    </div>
+  </div>
+
+  <div class="hamburger" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <div class="navbar-links" id="navbarLinks">
+    <a href="/">🏠 Home</a>
+    
+   <div class="relative group">
+  <button class="text-sm font-bold px-5 py-2 bg-white bg-opacity-10 border border-white border-opacity-20 text-black rounded-full hover:bg-white hover:text-blue-600 transition-all">
+    🚨 Emergency
+  </button>
+  <div class="absolute hidden group-hover:block bg-red-500 text-white mt-2 z-50 min-w-[120px] px-2 py-1 rounded-full shadow-lg text-center">
+    <a href="tel:102" class="block font-medium hover:bg-red-600 rounded-full px-2 py-1 transition">
+      🚑 Ambulance: 102
+    </a>
+  </div>
+</div>
+
+    <a href="/services">👩‍⚕️Services</a>
+   {% if user.is_authenticated %}
+  <!--<a href="#" style="color: white; pointer-events: none;"></a>-->
+  <a href="/logout/">Logout</a>
+{% else %}
+  <a href="/login/">🔓Login</a>
+{% endif %}
+{% if user.is_authenticated %}
+  <h4>🔐{{ user.first_name }}</h4>
+{% else %}
+  
+{% endif %}
+    <a href="/about">ℹ About</a>
+    <a href="/contact">📞Contact</a>
+  </div>
+</nav>
+
+    <!-- Hero Section -->
+    <header class="gradient-bg text-black">
+        <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                About eHelp
+            </h1>
+            <p class="mt-6 max-w-3xl mx-auto text-xl">
+                Connecting patients with emergency bed facilities when every second counts
+            </p>
+        </div>
+    </header>
+
+   <!-- Mission Section -->
+<section class="text-white py-20" style="background: linear-gradient(135deg, #0255e8 0%, #17b2ff 100%);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-base font-semibold tracking-wider uppercase text-white">Who We Are</h2>
+      <p class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
+        Our Mission
+      </p>
+      <p class="mt-4 max-w-2xl text-xl mx-auto text-white/90">
+        At eHelp, we're revolutionizing emergency healthcare by bridging the gap between patients in critical need and available hospital beds.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <!-- Card 1 -->
+      <div class="flex items-start space-x-6">
+        <div class="flex-shrink-0 h-12 w-12 rounded-md bg-white bg-opacity-20 flex items-center justify-center text-white">
+          <!-- icon -->
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-black">Fast Connections</h3>
+          <p class="mt-2 text-black/90">
+            Our real-time system connects patients to available beds instantly, reducing critical wait times during emergencies.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="flex items-start space-x-6">
+        <div class="flex-shrink-0 h-12 w-12 rounded-md bg-white bg-opacity-20 flex items-center justify-center text-white">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-black">Comprehensive Database</h3>
+          <p class="mt-2 text-black/90">
+            Partnered with hospitals nationwide to maintain an up-to-date inventory of available beds and facilities.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="flex items-start space-x-6">
+        <div class="flex-shrink-0 h-12 w-12 rounded-md bg-white bg-opacity-20 flex items-center justify-center text-white">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15l8-8m0 0l-8-8m8 8H4"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-black">No Middlemen</h3>
+          <p class="mt-2 text-black/90">
+            Direct patient-to-hospital connection eliminates unnecessary bureaucracy in emergency situations.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="flex items-start space-x-6">
+        <div class="flex-shrink-0 h-12 w-12 rounded-md bg-white bg-opacity-20 flex items-center justify-center text-white">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-black">Transparent Pricing</h3>
+          <p class="mt-2 text-black/90">
+            No hidden costs or last-minute surprises – you know exactly what you're paying for upfront.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Stats Section -->
+    <section class="bg-gray-50 py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Trusted by hospitals and patients nationwide
+                </h2>
+            </div>
+        </div>
+
+        <div class="mt-10 pb-12 bg-gray-50 sm:pb-16">
+            <div class="relative">
+                <div class="absolute inset-0 h-1/2 bg-gray-50"></div>
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-4xl mx-auto">
+                        <dl class="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-3">
+                            <div class="stat-card flex flex-col border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
+                                <dt class="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                                    Patients Assisted
+                                </dt>
+                                <dd class="order-1 text-5xl font-extrabold text-blue-600">
+                                    15,328+
+                                </dd>
+                            </div>
+                            <div class="stat-card flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
+                                <dt class="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                                    Partner Hospitals
+                                </dt>
+                                <dd class="order-1 text-5xl font-extrabold text-blue-600">
+                                    347
+                                </dd>
+                            </div>
+                            <div class="stat-card flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
+                                <dt class="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">
+                                    Average Response Time
+                                </dt>
+                                <dd class="order-1 text-5xl font-extrabold text-blue-600">
+                                    <2 min
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Team Section -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:text-center mb-12">
+      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+        Meet Our Team
+      </p>
+    </div>
+
+    <!-- Centered two cards -->
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-start">
+
+      <!-- Founder Card -->
+      <div class="team-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 w-full md:w-80">
+        <div class="w-full h-72 flex items-center justify-center bg-white">
+          <img src="{% static 'img/f1.jpg' %}" 
+               alt="Sonakshi Kumari" 
+               class="w-full max-h-full object-contain">
+        </div>
+
+        <div class="px-4 py-4 text-center">
+          <h3 class="text-base font-medium text-gray-900">Sonakshi Kumari</h3>
+          <p class="mt-1 text-xs text-gray-500">Founder</p>
+          <p class="mt-2 text-sm text-gray-700">
+            "eHelp is not just a project—it’s a mission to bridge the gap between emergency patients and timely medical help..."
+          </p>
+        </div>
+      </div>
+
+      <!-- Co-Founder Card -->
+      <div class="team-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 w-full md:w-80">
+        <div class="w-full h-72 flex items-center justify-center bg-white">
+          <img src="{% static 'img/f2.jpg' %}" 
+               alt="Vikesh" 
+               class="w-full max-h-full object-contain">
+        </div>
+
+        <div class="px-4 py-4 text-center">
+          <h3 class="text-base font-medium text-gray-900">Vikesh</h3>
+          <p class="mt-1 text-xs text-gray-500">Co-Founder</p>
+          <p class="mt-2 text-sm text-gray-700">
+            "From the beginning, our focus has been on simplifying hospital coordination during emergencies..."
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+   
+    <!-- CTA -->
+    <section class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                <span class="block">Ready to experience the difference?</span>
+            </h2>
+            <div class="mt-8 flex justify-center">
+                <div class="inline-flex rounded-md shadow">
+                    <a href="/services" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                        Services
+                    </a>
+                </div>
+                <div class="ml-3 inline-flex">
+                    <a href="/contact" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200">
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="col-span-2">
+                    <h3 class="text-white text-xl font-bold">eHelp</h3>
+                    <p class="mt-4 text-gray-300">
+                        Emergency bed booking when time matters most.
+                    </p>
+                    <p class="mt-4 text-gray-400 text-sm">
+                        © 2023 eHelp Inc. All rights reserved.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-white text-sm font-semibold tracking-wider uppercase">
+                        Navigation
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="/" class="text-gray-300 hover:text-white">Home</a></li>
+                        <li><a href="/about" class="text-gray-300 hover:text-white">About</a></li>
+                        <li><a href="/services" class="text-gray-300 hover:text-white">Services</a></li>
+                        <li><a href="/contact" class="text-gray-300 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white text-sm font-semibold tracking-wider uppercase">
+                        Connect
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#" class="text-gray-300 hover:text-white">Facebook</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">LinkedIn</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        function toggleMenu() {
+    const navbarLinks = document.getElementById("navbarLinks");
+    navbarLinks.classList.toggle("active");
+  }
+
+        // Simple JavaScript for demonstration purposes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation for stats counter
+            const statElements = document.querySelectorAll('.stat-card dd');
+            
+            statElements.forEach(stat => {
+                const target = stat.textContent;
+                let count = 0;
+                
+                if (target.includes('+')) {
+                    const num = parseInt(target);
+                    const increment = Math.floor(num / 20);
+                    const timer = setInterval(() => {
+                        count += increment;
+                        stat.textContent = count + '+';
+                        if (count >= num) {
+                            stat.textContent = target;
+                            clearInterval(timer);
+                        }
+                    }, 50);
+                } else if (target.includes('<')) {
+                    // For response time stat
+                    stat.style.opacity = 0;
+                    setTimeout(() => {
+                        stat.style.transition = 'opacity 0.5s ease';
+                        stat.style.opacity = 1;
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
