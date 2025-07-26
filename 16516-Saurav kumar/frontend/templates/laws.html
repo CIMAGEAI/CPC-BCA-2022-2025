@@ -1,0 +1,557 @@
+{% extends 'base.html' %}
+{% block title %}Indian Criminal Laws & Acts - Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="laws-container">
+    <div class="laws-header">
+        <div class="container">
+            <h1><i class="fas fa-gavel me-3"></i>Indian Criminal Laws & Acts</h1>
+            <p class="lead">Comprehensive guide to important Indian criminal laws with official government links</p>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <!-- Main Criminal Laws Section -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="laws-section">
+                    <h2><i class="fas fa-balance-scale me-2"></i>Major Criminal Laws</h2>
+                    
+                    <div class="law-card">
+                        <div class="law-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="law-content">
+                            <h3>Indian Penal Code (IPC), 1860</h3>
+                            <p>The main criminal code of India covering all substantive aspects of criminal law. It defines various crimes and their punishments.</p>
+                            <div class="law-details">
+                                <span class="badge bg-primary">Primary Law</span>
+                                <span class="badge bg-info">Criminal Code</span>
+                            </div>
+                            <a href="https://legislative.gov.in/indian-penal-code-1860" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>View Official Code
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="law-card">
+                        <div class="law-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="law-content">
+                            <h3>Code of Criminal Procedure (CrPC), 1973</h3>
+                            <p>Procedural law for administration of criminal justice in India. Governs investigation, trial, and punishment of crimes.</p>
+                            <div class="law-details">
+                                <span class="badge bg-secondary">Procedural Law</span>
+                                <span class="badge bg-info">Criminal Procedure</span>
+                            </div>
+                            <a href="https://legislative.gov.in/code-criminal-procedure-1973" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>View Official Code
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="law-card">
+                        <div class="law-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div class="law-content">
+                            <h3>Information Technology Act, 2000</h3>
+                            <p>Legal framework for electronic governance and cyber crimes. Covers digital signatures, cyber terrorism, and data protection.</p>
+                            <div class="law-details">
+                                <span class="badge bg-warning">Cyber Law</span>
+                                <span class="badge bg-info">Digital Governance</span>
+                            </div>
+                            <a href="https://legislative.gov.in/information-technology-act-2000" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>View Official Act
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="law-card">
+                        <div class="law-icon">
+                            <i class="fas fa-child"></i>
+                        </div>
+                        <div class="law-content">
+                            <h3>Protection of Children from Sexual Offences (POCSO) Act, 2012</h3>
+                            <p>Comprehensive law to protect children from sexual assault, harassment, and pornography. Provides child-friendly procedures.</p>
+                            <div class="law-details">
+                                <span class="badge bg-danger">Child Protection</span>
+                                <span class="badge bg-info">Special Law</span>
+                            </div>
+                            <a href="https://legislative.gov.in/protection-children-sexual-offences-act-2012" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>View Official Act
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="law-card">
+                        <div class="law-icon">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="law-content">
+                            <h3>Narcotic Drugs and Psychotropic Substances (NDPS) Act, 1985</h3>
+                            <p>Law to control and regulate narcotic drugs and psychotropic substances. Provides for forfeiture of property derived from drug trafficking.</p>
+                            <div class="law-details">
+                                <span class="badge bg-warning">Drug Control</span>
+                                <span class="badge bg-info">Substance Law</span>
+                            </div>
+                            <a href="https://legislative.gov.in/narcotic-drugs-and-psychotropic-substances-act-1985" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>View Official Act
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="law-card">
+                        <div class="law-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="law-content">
+                            <h3>Prevention of Corruption Act, 1988</h3>
+                            <p>Law to prevent corruption and establish special courts for corruption cases. Covers bribery, abuse of power, and criminal misconduct.</p>
+                            <div class="law-details">
+                                <span class="badge bg-danger">Anti-Corruption</span>
+                                <span class="badge bg-info">Special Courts</span>
+                            </div>
+                            <a href="https://legislative.gov.in/prevention-corruption-act-1988" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>View Official Act
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Laws Section -->
+                <div class="laws-section mt-5">
+                    <h2><i class="fas fa-plus-circle me-2"></i>Additional Important Laws</h2>
+                    
+                    <div class="additional-laws">
+                        <div class="additional-law-item">
+                            <h4>Arms Act, 1959</h4>
+                            <p>Regulates possession and use of arms and ammunition</p>
+                            <a href="https://legislative.gov.in/arms-act-1959" target="_blank">View Act →</a>
+                        </div>
+
+                        <div class="additional-law-item">
+                            <h4>Explosives Act, 1884</h4>
+                            <p>Regulates manufacture, possession, and use of explosives</p>
+                            <a href="https://legislative.gov.in/explosives-act-1884" target="_blank">View Act →</a>
+                        </div>
+
+                        <div class="additional-law-item">
+                            <h4>Immoral Traffic (Prevention) Act, 1956</h4>
+                            <p>Prevents immoral traffic and prostitution</p>
+                            <a href="https://legislative.gov.in/immoral-traffic-prevention-act-1956" target="_blank">View Act →</a>
+                        </div>
+
+                        <div class="additional-law-item">
+                            <h4>Juvenile Justice (Care and Protection) Act, 2015</h4>
+                            <p>Provides for care, protection, and rehabilitation of children</p>
+                            <a href="https://legislative.gov.in/juvenile-justice-care-and-protection-children-act-2015" target="_blank">View Act →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-building me-2"></i>Official Government Sources</h3>
+                    <div class="official-sources">
+                        <a href="https://legislative.gov.in/" target="_blank" class="official-link">
+                            <i class="fas fa-landmark me-2"></i>
+                            <div>
+                                <strong>Legislative Department</strong>
+                                <small>Ministry of Law & Justice</small>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.indiacode.nic.in/" target="_blank" class="official-link">
+                            <i class="fas fa-code me-2"></i>
+                            <div>
+                                <strong>India Code</strong>
+                                <small>Digital Repository</small>
+                            </div>
+                        </a>
+                        
+                        <a href="https://cybercrime.gov.in/" target="_blank" class="official-link">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            <div>
+                                <strong>Cyber Crime Portal</strong>
+                                <small>Report Cyber Crimes</small>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.mha.gov.in/" target="_blank" class="official-link">
+                            <i class="fas fa-home me-2"></i>
+                            <div>
+                                <strong>Ministry of Home Affairs</strong>
+                                <small>Law Enforcement</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="sidebar-section mt-4">
+                    <h3><i class="fas fa-phone me-2"></i>Legal Helplines</h3>
+                    <div class="helpline-list">
+                        <div class="helpline-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>National Legal Services Authority</strong>
+                                <span>1516</span>
+                            </div>
+                        </div>
+                        
+                        <div class="helpline-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Women Helpline</strong>
+                                <span>1091</span>
+                            </div>
+                        </div>
+                        
+                        <div class="helpline-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Child Helpline</strong>
+                                <span>1098</span>
+                            </div>
+                        </div>
+                        
+                        <div class="helpline-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Police Emergency</strong>
+                                <span>100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section mt-4">
+                    <h3><i class="fas fa-info-circle me-2"></i>Quick Information</h3>
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <h5>Right to Legal Aid</h5>
+                            <p>Free legal services available for eligible persons under Legal Services Authorities Act, 1987</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h5>Right to Information</h5>
+                            <p>RTI Act, 2005 allows citizens to access government information and records</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h5>Consumer Protection</h5>
+                            <p>Consumer Protection Act, 2019 provides rights and remedies for consumers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.laws-header, .laws-section, .sidebar-section, .info-card {
+    background: #c4b289 !important;
+    color: #212529 !important;
+}
+.laws-header h1, .laws-section h2, .sidebar-section h3, .info-card h5 {
+    color: #a10d1a !important;
+}
+.laws-section *, .sidebar-section *, .info-card * {
+    color: #111 !important;
+}
+.laws-header h1, .laws-section h2, .sidebar-section h3, .info-card h5 {
+    color: #a10d1a !important;
+}
+.footer, .footer * {
+    background: var(--primary-color) 60% !important;
+    color: #212529 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.laws-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: 100vh;
+}
+
+.laws-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: white;
+    padding: 3rem 0;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.laws-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.laws-header .lead {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.laws-section {
+    background: linear-gradient(135deg, #22335a 0%, #10204b 100%) !important;
+    color: #fff !important;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.laws-section h2 {
+    color: #f5b100 !important;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid var(--accent-color) !important;
+    padding-bottom: 0.5rem;
+}
+
+.law-card {
+    display: flex;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.law-card:hover {
+    border-color: #38bdf8;
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.15);
+    transform: translateY(-2px);
+}
+
+.law-icon {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+}
+
+.law-icon i {
+    font-size: 1.5rem;
+}
+
+.law-content {
+    flex: 1;
+}
+
+.law-content h3 {
+    color: #1e40af;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.law-content p {
+    color: #64748b;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.law-details {
+    margin-bottom: 1rem;
+}
+
+.law-details .badge {
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.additional-laws {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.additional-law-item {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 1rem;
+    border-left: 4px solid #38bdf8;
+}
+
+.additional-law-item h4 {
+    color: #1e40af;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.additional-law-item p {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.additional-law-item a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.additional-law-item a:hover {
+    text-decoration: underline;
+}
+
+.sidebar-section {
+    background: linear-gradient(135deg, #10204b 0%, #22335a 100%) !important;
+    color: #fff !important;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-section h3 {
+    color: #f5b100 !important;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-color) !important;
+    padding-bottom: 0.5rem;
+}
+
+.official-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.official-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #334155;
+    transition: all 0.3s ease;
+}
+
+.official-link:hover {
+    border-color: #38bdf8;
+    background: #f0f9ff;
+    color: #1e40af;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.official-link i {
+    font-size: 1.2rem;
+    color: #1e40af;
+    margin-right: 1rem;
+}
+
+.official-link div {
+    flex: 1;
+}
+
+.official-link strong {
+    display: block;
+    font-size: 0.95rem;
+}
+
+.official-link small {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+.helpline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.helpline-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border-left: 4px solid #dc2626;
+}
+
+.helpline-item i {
+    color: #dc2626;
+    font-size: 1.1rem;
+    margin-right: 1rem;
+}
+
+.helpline-item div {
+    flex: 1;
+}
+
+.helpline-item strong {
+    display: block;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.helpline-item span {
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-card {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.info-card h5 {
+    color: #0e7490;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.info-card p {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .laws-header h1 {
+        font-size: 2rem;
+    }
+    
+    .law-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .law-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .additional-laws {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %} 

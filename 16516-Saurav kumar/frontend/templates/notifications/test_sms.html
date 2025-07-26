@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Test SMS - Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-sms me-2"></i>
+                        Test SMS Functionality
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>Instructions:</h6>
+                        <ul class="mb-0">
+                            <li>Enter a phone number with country code (e.g., +1234567890)</li>
+                            <li>Write a test message or use the default</li>
+                            <li>Click "Send Test SMS" to test the Twilio integration</li>
+                        </ul>
+                    </div>
+
+                    <form method="post" id="smsTestForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">
+                                <i class="fas fa-phone me-2"></i>Phone Number
+                            </label>
+                            <input type="tel" 
+                                   class="form-control" 
+                                   id="phone_number" 
+                                   name="phone_number" 
+                                   placeholder="+1234567890"
+                                   pattern="^\+[1-9]\d{1,14}$"
+                                   required>
+                            <div class="form-text">
+                                Enter phone number with country code (e.g., +1 for US, +91 for India)
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="message" class="form-label">
+                                <i class="fas fa-comment me-2"></i>Message
+                            </label>
+                            <textarea class="form-control" 
+                                      id="message" 
+                                      name="message" 
+                                      rows="4" 
+                                      placeholder="Test SMS from Crime Report Portal"
+                                      maxlength="160">Test SMS from Crime Report Portal - Your crime report has been received and is being processed.</textarea>
+                            <div class="form-text">
+                                <span id="charCount">0</span>/160 characters
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Send Test SMS
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="testAPI()">
+                                <i class="fas fa-code me-2"></i>
+                                Test via API
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr>
+
+                    <div class="mt-4">
+                        <h5><i class="fas fa-cog me-2"></i>SMS Configuration</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Twilio Settings</h6>
+                                        <ul class="list-unstyled mb-0">
+                                            <li><strong>Provider:</strong> <span class="badge bg-success">Twilio</span></li>
+                                            <li><strong>Account SID:</strong> 
+                                                {% if settings.TWILIO_ACCOUNT_SID %}
+                                                    <span class="text-success">✓ Configured</span>
+                                                {% else %}
+                                                    <span class="text-danger">✗ Not configured</span>
+                                                {% endif %}
+                                            </li>
+                                            <li><strong>Auth Token:</strong> 
+                                                {% if settings.TWILIO_AUTH_TOKEN %}
+                                                    <span class="text-success">✓ Configured</span>
+                                                {% else %}
+                                                    <span class="text-danger">✗ Not configured</span>
+                                                {% endif %}
+                                            </li>
+                                            <li><strong>Phone Number:</strong> 
+                                                {% if settings.TWILIO_PHONE_NUMBER %}
+                                                    <span class="text-success">✓ {{ settings.TWILIO_PHONE_NUMBER }}</span>
+                                                {% else %}
+                                                    <span class="text-danger">✗ Not configured</span>
+                                                {% endif %}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Usage Information</h6>
+                                        <ul class="list-unstyled mb-0">
+                                            <li><strong>Character Limit:</strong> 160 characters</li>
+                                            <li><strong>Format:</strong> E.164 (with country code)</li>
+                                            <li><strong>Cost:</strong> Varies by country</li>
+                                            <li><strong>Delivery:</strong> Real-time</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- API Test Modal -->
+<div class="modal fade" id="apiTestModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">API Test Result</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="apiTestResult">
+                <!-- Result will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Character counter
+document.getElementById('message').addEventListener('input', function() {
+    const charCount = this.value.length;
+    document.getElementById('charCount').textContent = charCount;
+    
+    if (charCount > 160) {
+        document.getElementById('charCount').classList.add('text-danger');
+    } else {
+        document.getElementById('charCount').classList.remove('text-danger');
+    }
+});
+
+// API test function
+function testAPI() {
+    const phoneNumber = document.getElementById('phone_number').value;
+    const message = document.getElementById('message').value;
+    
+    if (!phoneNumber) {
+        alert('Please enter a phone number first.');
+        return;
+    }
+    
+    const data = {
+        phone_number: phoneNumber,
+        message: message
+    };
+    
+    fetch('/notifications/api/test-sms/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const modal = new bootstrap.Modal(document.getElementById('apiTestModal'));
+        const resultDiv = document.getElementById('apiTestResult');
+        
+        if (data.success) {
+            resultDiv.innerHTML = `
+                <div class="alert alert-success">
+                    <h6><i class="fas fa-check-circle me-2"></i>Success!</h6>
+                    <p><strong>Message:</strong> ${data.message}</p>
+                    <p><strong>SID:</strong> ${data.sid || 'N/A'}</p>
+                    <p><strong>Status:</strong> ${data.status || 'N/A'}</p>
+                </div>
+            `;
+        } else {
+            resultDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <h6><i class="fas fa-exclamation-circle me-2"></i>Error!</h6>
+                    <p><strong>Message:</strong> ${data.message}</p>
+                    ${data.error ? `<p><strong>Error Type:</strong> ${data.error}</p>` : ''}
+                </div>
+            `;
+        }
+        
+        modal.show();
+    })
+    .catch(error => {
+        const modal = new bootstrap.Modal(document.getElementById('apiTestModal'));
+        const resultDiv = document.getElementById('apiTestResult');
+        
+        resultDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <h6><i class="fas fa-exclamation-circle me-2"></i>Network Error!</h6>
+                <p>${error.message}</p>
+            </div>
+        `;
+        
+        modal.show();
+    });
+}
+
+// Form validation
+document.getElementById('smsTestForm').addEventListener('submit', function(e) {
+    const phoneNumber = document.getElementById('phone_number').value;
+    const message = document.getElementById('message').value;
+    
+    if (!phoneNumber.match(/^\+[1-9]\d{1,14}$/)) {
+        e.preventDefault();
+        alert('Please enter a valid phone number with country code (e.g., +1234567890)');
+        return false;
+    }
+    
+    if (message.length > 160) {
+        e.preventDefault();
+        alert('Message is too long. Please keep it under 160 characters.');
+        return false;
+    }
+});
+</script>
+{% endblock %} 

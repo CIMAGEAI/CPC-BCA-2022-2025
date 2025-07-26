@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block extra_js %}
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container-fluid mt-4">
+  <h2 class="fw-bold mb-4">👑 Admin Dashboard</h2>
+  <div class="row mb-4">
+    <div class="col-md-2 col-6 mb-3">
+      <div class="card text-white bg-primary h-100">
+        <div class="card-body text-center">
+          <div class="fs-2">{{ total_users }}</div>
+          <div>Users<br><span class="small">कुल यूज़र</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+      <div class="card text-white bg-success h-100">
+        <div class="card-body text-center">
+          <div class="fs-2">{{ total_reports }}</div>
+          <div>Complaints<br><span class="small">कुल शिकायतें</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+      <div class="card text-white bg-warning h-100">
+        <div class="card-body text-center">
+          <div class="fs-2">{{ open_cases }}</div>
+          <div>Open Cases<br><span class="small">खुले मामले</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+      <div class="card text-white bg-secondary h-100">
+        <div class="card-body text-center">
+          <div class="fs-2">{{ closed_cases }}</div>
+          <div>Closed Cases<br><span class="small">बंद मामले</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+      <div class="card text-white bg-info h-100">
+        <div class="card-body text-center">
+          <div class="fs-2">{{ new_users_today }}</div>
+          <div>New Users Today</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+      <div class="card text-white bg-danger h-100">
+        <div class="card-body text-center">
+          <div class="fs-2">{{ new_complaints_today }}</div>
+          <div>New Complaints Today</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-8 mb-4">
+      <div class="card h-100 mb-4">
+        <div class="card-header bg-light fw-bold"><i class="fas fa-list me-2"></i>Recent Complaints</div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-secondary">
+              <tr>
+                <th>Case ID</th>
+                <th>Complainant</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for case in recent_reports %}
+              <tr>
+                <td>{{ case.case_number }}</td>
+                <td>{{ case.reporter_name|default:'Anonymous' }}</td>
+                <td>{% if case.category %}{{ case.category.name }}{% endif %}</td>
+                <td><span class="badge bg-warning text-dark">{{ case.get_status_display }}</span></td>
+                <td>{{ case.created_at|date:'Y-m-d' }}</td>
+                <td><a href="/reports/report/{{ case.id }}/" class="btn btn-sm btn-outline-primary">View</a></td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="6" class="text-center text-muted">No recent complaints.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-header bg-light fw-bold"><i class="fas fa-chart-pie me-2"></i>Complaints by Status</div>
+            <div class="card-body">
+              <canvas id="statusPieChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-header bg-light fw-bold"><i class="fas fa-chart-bar me-2"></i>Complaints by Month</div>
+            <div class="card-body">
+              <canvas id="monthBarChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 mb-4">
+        <div class="card-header bg-light fw-bold"><i class="fas fa-users me-2"></i>Recent Users</div>
+        <ul class="list-group list-group-flush">
+          {% for user in recent_users %}
+          <li class="list-group-item">
+            <i class="fas fa-user me-2"></i>{{ user.get_full_name|default:user.username }}<br>
+            <span class="small text-muted">{{ user.email }}</span><br>
+            <span class="small">Joined: {{ user.date_joined|date:'Y-m-d' }}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item text-muted">No recent users.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card h-100 mb-4">
+        <div class="card-header bg-light fw-bold"><i class="fas fa-bell me-2"></i>Notifications</div>
+        <ul class="list-group list-group-flush">
+          {% for n in recent_notifications %}
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div>
+              <span class="badge bg-info me-2">{{ n.get_notification_type_display }}</span>
+              <span>{{ n.message|truncatechars:60 }}</span><br>
+              <span class="small text-muted">To: {{ n.user.get_full_name|default:n.user.username }}</span>
+            </div>
+            <span class="small text-muted ms-2">{{ n.created_at|timesince }} ago{% if not n.is_read %} <span class="badge bg-warning text-dark">Unread</span>{% endif %}</span>
+          </li>
+          {% empty %}
+          <li class="list-group-item text-muted">No notifications yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card h-100 mb-4">
+        <div class="card-header bg-light fw-bold"><i class="fas fa-link me-2"></i>Quick Links</div>
+        <div class="list-group list-group-flush">
+          <a href="/admin/auth/user/" class="list-group-item list-group-item-action"><i class="fas fa-users me-2"></i>Manage Users</a>
+          <a href="/admin/reports/crimereport/" class="list-group-item list-group-item-action"><i class="fas fa-file-alt me-2"></i>Manage Complaints</a>
+          <a href="/admin/notifications/notification/" class="list-group-item list-group-item-action"><i class="fas fa-bell me-2"></i>Notifications</a>
+          <a href="/admin/" class="list-group-item list-group-item-action"><i class="fas fa-cogs me-2"></i>Django Admin</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script id="status-data" type="application/json">
+  {{ status_data|default:'{}'|safe }}
+</script>
+<script id="month-labels" type="application/json">
+  {{ months|default:'[]'|safe }}
+</script>
+<script id="month-counts" type="application/json">
+  {{ month_data|default:'[]'|safe }}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Pie Chart - Complaints by Status
+  var statusData = JSON.parse(document.getElementById('status-data').textContent);
+  var statusLabels = Object.keys(statusData).map(function(key) {
+    return key.replace(/_/g, ' ').replace(/\b\w/g, function(l) { return l.toUpperCase(); });
+  });
+  var statusCounts = Object.values(statusData);
+  var statusColors = ['#f59e0b', '#1e3a8a', '#10b981', '#ef4444', '#6366f1', '#f43f5e', '#a21caf', '#0ea5e9'];
+  var ctx1 = document.getElementById('statusPieChart').getContext('2d');
+  new Chart(ctx1, {
+    type: 'pie',
+    data: {
+      labels: statusLabels,
+      datasets: [{
+        data: statusCounts,
+        backgroundColor: statusColors
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+
+  // Bar Chart - Complaints by Month
+  var monthLabels = JSON.parse(document.getElementById('month-labels').textContent);
+  var monthCounts = JSON.parse(document.getElementById('month-counts').textContent);
+  var ctx2 = document.getElementById('monthBarChart').getContext('2d');
+  new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: monthLabels,
+      datasets: [{
+        label: 'Complaints',
+        data: monthCounts,
+        backgroundColor: '#1e3a8a'
+      }]
+    },
+    options:{
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+});
+</script>
+{% endblock %}

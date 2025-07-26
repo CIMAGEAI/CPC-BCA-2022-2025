@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard - Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
+            <div class="position-sticky pt-3">
+                <div class="text-center mb-4">
+                    <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                    <h5 class="text-white mt-2">Admin Portal</h5>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" href="#dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="#users">
+                            <i class="fas fa-users me-2"></i>User Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="#reports">
+                            <i class="fas fa-file-alt me-2"></i>Reports
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="#statistics">
+                            <i class="fas fa-chart-bar me-2"></i>Statistics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="#settings">
+                            <i class="fas fa-cogs me-2"></i>System Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" href="#security">
+                            <i class="fas fa-lock me-2"></i>Security
+                        </a>
+                    </li>
+                </ul>
+                
+                <hr class="text-white-50">
+                
+                <div class="text-center">
+                    <small class="text-white-50">Logged in as</small><br>
+                    <strong class="text-white">{{ user.get_full_name }}</strong><br>
+                    <small class="text-success">Administrator</small>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Admin Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Print</button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <i class="fas fa-calendar me-1"></i>This week
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Users
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">1,234</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-users fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Total Reports
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">567</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-file-alt fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Active Cases
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">89</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Pending Reviews
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">23</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-clock fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity & Quick Actions -->
+            <div class="row">
+                <!-- Recent Activity -->
+                <div class="col-lg-8">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
+                                    <div class="dropdown-header">Dropdown Header:</div>
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-item d-flex align-items-center mb-3">
+                                <div class="activity-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <strong>New user registered</strong>
+                                    <div class="text-muted small">John Doe registered as Police Officer</div>
+                                    <small class="text-muted">2 minutes ago</small>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item d-flex align-items-center mb-3">
+                                <div class="activity-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <strong>New report submitted</strong>
+                                    <div class="text-muted small">Case #CR-2024-001 submitted</div>
+                                    <small class="text-muted">15 minutes ago</small>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item d-flex align-items-center mb-3">
+                                <div class="activity-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <strong>System alert</strong>
+                                    <div class="text-muted small">High number of failed login attempts</div>
+                                    <small class="text-muted">1 hour ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="col-lg-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="fas fa-user-plus me-2"></i>Add New User
+                                </button>
+                                <button class="btn btn-success btn-sm">
+                                    <i class="fas fa-file-alt me-2"></i>View All Reports
+                                </button>
+                                <button class="btn btn-info btn-sm">
+                                    <i class="fas fa-chart-bar me-2"></i>Generate Report
+                                </button>
+                                <button class="btn btn-warning btn-sm">
+                                    <i class="fas fa-cogs me-2"></i>System Settings
+                                </button>
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-shield-alt me-2"></i>Security Audit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Status -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">System Status</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="status-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Database</span>
+                                <span class="badge bg-success">Online</span>
+                            </div>
+                            <div class="status-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Email Service</span>
+                                <span class="badge bg-success">Active</span>
+                            </div>
+                            <div class="status-item d-flex justify-content-between align-items-center mb-2">
+                                <span>SMS Service</span>
+                                <span class="badge bg-warning">Limited</span>
+                            </div>
+                            <div class="status-item d-flex justify-content-between align-items-center mb-2">
+                                <span>Backup System</span>
+                                <span class="badge bg-success">Running</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<style>
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+}
+
+.sidebar .nav-link.active {
+    color: #2470dc;
+}
+
+.sidebar .nav-link:hover {
+    color: #2470dc;
+}
+
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+}
+
+.border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+.text-gray-300 {
+    color: #dddfeb !important;
+}
+
+.text-gray-800 {
+    color: #5a5c69 !important;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: static;
+        height: auto;
+        padding-top: 0;
+    }
+}
+</style>
+{% endblock %} 

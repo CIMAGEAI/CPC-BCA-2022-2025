@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grocify - Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+      padding: 30px;
+    }
+
+    .cart-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+
+    .item {
+      margin: 15px 0;
+      padding: 10px;
+      background: #f1f1f1;
+      border-radius: 8px;
+    }
+
+    .summary {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    .qty-controls {
+      margin-top: 8px;
+    }
+
+    .qty-controls button {
+      background: #007bff;
+      margin: 0 5px;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #clearCart {
+      background: red;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cart-box">
+    <h2>Your Cart 🛒</h2>
+
+    <div id="cart-items"></div>
+
+    <div class="summary" id="checkout-section" style="display:none;">
+      <h3>Total: ₹<span id="totalDisplay">0</span></h3>
+      <form action="order_form.html" method="GET">
+        <input type="hidden" name="total_price" id="totalPriceInput">
+        <input type="hidden" name="product_summary" id="productSummaryInput">
+        <button type="submit">Proceed to Checkout ➡️</button>
+      </form>
+    </div>
+
+    <button id="clearCart">🗑️ Clear Cart</button>
+  </div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartItemsDiv = document.getElementById("cart-items");
+    const totalPriceInput = document.getElementById("totalPriceInput");
+    const productSummaryInput = document.getElementById("productSummaryInput");
+    const totalDisplay = document.getElementById("totalDisplay");
+    const checkoutSection = document.getElementById("checkout-section");
+
+    function renderCart() {
+      cartItemsDiv.innerHTML = "";
+      let total = 0;
+      let summary = "";
+
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
+        checkoutSection.style.display = "none";
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.qty * item.price;
+        total += itemTotal;
+        summary += `${item.qty} x ${item.name} @ ₹${item.price} = ₹${itemTotal}\n`;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("item");
+        itemDiv.innerHTML = `
+          <p><strong>${item.name}</strong></p>
+          <p>Price: ₹${item.price}</p>
+          <div class="qty-controls">
+            <button onclick="changeQty(${index}, -1)">➖</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty(${index}, 1)">➕</button>
+          </div>
+          <p>Total: ₹${itemTotal}</p>
+        `;
+        cartItemsDiv.appendChild(itemDiv);
+      });
+
+      totalDisplay.textContent = total;
+      totalPriceInput.value = total;
+      productSummaryInput.value = summary.trim();
+      checkoutSection.style.display = "block";
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      renderCart();
+    }
+
+    document.getElementById("clearCart").addEventListener("click", () => {
+      if (confirm("Clear your cart?")) {
+        localStorage.removeItem("cart");
+        cart = [];
+        renderCart();
+      }
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>

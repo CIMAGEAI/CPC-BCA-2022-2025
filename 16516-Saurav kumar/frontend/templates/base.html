@@ -1,0 +1,389 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <title>{% block title %}Crime Report Portal{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- Custom CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-shield-alt me-2"></i>Crime Report Portal
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Main Navigation Links -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reports/"><i class="fas fa-exclamation-triangle me-1"></i>Report Crime</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reports/search/"><i class="fas fa-search me-1"></i>Search Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/statistics/"><i class="fas fa-chart-bar me-1"></i>Statistics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/security/info/"><i class="fas fa-info-circle me-1"></i>Security Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/laws/"><i class="fas fa-gavel me-1"></i>Laws & Acts</a>
+                    </li>
+                </ul>
+                
+                <!-- Search Bar -->
+                <form class="d-flex me-3" method="get" action="{% url 'global_search' %}">
+                    <div class="input-group">
+                        <input class="form-control" type="search" name="q" placeholder="Search reports..." aria-label="Search">
+                        <button class="btn btn-outline-light" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- User Menu -->
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>{{ user.get_full_name|default:user.username }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/auth/profile/"><i class="fas fa-user-circle me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="/reports/my-reports/"><i class="fas fa-file-alt me-2"></i>My Reports</a></li>
+                                {% if user.role in 'officer,admin,supervisor' %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/main/police/dashboard/"><i class="fas fa-tachometer-alt me-2"></i>Officer Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="/security/"><i class="fas fa-cogs me-2"></i>Security Management</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/auth/logout/"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/auth/login/"><i class="fas fa-sign-in-alt me-1"></i>Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/auth/register/"><i class="fas fa-user-plus me-1"></i>Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>{{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Global Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <p class="loading-text">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- Brand & Description -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5><i class="fas fa-shield-alt me-2"></i>Crime Report Portal</h5>
+                    <p class="mb-3">Making communities safer through secure and efficient crime reporting. Your safety is our priority.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/crimereportportal" target="_blank" class="social-link" title="Follow us on Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/crimeportal" target="_blank" class="social-link" title="Follow us on Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://instagram.com/crimereportportal" target="_blank" class="social-link" title="Follow us on Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://linkedin.com/company/crime-report-portal" target="_blank" class="social-link" title="Connect on LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/reports/"><i class="fas fa-arrow-right me-2"></i>Report Crime</a></li>
+                        <li><a href="/statistics/"><i class="fas fa-arrow-right me-2"></i>Statistics</a></li>
+                        <li><a href="/auth/login/"><i class="fas fa-arrow-right me-2"></i>Login</a></li>
+                        <li><a href="/auth/register/"><i class="fas fa-arrow-right me-2"></i>Register</a></li>
+                        <li><a href="/security/info/"><i class="fas fa-arrow-right me-2"></i>Security Info</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Contact Information</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone me-2"></i>+91 98765 43210</li>
+                        <li><i class="fas fa-envelope me-2"></i>info@crimeportal.gov.in</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>Police Headquarters, Delhi</li>
+                        <li><i class="fas fa-clock me-2"></i>24/7 Emergency Support</li>
+                    </ul>
+                </div>
+                
+                <!-- Emergency Numbers -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Emergency Numbers</h5>
+                    <ul class="list-unstyled emergency-numbers">
+                        <li><i class="fas fa-phone me-2"></i><strong>100</strong> - Police</li>
+                        <li><i class="fas fa-phone me-2"></i><strong>101</strong> - Fire</li>
+                        <li><i class="fas fa-phone me-2"></i><strong>102</strong> - Ambulance</li>
+                        <li><i class="fas fa-phone me-2"></i><strong>1091</strong> - Women Helpline</li>
+                        <li><i class="fas fa-phone me-2"></i><strong>1098</strong> - Child Helpline</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            
+            <!-- Bottom Section -->
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Crime Report Portal. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="footer-links">
+                        <a href="/privacy-policy/">Privacy Policy</a>
+                        <a href="/terms-of-service/">Terms of Service</a>
+                        <a href="/sitemap/">Sitemap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    
+    <script>
+        // Global Loading and Toast Functions
+        window.CrimePortal = {
+            // Loading Functions
+            showLoading: function(message = 'Loading...') {
+                const overlay = document.getElementById('loadingOverlay');
+                const text = overlay.querySelector('.loading-text');
+                text.textContent = message;
+                overlay.classList.add('show');
+            },
+            
+            hideLoading: function() {
+                const overlay = document.getElementById('loadingOverlay');
+                overlay.classList.remove('show');
+            },
+            
+            // Toast Functions
+            showToast: function(message, type = 'info', title = '', duration = 5000) {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle'
+                };
+                
+                const titles = {
+                    success: 'Success',
+                    error: 'Error',
+                    warning: 'Warning',
+                    info: 'Information'
+                };
+                
+                toast.innerHTML = `
+                    <i class="toast-icon ${icons[type]}"></i>
+                    <div class="toast-content">
+                        <div class="toast-title">${title || titles[type]}</div>
+                        <p class="toast-message">${message}</p>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                container.appendChild(toast);
+                
+                // Show animation
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 100);
+                
+                // Auto remove
+                if (duration > 0) {
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => {
+                            if (toast.parentElement) {
+                                toast.remove();
+                            }
+                        }, 300);
+                    }, duration);
+                }
+            },
+            
+            // Button Loading State
+            setButtonLoading: function(button, loading = true) {
+                if (loading) {
+                    button.classList.add('btn-loading');
+                    button.disabled = true;
+                } else {
+                    button.classList.remove('btn-loading');
+                    button.disabled = false;
+                }
+            }
+        };
+
+        // Handle form submissions
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Crime Report Portal loaded');
+            
+            // Add page transition class
+            document.body.classList.add('page-transition');
+            
+            // Handle all forms
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    console.log('Form submitted:', form.action);
+                    
+                    // Show loading state
+                    CrimePortal.showLoading('Processing your request...');
+                    
+                    // Add loading state to submit button
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        CrimePortal.setButtonLoading(submitBtn, true);
+                    }
+                    
+                    // Hide loading after form submission (simulate)
+                    setTimeout(() => {
+                        CrimePortal.hideLoading();
+                        if (submitBtn) {
+                            CrimePortal.setButtonLoading(submitBtn, false);
+                        }
+                    }, 2000);
+                });
+            });
+            
+            // Handle navigation links
+            const navLinks = document.querySelectorAll('a[href^="/"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    console.log('Navigation link clicked:', link.href);
+                    
+                    // Show loading for navigation
+                    if (!link.href.includes('#') && !link.href.includes('logout')) {
+                        CrimePortal.showLoading('Loading page...');
+                    }
+                });
+            });
+            
+            // Password toggle functionality
+            const togglePasswordBtns = document.querySelectorAll('[id^="togglePassword"]');
+            togglePasswordBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const inputId = this.id.replace('togglePassword', 'password');
+                    const passwordInput = document.getElementById(inputId);
+                    const icon = this.querySelector('i');
+                    
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+            
+            // Auto-hide alerts after 5 seconds
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.style.transition = 'opacity 0.5s';
+                        alert.style.opacity = '0';
+                        setTimeout(() => {
+                            if (alert.parentNode) {
+                                alert.remove();
+                            }
+                        }, 500);
+                    }
+                }, 5000);
+            });
+            
+            // Show welcome toast
+            setTimeout(() => {
+                CrimePortal.showToast('Welcome to Crime Report Portal!', 'info', 'Welcome', 3000);
+            }, 1000);
+        });
+        
+        // Hide loading when page is fully loaded
+        window.addEventListener('load', function() {
+            CrimePortal.hideLoading();
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+    <div id="notificationContainer" class="notification-container"></div>
+</body>
+</html> 

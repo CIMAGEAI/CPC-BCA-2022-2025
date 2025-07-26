@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>LearnEase | Test Series</title>
+    <style>
+        /* Reset and Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Header */
+        header {
+            background-color: #004080;
+            padding: 20px 0;
+            color: white;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-end;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-menu a.active,
+        .nav-menu a:hover {
+            color: #ffcc00;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .page-title h2 {
+            font-size: 32px;
+            color: #004080;
+        }
+
+        /* Test List Section */
+        .test-list {
+            padding: 30px 20px 60px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .test-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            width: 280px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .test-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .test-card img {
+            max-width: 100%;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .test-card h3 {
+            color: #004080;
+            margin-bottom: 10px;
+        }
+
+        .test-card p {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #004080;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #003366;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #004080;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1 class="logo">LearnEase</h1>
+            <nav aria-label="Main navigation">
+                <ul class="nav-menu">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="course.html">Courses</a></li>
+                    <li><a href="testseries.html" class="active">Test Series</a></li>
+                    <li><a href="video.html">Videos</a></li>
+                    <li><a href="service.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <section class="page-title">
+        <h2>Available Test Series</h2>
+    </section>
+
+    <!-- Test Series Grid -->
+    <section class="test-list">
+
+        <div class="test-card">
+            <img src="https://img.icons8.com/color/96/000000/c-programming.png" alt="C Language">
+            <h3>C Language</h3>
+            <p>Basics to advanced-level C programming practice questions.</p>
+            <a href="c.html" class="btn">Start C Test</a>
+        </div>
+
+        <div class="test-card">
+            <img src="https://img.icons8.com/color/96/000000/c-plus-plus-logo.png" alt="C++ Language">
+            <h3>C++ Language</h3>
+            <p>Object-oriented programming tests with STL practice.</p>
+            <a href="C++.html" class="btn">Start C++ Test</a>
+        </div>
+
+        <div class="test-card">
+            <img src="https://img.icons8.com/color/96/000000/java-coffee-cup-logo.png" alt="Java">
+            <h3>Java</h3>
+            <p>Core Java, OOPs, and exception handling mock tests.</p>
+            <a href="java.html" class="btn">Start Java Test</a>
+        </div>
+
+        <div class="test-card">
+            <img src="https://img.icons8.com/color/96/000000/javascript--v1.png" alt="JavaScript">
+            <h3>JavaScript</h3>
+            <p>DOM, ES6, events, and functions with interactive questions.</p>
+            <a href="javascript.html" class="btn">Start JS Test</a>
+        </div>
+
+        <div class="test-card">
+            <img src="https://img.icons8.com/color/96/000000/nodejs.png" alt="Node.js">
+            <h3>Node.js</h3>
+            <p>Express, middleware, and backend programming test series.</p>
+            <a href="node.html" class="btn">Start Node.js Test</a>
+        </div>
+
+        <div class="test-card">
+            <img src="https://img.icons8.com/color/96/000000/html-5--v1.png" alt="HTML">
+            <h3>HTML</h3>
+            <p>Structure, tags, forms, and semantic HTML-based quizzes.</p>
+            <a href="H.html" class="btn">Start HTML Test</a>
+        </div>
+
+        <div class="test-card">
+            <img src="https://img.icons8.com/color/96/000000/css3.png" alt="CSS">
+            <h3>CSS</h3>
+            <p>Flexbox, Grid, positioning, and responsive design tests.</p>
+            <a href="CSs.html" class="btn">Start CSS Test</a>
+        </div>
+
+        <div class="test-card">
+            <img src="https://img.icons8.com/color/96/000000/python--v1.png" alt="Python">
+            <h3>Python</h3>
+            <p>Syntax, functions, OOPs, and advanced Python practice tests.</p>
+            <a href="python.html" class="btn">Start Python Test</a>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Designed and Implemented by Vikash Kumar</p>
+            <p>&copy; 2025 Project Titled: Learn Ease.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

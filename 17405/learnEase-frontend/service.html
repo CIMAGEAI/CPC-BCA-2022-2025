@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LearnEase - Services</title>
+  <style>
+    :root {
+  --primary: #0077ff;
+  --dark: #1e1e1e;
+  --light: #f9f9f9;
+  --gray: #666;
+  --font: 'Poppins', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--light);
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+header {
+    background: #004080;
+    color: white;
+    padding: 20px 0;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+    color: #ffcc00;
+}
+/* Navbar */
+.navbar {
+  background: var(--dark);
+  color: white;
+  padding: 1rem 0;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: var(--primary);
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(to right, #0077ff, #00c6ff);
+  color: white;
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Services Section */
+.services {
+  padding: 4rem 0;
+  background: #fff;
+}
+
+.services .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.service-card {
+  background: #f0f4ff;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card img {
+  height: 80px;
+  margin-bottom: 1rem;
+}
+
+.service-card h3 {
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+}
+
+.service-card p {
+  color: var(--gray);
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+footer {
+  background: var(--dark);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+}
+
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+        <h1 class="logo">LearnEase</h1>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="course.html">Courses</a></li>
+                <li><a href="testseries.html">Test Series</a></li>
+                <li><a href="video.html">Videos</a></li>
+                <li><a href="service.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+               
+            </ul>
+        </nav>
+    </div>
+</header>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Our Educational Services</h1>
+      <p>Empowering students through accessible, quality learning solutions</p>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services">
+    <div class="container">
+      <div class="service-card">
+        <img src="online.png" alt="Online Courses" />
+        <h3>Online Courses</h3>
+        <p>Explore hundreds of subjects with expert instructors at your pace.</p>
+      </div>
+      <div class="service-card">
+        <img src="https://img.icons8.com/color/96/000000/student-male.png" alt="Tutoring" />
+        <h3>1-on-1 Tutoring</h3>
+        <p>Personalized support for academic improvement and confidence.</p>
+      </div>
+      <div class="service-card">
+        <img src="workshop.png" alt="Workshops" />
+        <h3>Workshops</h3>
+        <p>Attend live workshops and skill-building events curated by pros.</p>
+      </div>
+      <div class="service-card">
+        <img src="carrer.png" alt="Career Guidance" />
+        <h3>Career Guidance</h3>
+        <p>Get expert advice to make smart career and course decisions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+ <footer>
+        <div class="container">
+            <p>&copy; 2025 Designed and Implemented by Vikash Kumar</p>
+            <p>&copy; 2025 Project Titled: Learn Ease.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

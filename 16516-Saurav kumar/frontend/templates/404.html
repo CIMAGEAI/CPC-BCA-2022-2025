@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="error-page-container">
+    <div class="error-page-card">
+        <h1>404</h1>
+        <h2>Page Not Found / पेज नहीं मिला</h2>
+        <p>Sorry, the page you are looking for does not exist.<br>माफ़ कीजिए, यह पेज उपलब्ध नहीं है।</p>
+        <a href="/" class="error-home-btn">Go Home / होम जाएं</a>
+    </div>
+</div>
+<style>
+.error-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background: #f8fafc;
+}
+.error-page-card {
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 32px rgba(52, 112, 255, 0.10);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    border: 2px solid #f59e42;
+}
+.error-page-card h1 {
+    font-size: 3.5rem;
+    color: #f59e42;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+}
+.error-page-card h2 {
+    color: #334155;
+    margin-bottom: 1rem;
+}
+.error-page-card p {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+.error-home-btn {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    background: #f59e42;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.error-home-btn:hover {
+    background: #ea580c;
+}
+</style>
+{% endblock %} 

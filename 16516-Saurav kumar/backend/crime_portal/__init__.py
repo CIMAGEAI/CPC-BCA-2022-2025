@@ -1,0 +1,1 @@
+# Crime Report Portal - Main Django Project 

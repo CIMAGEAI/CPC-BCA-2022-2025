@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Email Verification{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header {% if verified %}bg-success{% else %}bg-danger{% endif %} text-white">
+                    <h4 class="mb-0">
+                        {% if verified %}
+                            <i class="fas fa-check-circle me-2"></i>Email Verified
+                        {% else %}
+                            <i class="fas fa-exclamation-triangle me-2"></i>Verification Failed
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body text-center">
+                    {% if verified %}
+                        <div class="mb-4">
+                            <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                            <h5 class="text-success">Email Verification Successful!</h5>
+                            <p class="text-muted">
+                                Your email address has been successfully verified. You can now login to your account.
+                            </p>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'authentication:login' %}" class="btn btn-success">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login Now
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="mb-4">
+                            <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                            <h5 class="text-danger">Verification Failed</h5>
+                            <p class="text-muted">
+                                The verification link is invalid or has expired. Please request a new verification email.
+                            </p>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'authentication:login' %}" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>Go to Login
+                            </a>
+                            <a href="{% url 'authentication:register' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-user-plus me-2"></i>Register New Account
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

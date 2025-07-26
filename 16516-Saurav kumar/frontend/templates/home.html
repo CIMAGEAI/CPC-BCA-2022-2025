@@ -1,0 +1,791 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crime Report Portal - Secure Crime Reporting System{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, rgba(30, 58, 138, 0.7) 0%, rgba(30, 64, 175, 0.6) 50%, rgba(17, 24, 39, 0.7) 100%), 
+                    url('https://images.unsplash.com/photo-1589820296150-ecf34c9b2c0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white;
+        padding: 120px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #C4B289;
+        opacity: 1;
+    }
+    
+    .hero-section h1 {
+        font-weight: 800;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+        font-size: 3.5rem;
+    }
+    
+    .hero-section .lead {
+        font-size: 1.3rem;
+        font-weight: 500;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .hero-section .btn {
+        position: relative;
+        z-index: 1;
+        font-weight: 600;
+        padding: 15px 35px;
+        border-radius: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .hero-section .btn-light {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        border: none;
+        color: white;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+    
+    .hero-section .btn-light:hover {
+        background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+    }
+    
+    .hero-section .btn-outline-light {
+        border: 2px solid white;
+        color: white;
+        background: transparent;
+    }
+    
+    .hero-section .btn-outline-light:hover {
+        background: white;
+        color: #1e3a8a;
+        transform: translateY(-3px);
+    }
+    
+    /* Enhanced Feature Cards */
+    .feature-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .feature-card .card-body {
+        padding: 40px 30px;
+        text-align: center;
+    }
+    
+    .feature-card i {
+        font-size: 4rem;
+        margin-bottom: 25px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .feature-card .card-title {
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: #1f2937;
+        margin-bottom: 15px;
+    }
+    
+    .feature-card .card-text {
+        color: #6b7280;
+        font-weight: 500;
+        line-height: 1.6;
+    }
+    
+    /* Enhanced Statistics Section */
+    .stats-section {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: 80px 0;
+        position: relative;
+    }
+    
+    .stats-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    }
+    
+    .stats-section h2 {
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 60px;
+        position: relative;
+    }
+    
+    .stats-section h2::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+    
+    .stats-item {
+        text-align: center;
+        padding: 30px 20px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+    }
+    
+    .stats-item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .stats-item i {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stats-item h3 {
+        font-weight: 800;
+        font-size: 2.5rem;
+        color: #1f2937;
+        margin-bottom: 10px;
+    }
+    
+    .stats-item p {
+        color: #6b7280;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* Enhanced How It Works Section */
+    .how-it-works {
+        padding: 80px 0;
+        background: white;
+    }
+    
+    .how-it-works h2 {
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 60px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .how-it-works h2::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+    
+    .step-item {
+        text-align: center;
+        padding: 40px 20px 30px 20px;
+        position: relative;
+        margin-top: 25px;
+    }
+    
+    .step-item::before {
+        content: '';
+        position: absolute;
+        top: 50px;
+        right: -50%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        z-index: 0;
+    }
+    
+    .step-item:last-child::before {
+        display: none;
+    }
+    
+    .step-item .step-number {
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.4rem;
+        z-index: 1;
+        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        border: 3px solid white;
+    }
+    
+    .step-item i {
+        font-size: 3rem;
+        margin: 50px 0 20px 0;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .step-item h5 {
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+    
+    .step-item p {
+        color: #6b7280;
+        font-weight: 500;
+        line-height: 1.6;
+    }
+    
+    /* Enhanced Call to Action */
+    .cta-section {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        color: white;
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #C4B289;
+        opacity: 1;
+    }
+    
+    .cta-section .container {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .cta-section h2 {
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .cta-section .lead {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 30px;
+        opacity: 0.9;
+    }
+    
+    .cta-section .btn {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        border: none;
+        padding: 15px 40px;
+        border-radius: 30px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .cta-section .btn:hover {
+        background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-section .btn {
+            margin: 10px 5px;
+            padding: 12px 25px;
+        }
+        
+        .step-item::before {
+            display: none;
+        }
+        
+        .stats-item {
+            margin-bottom: 20px;
+        }
+    }
+
+/* Modern Section Backgrounds */
+.enhanced-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #1e3a8a10 100%);
+    border-radius: 30px;
+    box-shadow: 0 8px 32px rgba(30,58,138,0.10), 0 1.5px 8px rgba(220,38,38,0.07);
+    padding: 3.5rem 2rem 3rem 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+@media (max-width: 768px) {
+    .enhanced-section {
+        padding: 2rem 0.5rem 2rem 0.5rem;
+        border-radius: 18px;
+    }
+}
+
+/* CLEANUP: Bootstrap default backgrounds for all main sections */
+.hero-section, .features-section, .stats-section, .enhanced-section, .how-it-works, .cta-section {
+    background: #c4b289 !important;
+    color: #212529 !important;
+}
+.hero-section h1, .feature-card .card-title, .stats-section h2, .step-item h5, .cta-section h2, .stats-item h3 {
+    color: #212529 !important;
+    text-shadow: none !important;
+}
+.stats-item, .feature-card {
+    background: linear-gradient(135deg, #22335a 0%, #10204b 100%) !important;
+    color: #fff !important;
+}
+.stats-item h3, .feature-card .card-title {
+    color: #f5b100 !important;
+}
+.cta-section .btn, .hero-section .btn {
+    background: unset !important;
+    color: unset !important;
+    font-weight: unset !important;
+    border: unset !important;
+}
+.cta-section .btn:hover, .hero-section .btn:hover {
+    background: unset !important;
+    color: unset !important;
+    border: unset !important;
+}
+
+/* Set all main cards to #C4B289 background and dark text for readability */
+.feature-card, .stats-item, .info-card, .card, .impact-number {
+    background: #C4B289 !important;
+    color: #111 !important;
+}
+/* Set h3 inside cards to dark red */
+.feature-card h3, .stats-item h3, .info-card h3, .card h3, .impact-number h3 {
+    color: #a10d1a !important;
+}
+/* All other text inside cards to black */
+.feature-card *, .stats-item *, .info-card *, .card *, .impact-number * {
+    color: #111 !important;
+}
+/* But h3 stays dark red */
+.feature-card h3, .stats-item h3, .info-card h3, .card h3, .impact-number h3 {
+    color: #a10d1a !important;
+}
+/* Set h5.card-title inside .card-body to dark red */
+.card-body h5.card-title {
+    color: #a10d1a !important;
+}
+.footer, .footer * {
+    background: var(--primary-color) 60% !important;
+    color: #212529 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">
+            <i class="fas fa-shield-alt me-3" style="color: #f59e0b;"></i>
+            Secure Crime Reporting System
+        </h1>
+        <p class="lead mb-5">Report crimes safely and anonymously. Help make your community safer with our professional crime reporting portal.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="/reports/submit/" class="btn btn-light btn-lg">
+                <i class="fas fa-plus me-2"></i>Report Crime
+            </a>
+            <a href="/auth/register/" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-user-plus me-2"></i>Register Now
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboards Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4 text-white" style="font-weight: 700;">Dashboards</h2>
+        <div class="row justify-content-center g-4">
+            {% if user.is_authenticated %}
+                {% if user.role == 'police' %}
+                <div class="col-md-4">
+                    <div class="card h-100 text-center border-primary">
+                        <div class="card-body">
+                            <i class="fas fa-user-shield fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Police Dashboard</h5>
+                            <p class="card-text">Manage, assign, and track criminal cases as a police officer.</p>
+                            <a href="/main/police/dashboard/" class="btn btn-primary w-100">Go to Police Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if user.role == 'admin' %}
+                <div class="col-md-4">
+                    <div class="card h-100 text-center border-success">
+                        <div class="card-body">
+                            <i class="fas fa-user-cog fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">Admin Dashboard</h5>
+                            <p class="card-text">Full system management, analytics, and user control for admins.</p>
+                            <a href="/main/admin/dashboard/" class="btn btn-success w-100">Go to Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if user.role == 'public' %}
+                <div class="col-md-4">
+                    <div class="card h-100 text-center border-info">
+                        <div class="card-body">
+                            <i class="fas fa-users fa-3x text-info mb-3"></i>
+                            <h5 class="card-title">Public Dashboard</h5>
+                            <p class="card-text">View public crime statistics, trends, and community safety info.</p>
+                            <a href="/public/dashboard/" class="btn btn-info w-100">Go to Public Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="col-md-4">
+                    <div class="card h-100 text-center border-info">
+                        <div class="card-body">
+                            <i class="fas fa-users fa-3x text-info mb-3"></i>
+                            <h5 class="card-title">Public Dashboard</h5>
+                            <p class="card-text">View public crime statistics, trends, and community safety info.</p>
+                            <a href="/public/dashboard/" class="btn btn-info w-100">Go to Public Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <p class="text-center text-white mt-3 small">* Access to Police/Admin dashboards requires login and appropriate permissions.</p>
+    </div>
+</section>
+
+<!-- Extra Gap Between Hero and Features -->
+<div class="my-5"></div>
+
+<!-- Features Section -->
+<section class="py-5 enhanced-section mt-4">
+    <div class="container">
+        <h2 class="text-center mb-5" style="font-weight: 800; color: #1f2937;">Why Choose Our Portal?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-shield"></i>
+                        <h5 class="card-title">Secure & Anonymous</h5>
+                        <p class="card-text">Report crimes anonymously with end-to-end encryption and secure data handling. Your privacy is our priority.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line"></i>
+                        <h5 class="card-title">Real-time Tracking</h5>
+                        <p class="card-text">Track your report status in real-time and receive updates on investigation progress through our secure system.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h5 class="card-title">Mobile Friendly</h5>
+                        <p class="card-text">Access the portal from any device - desktop, tablet, or mobile phone with our responsive design.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="stats-section enhanced-section">
+    <div class="container">
+        <h2 class="text-center mb-5">Community Impact</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-item">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>1,234</h3>
+                    <p>Reports Filed</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-item">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>856</h3>
+                    <p>Cases Resolved</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-item">
+                    <i class="fas fa-users"></i>
+                    <h3>5,678</h3>
+                    <p>Registered Users</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-item">
+                    <i class="fas fa-clock"></i>
+                    <h3>24h</h3>
+                    <p>Average Response</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works enhanced-section">
+    <div class="container">
+        <h2 class="mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <i class="fas fa-edit"></i>
+                    <h5>Report</h5>
+                    <p>Fill out the crime report form with detailed information</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <i class="fas fa-search"></i>
+                    <h5>Review</h5>
+                    <p>Officers review and assign your case for investigation</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <i class="fas fa-cogs"></i>
+                    <h5>Investigate</h5>
+                    <p>Professional investigation begins with expert officers</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <i class="fas fa-flag-checkered"></i>
+                    <h5>Resolve</h5>
+                    <p>Case resolution and regular updates provided</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Report?</h2>
+        <p class="lead mb-4">Help make your community safer by reporting crimes securely and anonymously through our professional portal.</p>
+        <a href="/reports/submit/" class="btn btn-lg">
+            <i class="fas fa-plus me-2"></i>Report a Crime Now
+        </a>
+    </div>
+</section>
+
+<!-- About/Introduction Section -->
+<section class="enhanced-section">
+  <div class="container">
+    <h2 class="mb-4 text-center">पोर्टल का परिचय (About the Portal)</h2>
+    <p class="lead text-center">यह पोर्टल नागरिकों को सुरक्षित, गोपनीय और आसान तरीके से अपराध की शिकायत दर्ज करने, ट्रैक करने और पुलिस से संवाद करने की सुविधा देता है। आपकी जानकारी पूरी तरह से एन्क्रिप्टेड और गोपनीय रहती है।</p>
+  </div>
+</section>
+
+<!-- How to File Complaint Section -->
+<section class="enhanced-section">
+  <div class="container">
+    <h2 class="mb-4 text-center">शिकायत कैसे दर्ज करें? (How to File a Complaint)</h2>
+    <ol class="list-group list-group-numbered mb-3">
+      <li class="list-group-item">पोर्टल पर <b>रजिस्टर</b> करें या लॉगिन करें।</li>
+      <li class="list-group-item">"Report Crime" या "शिकायत दर्ज करें" बटन पर क्लिक करें।</li>
+      <li class="list-group-item">शिकायत फॉर्म भरें: शीर्षक, प्रकार, विवरण, स्थान, तारीख/समय, प्रमाण (फोटो/वीडियो/पीडीएफ) अपलोड करें (यदि उपलब्ध हो)।</li>
+      <li class="list-group-item">प्राथमिकता चुनें (Normal, Medium, Critical, Sensitive)।</li>
+      <li class="list-group-item">फॉर्म सबमिट करें। आपको <b>ट्रैकिंग ID</b> और कन्फर्मेशन मैसेज मिलेगा।</li>
+      <li class="list-group-item">आप "Track Complaint" सेक्शन में अपनी शिकायत की स्थिति देख सकते हैं।</li>
+    </ol>
+    <p class="text-center text-muted">कोई भी समस्या या सहायता के लिए नीचे दिए गए हेल्पलाइन नंबरों पर संपर्क करें।</p>
+  </div>
+</section>
+
+<!-- Helpline & Emergency Numbers Section -->
+<section class="enhanced-section">
+  <div class="container">
+    <h2 class="mb-4 text-center">Helpline & Emergency Numbers</h2>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <div class="card info-card h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Police Helpline</h5>
+            <p class="card-text display-6"><b>100</b></p>
+            <p class="card-text">For immediate police assistance</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card info-card h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Women Helpline</h5>
+            <p class="card-text display-6"><b>1091</b></p>
+            <p class="card-text">महिला सुरक्षा के लिए</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card info-card h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Child Helpline</h5>
+            <p class="card-text display-6"><b>1098</b></p>
+            <p class="card-text">बच्चों की सुरक्षा के लिए</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card info-card h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Disaster/Emergency</h5>
+            <p class="card-text display-6"><b>112</b></p>
+            <p class="card-text">All-in-one emergency number</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQs Section -->
+<section class="enhanced-section">
+  <div class="container">
+    <h2 class="mb-4 text-center">FAQs (अक्सर पूछे जाने वाले सवाल)</h2>
+    <div class="accordion" id="faqAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
+            क्या मेरी जानकारी गोपनीय रहेगी?
+          </button>
+        </h2>
+        <div id="faqCollapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            हाँ, आपकी सभी जानकारी पूरी तरह से एन्क्रिप्टेड और गोपनीय रहती है। सिर्फ पुलिस और अधिकृत अधिकारी ही देख सकते हैं।
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+            क्या मैं गुमनाम (anonymous) शिकायत दर्ज कर सकता हूँ?
+          </button>
+        </h2>
+        <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            हाँ, आप चाहें तो अपनी पहचान छुपा सकते हैं। "Anonymous" विकल्प चुनें।
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq3">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+            शिकायत दर्ज करने के बाद क्या होगा?
+          </button>
+        </h2>
+        <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            आपकी शिकायत पुलिस अधिकारी को भेज दी जाएगी। आप ट्रैकिंग ID से उसकी स्थिति देख सकते हैं।
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq4">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+            अगर मुझे तकनीकी सहायता चाहिए तो?
+          </button>
+        </h2>
+        <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            आप ऊपर दिए गए हेल्पलाइन नंबरों पर कॉल कर सकते हैं या <b>Contact Local Police</b> सेक्शन देखें।
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Local Police Section -->
+<section class="enhanced-section">
+  <div class="container">
+    <h2 class="mb-4 text-center">Contact Local Police Station</h2>
+    <p class="text-center">अपने नजदीकी पुलिस स्टेशन की जानकारी के लिए <b>100</b> पर कॉल करें या राज्य पुलिस की वेबसाइट देखें। जल्द ही यहाँ station-wise directory उपलब्ध होगी।</p>
+  </div>
+</section>
+{% endblock %}
