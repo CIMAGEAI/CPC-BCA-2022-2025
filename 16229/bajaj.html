@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bajaj Service Booking</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #e0f7fa);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 32px;
+      background: linear-gradient(to right, #1565c0, #00bcd4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #43a047, #66bb6a);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #388e3c, #4caf50);
+    }
+
+    #confirmation {
+      position: fixed;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 2px solid #43a047;
+      padding: 20px 25px;
+      border-radius: 10px;
+      font-size: 26px;
+      font-weight: bold;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 280px;
+      text-align: center;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="confirmation"></div>
+
+    <h2>Book Your Bajaj Bike Service</h2>
+
+    <form id="bookingForm">
+      <label for="model">Select Bajaj Bike Model:</label>
+      <select name="bike_model" id="model" required>
+        <option value="Pulsar N160">Pulsar N160</option>
+        <option value="Pulsar NS200">Pulsar NS200</option>
+        <option value="Pulsar 125">Pulsar 125</option>
+        <option value="Pulsar NS400Z">Pulsar NS400Z</option>
+        <option value="Pulsar NS125">Pulsar NS125</option>
+        <option value="Pulsar 150">Pulsar 150</option>
+        <option value="Pulsar NS160">Pulsar NS160</option>
+        <option value="Pulsar RS 200">Pulsar RS 200</option>
+        <option value="Dominar 400">Dominar 400</option>
+        <option value="Pulsar 220 F">Pulsar 220 F</option>
+        <option value="Chetak">Chetak</option>
+        <option value="Dominar 250">Dominar 250</option>
+        <option value="Pulsar N125">Pulsar N125</option>
+        <option value="Pulsar N250">Pulsar N250</option>
+        <option value="Pulsar N150">Pulsar N150</option>
+        <option value="Freedom CNG">Freedom CNG</option>
+        <option value="Platina 100">Platina 100</option>
+        <option value="Platina 110">Platina 110</option>
+        <option value="CT 110">CT 110</option>
+        <option value="Avenger Street 160">Avenger Street 160</option>
+        <option value="Avenger Cruise 220">Avenger Cruise 220</option>
+        <option value="Pulsar P150">Pulsar P150</option>
+        <option value="Avenger Street 220">Avenger Street 220</option>
+      </select>
+
+      <label for="regno">Bike Registration No. :</label>
+      <input type="text" name="regno" id="regno" required />
+
+      <label for="name">Customer Name:</label>
+      <input type="text" name="name" id="name" required />
+
+      <label for="phone">Phone Number:</label>
+      <input type="text" name="mobile" id="phone" required />
+
+      <label for="address">Address:</label>
+      <textarea name="address" id="address" required></textarea>
+
+      <label for="problem">Bike Problem Description:</label>
+      <textarea name="problem" id="problem" required></textarea>
+
+      <button type="submit">Submit Booking</button>
+    </form>
+  </div>
+
+  <!-- jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const { jsPDF } = window.jspdf;
+    const form = document.getElementById("bookingForm");
+    const confirmation = document.getElementById("confirmation");
+
+    function generateToken() {
+      return Math.floor(Math.random() * 100) + 1;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = form.name.value.trim();
+      const mobile = form.mobile.value.trim();
+      const model = form.bike_model.value;
+      const regno = form.regno.value.trim();
+      const address = form.address.value.trim();
+      const problem = form.problem.value.trim();
+      const company = "Bajaj"; // ✅ ADDED
+
+      const date = new Date();
+      date.setDate(date.getDate() + 2);
+
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const months = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+
+      const dayName = days[date.getDay()];
+      const day = date.getDate();
+      const monthName = months[date.getMonth()];
+      const year = date.getFullYear();
+
+      const serviceDate = `${dayName} ${day} ${monthName} ${year}, 9:00 AM`; // ✅ ADDED TIME
+      const token = generateToken(); // ✅ ADDED
+
+      confirmation.innerText = `✅ Thank you, ${name}! Your Token Number is ${token}. Please bring your bike on ${serviceDate}`;
+      confirmation.style.display = "block";
+
+      const doc = new jsPDF();
+      doc.setTextColor(22, 101, 182);
+      doc.setFontSize(24);
+      doc.setFont("helvetica", "bold");
+      doc.text("Bajaj Bike Service Booking Confirmation", 20, 25);
+
+      doc.setTextColor(0, 0, 0);
+      let y = 40;
+
+      function printField(label, value) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.text(label + ":", 20, y);
+        doc.setFont("helvetica", "normal");
+        doc.text(value, 80, y);
+        y += 12;
+      }
+
+      printField("Customer Name", name);
+      printField("Phone Number", mobile);
+      printField("Bike Model", model);
+      printField("Bike Registration No.", regno);
+      printField("Address", address);
+      printField("Problem Description", problem);
+      printField("Token Number", token.toString());
+      printField("Service Date", serviceDate);
+
+      doc.save("Bajaj_Bike_Service_Booking.pdf");
+
+      // ✅ ADDED: Send data to PHP
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("mobile", mobile);
+      formData.append("bike_model", model);
+      formData.append("regno", regno);
+      formData.append("address", address);
+      formData.append("problem", problem);
+      formData.append("company", company);
+      formData.append("token", token);
+      formData.append("service_date", serviceDate);
+
+      fetch("submit.php", {
+        method: "POST",
+        body: formData
+      }).then(response => response.text())
+        .then(data => console.log("Response:", data));
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>

@@ -36,14 +36,13 @@ This is the official final-year BCA project for a fully functional **Patna Metro
 
 ## 👨‍🎓 Project Info
 
-- 🔖 Project Name: Patna Metro Website
-- 🏫 College: CIMAGE Professional College
-- 📅 Session: 2022–2025
-- 👨‍💻 Submitted by: Krishna Kumar
-- 🆔 Student ID: 16685
-- 🎓 Roll Number: C43
-- 📝 Registration Number: 22303310051
-- 📚 Course: BCA (6th Semester)
+- 🔖 **Project Name:** Patna Metro Website  
+- 🏫 **College:** CIMAGE Professional College  
+- 📅 **Session:** 2022–2025  
+- 👨‍💻 **Submitted by:** Krishna Kumar  
+- 🆔 **Student ID:** 16685  
+- 🎓 **Roll Number:** C43  
+- 📚 **Course:** BCA (6th Semester)
 
 
 📄 License

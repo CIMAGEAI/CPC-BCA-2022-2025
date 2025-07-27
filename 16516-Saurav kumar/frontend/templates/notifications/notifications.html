@@ -1,0 +1,539 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Notifications - Crime Report Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .notification-item {
+        border-left: 4px solid #007bff;
+        transition: all 0.2s;
+    }
+    .notification-item:hover {
+        background-color: #f8f9fa;
+    }
+    .notification-item.unread {
+        background-color: #e3f2fd;
+        border-left-color: #2196f3;
+    }
+    .notification-item.unread:hover {
+        background-color: #bbdefb;
+    }
+    .notification-type {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+    .notification-time {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+    .preferences-section {
+        background: #f8f9fa;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .notification-filters {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    /* REVERT: Remove all custom police theme, gradients, gold accent, and forced color overrides. Restore Bootstrap defaults. */
+    .notification-item, .notification-filters, .preferences-section {
+        background: unset !important;
+        color: unset !important;
+        border-left: unset !important;
+    }
+    .notification-item.unread {
+        background: unset !important;
+        color: unset !important;
+        border-left: unset !important;
+    }
+    .notification-type {
+        color: unset !important;
+    }
+    .notification-item, .notification-filters, .preferences-section, .card, .info-card {
+        background: #c4b289 !important;
+        color: #212529 !important;
+    }
+    .notification-item h3, .notification-item h5, .card h3, .card h5, .info-card h3, .info-card h5 {
+        color: #a10d1a !important;
+    }
+    .notification-item *, .card *, .info-card * {
+        color: #111 !important;
+    }
+    .notification-item h3, .notification-item h5, .card h3, .card h5, .info-card h3, .info-card h5 {
+        color: #a10d1a !important;
+    }
+    .footer, .footer * {
+        background: var(--primary-color) 60% !important;
+        color: #212529 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 mb-0">Notifications</h1>
+                    <p class="text-muted">Stay updated on your case progress</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary" onclick="markAllAsRead()">
+                        <i class="fas fa-check-double"></i> Mark All Read
+                    </button>
+                    <button class="btn btn-outline-danger" onclick="clearAllNotifications()">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="notification-filters">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="type" class="form-label">Type</label>
+                        <select class="form-select" id="type" name="type">
+                            <option value="">All Types</option>
+                            <option value="status_change" {% if request.GET.type == 'status_change' %}selected{% endif %}>Status Changes</option>
+                            <option value="assignment" {% if request.GET.type == 'assignment' %}selected{% endif %}>Assignments</option>
+                            <option value="comment" {% if request.GET.type == 'comment' %}selected{% endif %}>Comments</option>
+                            <option value="evidence" {% if request.GET.type == 'evidence' %}selected{% endif %}>Evidence</option>
+                            <option value="reminder" {% if request.GET.type == 'reminder' %}selected{% endif %}>Reminders</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="">All</option>
+                            <option value="unread" {% if request.GET.status == 'unread' %}selected{% endif %}>Unread</option>
+                            <option value="read" {% if request.GET.status == 'read' %}selected{% endif %}>Read</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="date" class="form-label">Date Range</label>
+                        <select class="form-select" id="date" name="date">
+                            <option value="">All Time</option>
+                            <option value="today" {% if request.GET.date == 'today' %}selected{% endif %}>Today</option>
+                            <option value="week" {% if request.GET.date == 'week' %}selected{% endif %}>This Week</option>
+                            <option value="month" {% if request.GET.date == 'month' %}selected{% endif %}>This Month</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <a href="{% url 'notifications' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Clear
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Notifications List -->
+            <div class="notifications-list">
+                {% for notification in notifications %}
+                <div class="card notification-item mb-3 {% if not notification.is_read %}unread{% endif %}" 
+                     data-notification-id="{{ notification.id }}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-primary notification-type me-2">
+                                        {{ notification.get_notification_type_display }}
+                                    </span>
+                                    {% if not notification.is_read %}
+                                    <span class="badge bg-danger">New</span>
+                                    {% endif %}
+                                </div>
+                                <h6 class="card-title mb-1">{{ notification.message }}</h6>
+                                {% if notification.report %}
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-file-alt"></i>
+                                    Case #{{ notification.report.case_number }}
+                                </p>
+                                {% endif %}
+                                <div class="notification-time">
+                                    <i class="fas fa-clock"></i>
+                                    {{ notification.created_at|timesince }} ago
+                                </div>
+                            </div>
+                            <div class="d-flex gap-1">
+                                {% if not notification.is_read %}
+                                <button class="btn btn-sm btn-outline-success" onclick="markAsRead('{{ notification.id }}')">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                {% endif %}
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteNotification('{{ notification.id }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5">
+                    <i class="fas fa-bell-slash fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No notifications</h5>
+                    <p class="text-muted">You're all caught up! Check back later for updates.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if notifications.has_other_pages %}
+            <nav aria-label="Notifications pagination" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if notifications.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ notifications.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                            Previous
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in notifications.paginator.page_range %}
+                    {% if notifications.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% elif num > notifications.number|add:'-3' and num < notifications.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                            {{ num }}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if notifications.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ notifications.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                            Next
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Notification Preferences -->
+            <div class="preferences-section">
+                <h5 class="mb-3">
+                    <i class="fas fa-cog"></i> Notification Preferences
+                </h5>
+                
+                <form id="preferencesForm">
+                    <h6 class="text-muted mb-2">Email Notifications</h6>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="email_status" name="email_status_updates" 
+                                   {% if preferences.email_status_updates %}checked{% endif %}>
+                            <label class="form-check-label" for="email_status">
+                                Status updates
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="email_assignment" name="email_assignments" 
+                                   {% if preferences.email_assignments %}checked{% endif %}>
+                            <label class="form-check-label" for="email_assignment">
+                                Report assignments
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="email_comments" name="email_comments" 
+                                   {% if preferences.email_comments %}checked{% endif %}>
+                            <label class="form-check-label" for="email_comments">
+                                New comments
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="email_reminders" name="email_reminders" 
+                                   {% if preferences.email_reminders %}checked{% endif %}>
+                            <label class="form-check-label" for="email_reminders">
+                                Reminders
+                            </label>
+                        </div>
+                    </div>
+
+                    <h6 class="text-muted mb-2">SMS Notifications</h6>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sms_status" name="sms_status_updates" 
+                                   {% if preferences.sms_status_updates %}checked{% endif %}>
+                            <label class="form-check-label" for="sms_status">
+                                Status updates
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sms_urgent" name="sms_urgent" 
+                                   {% if preferences.sms_urgent %}checked{% endif %}>
+                            <label class="form-check-label" for="sms_urgent">
+                                Urgent notifications only
+                            </label>
+                        </div>
+                    </div>
+
+                    <h6 class="text-muted mb-2">In-App Notifications</h6>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="inapp_status" name="in_app_status_updates" 
+                                   {% if preferences.in_app_status_updates %}checked{% endif %}>
+                            <label class="form-check-label" for="inapp_status">
+                                Status updates
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="inapp_comments" name="in_app_comments" 
+                                   {% if preferences.in_app_comments %}checked{% endif %}>
+                            <label class="form-check-label" for="inapp_comments">
+                                New comments
+                            </label>
+                        </div>
+                    </div>
+
+                    <h6 class="text-muted mb-2">Frequency</h6>
+                    <div class="mb-3">
+                        <select class="form-select" id="frequency" name="digest_frequency">
+                            <option value="immediate" {% if preferences.digest_frequency == 'immediate' %}selected{% endif %}>Immediate</option>
+                            <option value="hourly" {% if preferences.digest_frequency == 'hourly' %}selected{% endif %}>Hourly</option>
+                            <option value="daily" {% if preferences.digest_frequency == 'daily' %}selected{% endif %}>Daily</option>
+                            <option value="weekly" {% if preferences.digest_frequency == 'weekly' %}selected{% endif %}>Weekly</option>
+                        </select>
+                    </div>
+
+                    <h6 class="text-muted mb-2">Quiet Hours</h6>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="quiet_hours" name="quiet_hours_enabled" 
+                                   {% if preferences.quiet_hours_enabled %}checked{% endif %}>
+                            <label class="form-check-label" for="quiet_hours">
+                                Enable quiet hours
+                            </label>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <label for="quiet_start" class="form-label">Start Time</label>
+                                <input type="time" class="form-control" id="quiet_start" name="quiet_hours_start" 
+                                       value="{{ preferences.quiet_hours_start|time:'H:i' }}">
+                            </div>
+                            <div class="col-6">
+                                <label for="quiet_end" class="form-label">End Time</label>
+                                <input type="time" class="form-control" id="quiet_end" name="quiet_hours_end" 
+                                       value="{{ preferences.quiet_hours_end|time:'H:i' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-save"></i> Save Preferences
+                    </button>
+                </form>
+            </div>
+
+            <!-- Notification Stats -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-chart-bar"></i> Notification Stats
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h4 class="text-primary">{{ stats.total }}</h4>
+                            <small class="text-muted">Total</small>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="text-warning">{{ stats.unread }}</h4>
+                            <small class="text-muted">Unread</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Notification functions
+function markAsRead(notificationId) {
+    fetch(`/api/notifications/${notificationId}/mark-read/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const notification = document.querySelector(`[data-notification-id="${notificationId}"]`);
+            notification.classList.remove('unread');
+            notification.querySelector('.badge.bg-danger')?.remove();
+            updateNotificationCount();
+        }
+    })
+    .catch(error => {
+        console.error('Error marking notification as read:', error);
+    });
+}
+
+function markAllAsRead() {
+    if (!confirm('Mark all notifications as read?')) return;
+    
+    fetch('/api/notifications/mark-all-read/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.querySelectorAll('.notification-item.unread').forEach(item => {
+                item.classList.remove('unread');
+                item.querySelector('.badge.bg-danger')?.remove();
+            });
+            updateNotificationCount();
+            showAlert('All notifications marked as read', 'success');
+        }
+    })
+    .catch(error => {
+        console.error('Error marking all notifications as read:', error);
+        showAlert('Error marking notifications as read', 'danger');
+    });
+}
+
+function deleteNotification(notificationId) {
+    if (!confirm('Delete this notification?')) return;
+    
+    fetch(`/api/notifications/${notificationId}/delete/`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const notification = document.querySelector(`[data-notification-id="${notificationId}"]`);
+            notification.remove();
+            updateNotificationCount();
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting notification:', error);
+    });
+}
+
+function clearAllNotifications() {
+    if (!confirm('Clear all notifications? This action cannot be undone.')) return;
+    
+    fetch('/api/notifications/clear-all/', {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.querySelector('.notifications-list').innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-bell-slash fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No notifications</h5>
+                    <p class="text-muted">You're all caught up! Check back later for updates.</p>
+                </div>
+            `;
+            updateNotificationCount();
+            showAlert('All notifications cleared', 'success');
+        }
+    })
+    .catch(error => {
+        console.error('Error clearing notifications:', error);
+        showAlert('Error clearing notifications', 'danger');
+    });
+}
+
+// Preferences form
+document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('/api/notifications/preferences/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showAlert('Preferences saved successfully', 'success');
+        } else {
+            showAlert(data.error || 'Error saving preferences', 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving preferences:', error);
+        showAlert('Error saving preferences', 'danger');
+    });
+});
+
+function updateNotificationCount() {
+    // Update notification count in header if it exists
+    const countElement = document.querySelector('.notification-count');
+    if (countElement) {
+        const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+        countElement.textContent = unreadCount;
+        if (unreadCount === 0) {
+            countElement.style.display = 'none';
+        }
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 5000);
+}
+</script>
+{% endblock %} 

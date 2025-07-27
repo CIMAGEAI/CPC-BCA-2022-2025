@@ -1,0 +1,742 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <div class="background-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+            <div class="shape shape-6"></div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
+                <div class="register-card">
+                    <div class="card-header-section">
+                        <div class="logo-container">
+                            <i class="fas fa-user-plus logo-icon"></i>
+                        </div>
+                        <h2 class="welcome-text">Create Account</h2>
+                        <p class="subtitle">Join our secure crime reporting community</p>
+                    </div>
+                    
+                    <form method="post" class="register-form" id="registerForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-icon">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="username" 
+                                       name="username" 
+                                       required 
+                                       placeholder="Choose a username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <div class="input-group">
+                                <span class="input-icon">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="first_name" 
+                                       name="first_name" 
+                                       required 
+                                       placeholder="Enter your first name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <div class="input-group">
+                                <span class="input-icon">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="last_name" 
+                                       name="last_name" 
+                                       required 
+                                       placeholder="Enter your last name">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                                <input type="email" 
+                                       class="form-control" 
+                                       id="email" 
+                                       name="email" 
+                                       required 
+                                       placeholder="Enter your email">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-icon">
+                                    <i class="fas fa-phone"></i>
+                                </span>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="phone" 
+                                       name="phone" 
+                                       required 
+                                       placeholder="Enter your phone number">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password1" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-icon">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="password1" 
+                                       name="password1" 
+                                       required 
+                                       placeholder="Create a strong password">
+                                <button type="button" 
+                                        class="password-toggle" 
+                                        id="togglePassword1">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength" id="passwordStrength"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password2" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-icon">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="password2" 
+                                       name="password2" 
+                                       required 
+                                       placeholder="Confirm your password">
+                                <button type="button" 
+                                        class="password-toggle" 
+                                        id="togglePassword2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="role" class="form-label">Role</label>
+                            <div class="input-group">
+                                <span class="input-icon">
+                                    <i class="fas fa-user-tag"></i>
+                                </span>
+                                <select class="form-control" id="role" name="role" required>
+                                    <option value="">Select Role</option>
+                                    <option value="public">Public</option>
+                                    <option value="police">Police</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="terms" id="terms" required>
+                                <span class="checkmark"></span>
+                                I agree to the <a href="/terms/" target="_blank">Terms of Service</a> and <a href="/privacy/" target="_blank">Privacy Policy</a>
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid mt-3">
+                            <button type="submit" form="registerForm" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Register
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="footer-links">
+                        <div class="login-link">
+                            <p class="mb-0">
+                                Already have an account? 
+                                <a href="/auth/login/" class="link-text" style="color: #0d6efd; font-weight: bold;">Sign in here</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Enhanced Register Container */
+    .register-container {
+        min-height: 100vh;
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+    }
+    
+    /* Animated Background */
+    .background-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    
+    .floating-shapes {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .shape-1 {
+        width: 80px;
+        height: 80px;
+        top: 15%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+    
+    .shape-2 {
+        width: 120px;
+        height: 120px;
+        top: 65%;
+        right: 10%;
+        animation-delay: 2s;
+    }
+    
+    .shape-3 {
+        width: 60px;
+        height: 60px;
+        top: 35%;
+        left: 85%;
+        animation-delay: 4s;
+    }
+    
+    .shape-4 {
+        width: 100px;
+        height: 100px;
+        bottom: 25%;
+        left: 15%;
+        animation-delay: 1s;
+    }
+    
+    .shape-5 {
+        width: 70px;
+        height: 70px;
+        top: 85%;
+        right: 25%;
+        animation-delay: 3s;
+    }
+    
+    .shape-6 {
+        width: 90px;
+        height: 90px;
+        top: 45%;
+        left: 5%;
+        animation-delay: 5s;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    
+    /* Enhanced Register Card */
+    .register-card {
+        background: #c4b289;
+        backdrop-filter: none;
+        border-radius: 25px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        padding: 40px;
+        position: relative;
+        z-index: 2;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        animation: slideInUp 0.8s ease-out;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Card Header */
+    .card-header-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .logo-container {
+        margin-bottom: 20px;
+    }
+    
+    .logo-icon {
+        font-size: 4rem;
+        background: none;
+        color: #374151;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: unset;
+        background-clip: unset;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    
+    .welcome-text {
+        color: #1f2937;
+        font-weight: 800;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        background: none;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: unset;
+        background-clip: unset;
+    }
+    
+    .subtitle {
+        color: #0f0f0f;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 0;
+    }
+    
+    /* Form Styling */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #374151;
+        font-size: 0.9rem;
+    }
+    
+    .input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        z-index: 10;
+        transition: color 0.3s ease;
+        font-size: 1rem;
+        pointer-events: none;
+    }
+    
+    .input-group.focused .input-icon {
+        color: #667eea;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px 12px 45px;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+        height: 48px;
+        box-sizing: border-box;
+        position: relative;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .input-group.focused .form-control {
+        border-color: #667eea;
+    }
+    
+    .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        padding: 0;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+        z-index: 10;
+    }
+    
+    .password-toggle:hover {
+        color: #667eea;
+    }
+    
+    /* Custom Checkbox */
+    .custom-checkbox {
+        margin: 25px 0;
+    }
+    
+    .custom-checkbox .form-check-input {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #667eea;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+    
+    .custom-checkbox .form-check-input:checked {
+        background: #667eea;
+        border-color: #667eea;
+    }
+    
+    .custom-checkbox .form-check-label {
+        color: #374151;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+    
+    /* Custom Alert */
+    .custom-alert {
+        background: #ef4444;
+        border: none;
+        border-radius: 15px;
+        color: white;
+        padding: 15px 20px;
+        margin: 20px 0;
+        box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+    }
+    
+    /* Register Button */
+    .submit-section {
+        margin: 30px 0;
+    }
+    
+    .register-btn {
+        width: 100%;
+        background: #667eea;
+        border: none;
+        border-radius: 15px;
+        padding: 18px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .register-btn:hover {
+        background: #5a67d8;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+    
+    .register-btn:active {
+        transform: translateY(-1px);
+    }
+    
+    .btn-text {
+        margin-right: 10px;
+    }
+    
+    .btn-icon {
+        font-size: 1.1rem;
+    }
+    
+    /* Footer Links */
+    .footer-links {
+        text-align: center;
+        margin-top: 30px;
+    }
+    
+    .link-text {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .link-text:hover {
+        color: #5a67d8;
+        text-decoration: underline;
+        transform: translateY(-1px);
+    }
+    
+    .login-link p {
+        color: #6b7280;
+        font-size: 0.95rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .register-card {
+            padding: 30px 20px;
+            margin: 20px;
+        }
+        
+        .welcome-text {
+            font-size: 1.8rem;
+        }
+        
+        .logo-icon {
+            font-size: 3rem;
+        }
+        
+        .form-row {
+            flex-direction: column;
+        }
+        
+        .form-group {
+            flex: none;
+        }
+    }
+
+    /* White background for all input and select fields */
+    .register-form .form-control,
+    .register-form select.form-control {
+        background: #fff !important;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const registerForm = document.getElementById('registerForm');
+        // const registerBtn = document.getElementById('registerBtn'); // Remove this line, as registerBtn may not exist
+        const password1Input = document.getElementById('password1');
+        const password2Input = document.getElementById('password2');
+        const togglePassword1Btn = document.getElementById('togglePassword1');
+        const togglePassword2Btn = document.getElementById('togglePassword2');
+        const passwordStrengthDiv = document.getElementById('passwordStrength');
+        
+        // Password toggle functionality
+        function setupPasswordToggle(button, input) {
+            if (!button || !input) return;
+            button.addEventListener('click', function() {
+                const type = input.type === 'password' ? 'text' : 'password';
+                input.type = type;
+                const icon = this.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-eye');
+                    icon.classList.toggle('fa-eye-slash');
+                }
+            });
+        }
+        
+        setupPasswordToggle(togglePassword1Btn, password1Input);
+        setupPasswordToggle(togglePassword2Btn, password2Input);
+        
+        // Robust password toggle using event delegation
+        document.querySelectorAll('.password-toggle').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var input = this.parentElement.querySelector('input.form-control');
+                if (input) {
+                    input.type = input.type === 'password' ? 'text' : 'password';
+                }
+                var icon = this.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-eye');
+                    icon.classList.toggle('fa-eye-slash');
+                }
+            });
+        });
+        
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            let feedback = [];
+            
+            if (password.length >= 8) strength++;
+            else feedback.push('At least 8 characters');
+            
+            if (/[a-z]/.test(password)) strength++;
+            else feedback.push('Lowercase letter');
+            
+            if (/[A-Z]/.test(password)) strength++;
+            else feedback.push('Uppercase letter');
+            
+            if (/[0-9]/.test(password)) strength++;
+            else feedback.push('Number');
+            
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            else feedback.push('Special character');
+            
+            return { strength, feedback };
+        }
+        
+        // Update password strength display
+        password1Input.addEventListener('input', function() {
+            const password = this.value;
+            const result = checkPasswordStrength(password);
+            
+            let strengthText = '';
+            let strengthClass = '';
+            
+            if (password.length === 0) {
+                strengthText = '';
+            } else if (result.strength <= 2) {
+                strengthText = 'Weak';
+                strengthClass = 'weak';
+            } else if (result.strength <= 3) {
+                strengthText = 'Fair';
+                strengthClass = 'fair';
+            } else if (result.strength <= 4) {
+                strengthText = 'Good';
+                strengthClass = 'good';
+            } else {
+                strengthText = 'Strong';
+                strengthClass = 'strong';
+            }
+            
+            passwordStrengthDiv.innerHTML = `
+                <div class="strength-bar">
+                    <div class="strength-fill ${strengthClass}" style="width: ${(result.strength / 5) * 100}%"></div>
+                </div>
+                <span class="strength-text ${strengthClass}">${strengthText}</span>
+                ${result.feedback.length > 0 ? `<div class="strength-feedback">Missing: ${result.feedback.join(', ')}</div>` : ''}
+            `;
+        });
+        
+        // Form validation and submission
+        // registerForm.addEventListener('submit', function(e) {
+        //     e.preventDefault();
+            
+        //     const username = document.getElementById('username').value.trim();
+        //     const email = document.getElementById('email').value.trim();
+        //     const password1 = password1Input.value;
+        //     const password2 = password2Input.value;
+        //     const role = document.getElementById('role').value;
+        //     const terms = document.getElementById('terms').checked;
+            
+        //     // Validation
+        //     if (!username) {
+        //         CrimePortal.showToast('Please enter a username', 'error', 'Validation Error');
+        //         document.getElementById('username').focus();
+        //         return;
+        //     }
+            
+        //     if (username.length < 3) {
+        //         CrimePortal.showToast('Username must be at least 3 characters long', 'error', 'Validation Error');
+        //         document.getElementById('username').focus();
+        //         return;
+        //     }
+            
+        //     if (!email) {
+        //         CrimePortal.showToast('Please enter your email address', 'error', 'Validation Error');
+        //         document.getElementById('email').focus();
+        //         return;
+        //     }
+            
+        //     if (!email.includes('@')) {
+        //         CrimePortal.showToast('Please enter a valid email address', 'error', 'Validation Error');
+        //         document.getElementById('email').focus();
+        //         return;
+        //     }
+            
+        //     if (!password1) {
+        //         CrimePortal.showToast('Please enter a password', 'error', 'Validation Error');
+        //         password1Input.focus();
+        //         return;
+        //     }
+            
+        //     const passwordStrength = checkPasswordStrength(password1);
+        //     if (passwordStrength.strength < 3) {
+        //         CrimePortal.showToast('Password is too weak. Please make it stronger.', 'error', 'Validation Error');
+        //         password1Input.focus();
+        //         return;
+        //     }
+            
+        //     if (password1 !== password2) {
+        //         CrimePortal.showToast('Passwords do not match', 'error', 'Validation Error');
+        //         password2Input.focus();
+        //         return;
+        //     }
+            
+        //     if (!terms) {
+        //         CrimePortal.showToast('Please agree to the Terms of Service and Privacy Policy', 'error', 'Validation Error');
+        //         document.getElementById('terms').focus();
+        //         return;
+        //     }
+            
+        //     // Show loading state
+        //     CrimePortal.setButtonLoading(registerBtn, true);
+        //     CrimePortal.showLoading('Creating your account...');
+            
+        //     // Simulate registration process
+        //     setTimeout(() => {
+        //         // Submit the form
+        //         registerForm.submit();
+        //     }, 2000);
+        // });
+        
+        // Input focus effects
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+            
+            // Add focused class if input has value
+            if (input.value) {
+                input.parentElement.classList.add('focused');
+            }
+        });
+    });
+</script>
+{% endblock %} 

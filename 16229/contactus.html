@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us - Bike Solutions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: url('tools.webp') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      position: relative;
+    }
+
+    /* Watermark */
+    body::after {
+      content: "Praveen Kumar";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.07);
+      z-index: 0;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 20px 20px;
+      background: linear-gradient(45deg, #ff4081, #ff9100);
+      position: relative;
+      z-index: 1;
+      border-bottom: 5px solid #fff;
+    }
+
+    header h1 {
+      font-size: 5.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: linear-gradient(45deg, #23fc02, #067ff1, #e6fb05, #4c02fa);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 
+        2px 2px 6px rgba(0, 0, 0, 0.3),
+        -2px -2px 6px rgba(255, 255, 255, 0.15);
+      animation: gradientShift 8s ease infinite;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header p {
+      font-size: 2rem;
+      margin-top: 10px;
+      color: #ccc;
+      font-weight: bold;
+    }
+
+    nav {
+      background-color: #05224e;
+      padding: 10px;
+      z-index: 1;
+      position: relative;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 1.2rem;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      background-color: rgba(70, 16, 186, 0.915);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      color: #82f408;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-info {
+      background: linear-gradient(135deg, rgba(5, 34, 78, 0.95), rgba(70, 16, 186, 0.95));
+      border: 2px solid #82f408;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 20px rgba(130, 244, 8, 0.3); }
+      to { box-shadow: 0 0 30px rgba(130, 244, 8, 0.6); }
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      border-left: 4px solid #82f408;
+    }
+
+    .contact-item:hover {
+      transform: translateX(10px);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .contact-icon {
+      font-size: 2rem;
+      margin-right: 15px;
+      color: #82f408;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .contact-details h3 {
+      color: #faf6f6;
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .contact-details p {
+      color: #ccc;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .social-media {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .social-media h3 {
+      color: #faf6f6;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .social-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .social-icon:hover::before {
+      left: 100%;
+    }
+
+    .social-icon.facebook {
+      background: linear-gradient(45deg, #1877f2, #0d6efd);
+    }
+
+    .social-icon.instagram {
+      background: linear-gradient(45deg, #e4405f, #f77737);
+    }
+
+    .social-icon.whatsapp {
+      background: linear-gradient(45deg, #25d366, #128c7e);
+    }
+
+    .social-icon:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 25px;
+      color: #faf6f6;
+      text-shadow: 2px 2px #000;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #fbfbfb;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      background-color: #f3f3f3;
+      color: #000;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #009688, #00796b);
+      color: white;
+      font-size: 38px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #00796b, #004d40);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 1rem;
+      color: #ccc;
+      background-color: rgba(0, 0, 0, 0.4);
+      margin-top: 30px;
+    }
+
+    footer strong {
+      color: #fdd835;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 15px;
+      }
+
+      header h1 {
+        font-size: 3rem;
+      }
+
+      header p {
+        font-size: 1.5rem;
+      }
+
+      .contact-item {
+        padding: 12px;
+      }
+
+      .contact-icon {
+        font-size: 1.5rem;
+        margin-right: 12px;
+      }
+
+      .social-icons {
+        gap: 15px;
+      }
+
+      .social-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      button {
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+
+      .main-container {
+        margin: 20px auto;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      .contact-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+      }
+
+      .contact-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      .social-icons {
+        gap: 10px;
+      }
+
+      .social-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Modern Footer Styles */
+    .modern-footer {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+      color: white;
+      padding: 40px 20px 20px;
+      margin-top: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modern-footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff4081, #ff9100, #23fc02, #067ff1);
+      animation: rainbowShift 3s ease infinite;
+    }
+
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-section {
+      padding: 0 15px;
+    }
+
+    .footer-section h3 {
+      color: #ffd700;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+    }
+
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, #ff4081, #ff9100);
+      transition: width 0.3s ease;
+    }
+
+    .footer-section:hover h3::after {
+      width: 50px;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 8px;
+    }
+
+    .footer-links a {
+      color: #e0e0e0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+      position: relative;
+      padding: 2px 0;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      margin-right: 8px;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #ffd700;
+      transform: translateX(5px);
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .footer-section .contact-info {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section .contact-info li {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      color: #e0e0e0;
+    }
+
+    .footer-section .contact-info i {
+      margin-right: 10px;
+      color: #ffd700;
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .footer-section .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer-section .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-section .social-icon i {
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .footer-section .social-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .footer-section .social-icon:hover::before {
+      left: 100%;
+    }
+
+    .footer-section .social-icon.facebook {
+      background: linear-gradient(45deg, #1877f2, #42a5f5);
+    }
+
+    .footer-section .social-icon.instagram {
+      background: linear-gradient(45deg, #e4405f, #f06292);
+    }
+
+    .footer-section .social-icon.whatsapp {
+      background: linear-gradient(45deg, #25d366, #4caf50);
+    }
+
+    .footer-section .social-icon:hover {
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 30px;
+      padding-top: 20px;
+      text-align: center;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .footer-bottom strong {
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    /* Mobile Responsive for Footer */
+    @media (max-width: 768px) {
+      .modern-footer {
+        padding: 30px 15px 15px;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .footer-section {
+        text-align: center;
+        padding: 0 10px;
+      }
+
+      .footer-section .social-icons {
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .footer-section .social-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+
+      .footer-section .contact-info li {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .modern-footer {
+        padding: 25px 10px 10px;
+      }
+
+      .footer-section h3 {
+        font-size: 1.1rem;
+      }
+
+      .footer-section .social-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header from About Us -->
+  <header>
+    <h1>The Bike Solution</h1>
+    <p>Your Trusted Bike Repair Partner</p>
+  </header>
+
+  <!-- Nav Bar -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="aboutus.html">About Us</a>
+    <a href="contactus.html">Contact Us</a>
+  </nav>
+
+  <!-- Main Content Container -->
+  <div class="main-container">
+    <!-- Contact Info Block -->
+    <div class="container contact-info">
+      <h2>📍 Get In Touch</h2>
+      
+      <div class="contact-item">
+        <div class="contact-icon">
+          <i class="fas fa-phone"></i>
+        </div>
+        <div class="contact-details">
+          <h3>Phone Number</h3>
+          <p>+91 6202019630</p>
+          <p>+91 9905699252</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div class="contact-details">
+          <h3>Email Address</h3>
+          <p>bikesolution@gmail.com</p>
+          <p>support@bikesolution.com</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="contact-details">
+          <h3>Our Location</h3>
+          <p>Patliputra near P&M mall</p>
+          <p>Patna, Bihar - 800013</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="contact-details">
+          <h3>Working Hours</h3>
+          <p>Monday - Saturday: 8:00 AM - 8:00 PM</p>
+          <p>Sunday: 9:00 AM - 6:00 PM</p>
+        </div>
+      </div>
+
+      <!-- Social Media Section -->
+      <div class="social-media">
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="#" class="social-icon facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-icon instagram" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="social-icon whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="container">
+      <h2>📞 Let's Connect</h2>
+      <form action="contact_submit.php" method="POST">
+        <label for="name">Your Name:</label>
+        <input type="text" name="name" id="name" required />
+
+        <label for="email">Email Address:</label>
+        <input type="email" name="email" id="email" required />
+
+        <label for="mobile">Mobile Number:</label>
+        <input type="text" name="mobile" id="mobile" required />
+
+        <label for="message">Your Message:</label>
+        <textarea name="message" id="message" rows="5" required></textarea>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modern Footer -->
+  <footer class="modern-footer">
+    <div class="footer-content">
+      <!-- Quick Links Section -->
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">🏠 Home</a></li>
+          <li><a href="aboutus.html">👥 About Us</a></li>
+          <li><a href="contactus.html">📞 Contact Us</a></li>
+          <li><a href="admin.php">⚙️ Admin Panel</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="footer-section">
+        <h3>Contact Info</h3>
+        <ul class="contact-info">
+          <li><i>📞</i> +91 6202019630</li>
+          <li><i>📧</i> bikesolution@gmail.com</li>
+          <li><i>📍</i> Patliputra near P&M mall, Patna</li>
+          <li><i>🕒</i> Mon-Sat: 8AM-8PM, Sun: 9AM-6PM</li>
+        </ul>
+      </div>
+
+      <!-- Social Media -->
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/bikesolution" target="_blank" class="social-icon facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.instagram.com/bikesolution" target="_blank" class="social-icon instagram" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://wa.me/916202019630" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div class="footer-section">
+        <h3>Our Services</h3>
+        <ul class="footer-links">
+          <li><a href="#">🔧 Bike Repair</a></li>
+          <li><a href="#">🛠️ Maintenance</a></li>
+          <li><a href="#">🚿 Bike Wash</a></li>
+          <li><a href="#">🔋 Battery Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p>&copy; 2024 <strong>The Bike Solution</strong>. All rights reserved. | Designed and Developed by <strong>Praveen Kumar</strong> 🚀 | Passionate about Bikes & Code</p>
+    </div>
+  </footer>
+
+  <script>
+    // Add some interactive JavaScript for enhanced user experience
+    document.addEventListener('DOMContentLoaded', function() {
+      // Animate contact items on scroll
+      const contactItems = document.querySelectorAll('.contact-item');
+      
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateX(0)';
+          }
+        });
+      }, observerOptions);
+
+      contactItems.forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(-20px)';
+        item.style.transition = 'all 0.6s ease';
+        observer.observe(item);
+      });
+
+      // Add click functionality to social media icons
+      const socialIcons = document.querySelectorAll('.social-icon');
+      
+      socialIcons.forEach(icon => {
+        icon.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Add a ripple effect
+          const ripple = document.createElement('span');
+          ripple.style.position = 'absolute';
+          ripple.style.borderRadius = '50%';
+          ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+          ripple.style.transform = 'scale(0)';
+          ripple.style.animation = 'ripple 0.6s linear';
+          ripple.style.left = '50%';
+          ripple.style.top = '50%';
+          ripple.style.width = '20px';
+          ripple.style.height = '20px';
+          ripple.style.marginLeft = '-10px';
+          ripple.style.marginTop = '-10px';
+          
+          this.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // Add CSS for ripple animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes ripple {
+          to {
+            transform: scale(4);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+
+      // Footer Enhancement JavaScript
+      const footerLinks = document.querySelectorAll('.footer-links a');
+      footerLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          if (this.getAttribute('href') === '#') {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              this.style.transform = '';
+            }, 150);
+          }
+        });
+      });
+
+      // Add click effects to footer social icons
+      const footerSocialIcons = document.querySelectorAll('.footer-section .social-icon');
+      footerSocialIcons.forEach(icon => {
+        icon.addEventListener('click', function(e) {
+          // Create ripple effect before navigation
+          const ripple = document.createElement('span');
+          ripple.style.position = 'absolute';
+          ripple.style.borderRadius = '50%';
+          ripple.style.background = 'rgba(255,255,255,0.3)';
+          ripple.style.transform = 'scale(0)';
+          ripple.style.animation = 'ripple 0.6s linear';
+          ripple.style.left = '50%';
+          ripple.style.top = '50%';
+          ripple.style.width = '100%';
+          ripple.style.height = '100%';
+          ripple.style.marginLeft = '-50%';
+          ripple.style.marginTop = '-50%';
+          
+          this.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // Add hover effects to footer sections
+      const footerSections = document.querySelectorAll('.footer-section');
+      footerSections.forEach(section => {
+        section.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-2px)';
+          this.style.transition = 'transform 0.3s ease';
+        });
+        
+        section.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+
+      // Animate footer on page load
+      const footer = document.querySelector('.modern-footer');
+      footer.style.opacity = '0';
+      footer.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        footer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        footer.style.opacity = '1';
+        footer.style.transform = 'translateY(0)';
+      }, 500);
+    });
+  </script>
+
+</body>
+</html>

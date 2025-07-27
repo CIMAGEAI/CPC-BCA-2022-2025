@@ -1,0 +1,1550 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Police Dashboard{% endblock %}
+
+{% block extra_css %}
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+/* Notification Popup Styles */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 400px;
+}
+
+.notification-popup {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 10px;
+  padding: 15px 20px;
+  border-left: 4px solid #007bff;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.notification-popup.show {
+  transform: translateX(0);
+}
+
+.notification-popup.success {
+  border-left-color: #28a745;
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+}
+
+.notification-popup.error {
+  border-left-color: #dc3545;
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+}
+
+.notification-popup.info {
+  border-left-color: #17a2b8;
+  background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+}
+
+.notification-popup.warning {
+  border-left-color: #ffc107;
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.notification-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  line-height: 1;
+}
+
+.notification-close:hover {
+  color: #333;
+}
+
+.notification-message {
+  font-size: 13px;
+  margin: 0;
+  color: #333;
+}
+
+.notification-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #007bff;
+  width: 100%;
+  animation: progress 5s linear;
+}
+
+.notification-popup.success .notification-progress {
+  background: #28a745;
+}
+
+.notification-popup.error .notification-progress {
+  background: #dc3545;
+}
+
+.notification-popup.info .notification-progress {
+  background: #17a2b8;
+}
+
+.notification-popup.warning .notification-progress {
+  background: #ffc107;
+}
+
+@keyframes progress {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* Pulse animation for new notifications */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.notification-popup.new {
+  animation: pulse 0.5s ease;
+}
+
+/* Map Styles */
+.map-container {
+  height: 400px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.map-controls {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-map {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-map:hover {
+  background: #0056b3;
+}
+
+.btn-map.secondary {
+  background: #6c757d;
+}
+
+.btn-map.secondary:hover {
+  background: #545b62;
+}
+
+.map-legend {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Diagnostic Box -->
+<div id="diagnosticBox" style="display:none; position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:99999; background:#fff; border:2px solid #333; border-radius:8px; padding:16px 24px; box-shadow:0 4px 16px rgba(0,0,0,0.15); font-size:16px; min-width:320px; max-width:90vw;"></div>
+<div id="notificationContainer" class="notification-container"></div>
+
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 mb-4">
+      <div class="card mb-3">
+        <div class="card-body text-center">
+          <i class="fas fa-user-shield fa-3x mb-2 text-primary"></i>
+          <h5 class="card-title">{{ officer.name|default:'Officer Name' }}</h5>
+          <p class="mb-1"><strong>Username:</strong> {{ officer.username|default:'N/A' }}</p>
+          <p class="mb-1"><strong>Email:</strong> {{ officer.email|default:'N/A' }}</p>
+          <p class="mb-1"><strong>ID:</strong> {{ officer.id|default:'12345' }}</p>
+          <p class="mb-1"><strong>Role:</strong> {{ officer.role|default:'Police' }}</p>
+          <p class="mb-1"><strong>Last Login:</strong> {{ officer.last_login|default:'-' }}</p>
+          <p class="mb-1"><strong>Station:</strong> {{ officer.station|default:'N/A' }}</p>
+        </div>
+      </div>
+      <div class="list-group mb-3">
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#profileModal"><i class="fas fa-user me-2"></i>Profile</a>
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#notificationsModal"><i class="fas fa-bell me-2"></i>Notifications</a>
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="fas fa-cog me-2"></i>Settings</a>
+        <a href="/auth/logout/" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+      </div>
+      <div class="card">
+        <div class="card-header bg-primary text-white"><i class="fas fa-bell"></i> Notifications</div>
+        <div class="card-body p-2" style="max-height: 200px; overflow-y: auto;">
+          <ul class="list-group list-group-flush small">
+            {% if notifications and notifications|length > 0 %}
+              {% for n in notifications %}
+                <li class="list-group-item">🔔 {{ n.message|truncatechars:60 }}<br><span class="small text-muted">{{ n.created_at|date:'Y-m-d H:i' }}</span></li>
+              {% endfor %}
+            {% else %}
+              <li class="list-group-item text-muted">No notifications yet.</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="col-md-9">
+      <!-- Welcome Panel -->
+      <div class="mb-4">
+        <h2 class="fw-bold mb-1 text-white">👮‍♂️ Police Dashboard</h2>
+        <p class="text-white">Welcome, {{ officer.name|default:'Officer Name' }}! (पुलिस डैशबोर्ड)</p>
+      </div>
+      <!-- Summary Cards -->
+      <div class="row mb-4">
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-white bg-primary h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.total }}</div>
+              <div>Total Cases<br><span class="small">कुल मामले</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-dark bg-warning h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.open }}</div>
+              <div>Open<br><span class="small">खुले</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-white bg-info h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.in_progress }}</div>
+              <div>In Progress<br><span class="small">प्रगति पर</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-white bg-success h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.closed }}</div>
+              <div>Closed<br><span class="small">बंद</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-white bg-danger h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.critical }}</div>
+              <div>Critical<br><span class="small">गंभीर</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-white bg-secondary h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.this_week }}</div>
+              <div>This Week<br><span class="small">इस सप्ताह</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Additional Stats Row -->
+      <div class="row mb-4">
+        <div class="col-md-3 col-6 mb-2">
+          <div class="card text-white bg-danger h-100">
+            <div class="card-body text-center">
+              <div class="fs-4">{{ stats.high_priority }}</div>
+              <div>High Priority<br><span class="small">उच्च प्राथमिकता</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-2">
+          <div class="card text-dark bg-warning h-100">
+            <div class="card-body text-center">
+              <div class="fs-4">{{ stats.medium_priority }}</div>
+              <div>Medium Priority<br><span class="small">मध्यम प्राथमिकता</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-2">
+          <div class="card text-white bg-success h-100">
+            <div class="card-body text-center">
+              <div class="fs-4">{{ stats.low_priority }}</div>
+              <div>Low Priority<br><span class="small">कम प्राथमिकता</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-2">
+          <div class="card text-white bg-info h-100">
+            <div class="card-body text-center">
+              <div class="fs-4">{{ stats.resolved_this_month }}</div>
+              <div>Resolved This Month<br><span class="small">इस महीने हल</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Map Section -->
+      <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">
+          <i class="fas fa-map-marked-alt me-2"></i>Case Locations Map (मामलों का नक्शा)
+        </div>
+        <div class="card-body">
+          <div class="map-controls">
+            <button type="button" class="btn-map" onclick="refreshMap()">
+              <i class="fas fa-sync-alt me-1"></i>Refresh Map
+            </button>
+            <button type="button" class="btn-map secondary" onclick="toggleMapView()">
+              <i class="fas fa-eye me-1"></i>Toggle View
+            </button>
+            <button type="button" class="btn-map secondary" onclick="fitMapToMarkers()">
+              <i class="fas fa-expand me-1"></i>Show All Cases
+            </button>
+          </div>
+          <div id="policeCasesMap" class="map-container">
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px;">
+              <div style="text-align: center; color: #6c757d;">
+                <i class="fas fa-map fa-3x mb-3"></i>
+                <p>Loading map...</p>
+                <small>If map doesn't load, check your internet connection</small>
+              </div>
+            </div>
+          </div>
+          <div class="map-legend">
+            <h6 class="mb-2"><i class="fas fa-info-circle me-1"></i>Case Map Legend</h6>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #dc3545;"></div>
+              <span>Critical Priority Cases</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #fd7e14;"></div>
+              <span>High Priority Cases</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #ffc107;"></div>
+              <span>Medium Priority Cases</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #28a745;"></div>
+              <span>Low Priority Cases</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #6c757d;"></div>
+              <span>Closed Cases</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Search/Filter Form -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <form class="row g-2 align-items-end" method="get">
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Case ID</label>
+              <input type="text" class="form-control" name="case_id" placeholder="FIR #" value="{{ current_filters.case_id }}">
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Case Type</label>
+              <select class="form-select" name="case_type">
+                <option value="">All</option>
+                {% for category in categories %}
+                  <option value="{{ category.name }}" {% if current_filters.case_type == category.name %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Priority</label>
+              <select class="form-select" name="priority">
+                <option value="">All</option>
+                {% for value, label in priorities %}
+                  <option value="{{ value }}" {% if current_filters.priority == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Status</label>
+              <select class="form-select" name="status">
+                <option value="">All</option>
+                {% for value, label in status_choices %}
+                  <option value="{{ value }}" {% if current_filters.status == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Date From</label>
+              <input type="date" class="form-control" name="date_from" value="{{ current_filters.date_from }}">
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Date To</label>
+              <input type="date" class="form-control" name="date_to" value="{{ current_filters.date_to }}">
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <button class="btn btn-primary w-100"><i class="fas fa-search me-1"></i>Search</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Case List Table -->
+      <div class="card mb-4">
+        <div class="card-header bg-light fw-bold"><i class="fas fa-list me-2"></i>Case List (मामलों की सूची)</div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-secondary">
+              <tr>
+                <th>Case ID</th>
+                <th>Complainant</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Date Filed</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for case in cases %}
+              <tr>
+                <td>{{ case.case_number }}</td>
+                <td>{{ case.reporter_name|default:'Anonymous' }}</td>
+                <td>{% if case.category %}{{ case.category.name }}{% endif %}</td>
+                <td><span class="badge bg-warning text-dark">{{ case.get_status_display }}</span></td>
+                <td><span class="badge bg-danger">{{ case.get_priority_display }}</span></td>
+                <td>{{ case.created_at|date:'Y-m-d' }}</td>
+                <td>
+                  <div class="d-flex flex-wrap gap-1">
+                    <a href="/reports/report/{{ case.id }}/" class="btn btn-sm btn-outline-primary w-100 mb-1">View</a>
+                    <button class="btn btn-sm btn-outline-success w-100 mb-1" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-case-id="{{ case.id }}" data-case-status="{{ case.status }}">Update Status</button>
+                    <button class="btn btn-sm btn-outline-info w-100 mb-1" data-bs-toggle="modal" data-bs-target="#addCommentModal" data-case-id="{{ case.id }}">Add Comment</button>
+                    <button class="btn btn-sm btn-outline-secondary w-100 mb-1" data-bs-toggle="modal" data-bs-target="#uploadReportModal" data-case-id="{{ case.id }}">Upload Progress Report</button>
+                  </div>
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="7" class="text-center text-muted">No cases assigned.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Enhanced Statistics Section -->
+      <div class="row mb-4">
+        <!-- Category Statistics -->
+        <div class="col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-header bg-light fw-bold">
+              <i class="fas fa-chart-pie me-2"></i>Case Categories (मामलों के प्रकार)
+            </div>
+            <div class="card-body">
+              {% if category_stats %}
+                {% for category in category_stats %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold">{{ category.category__name|default:"Unknown" }}</span>
+                  <span class="badge bg-primary">{{ category.count }}</span>
+                </div>
+                <div class="progress mb-3" style="height: 8px;">
+                  <div class="progress-bar" role="progressbar" style="width: {% widthratio category.count stats.total 100 %}%"></div>
+                </div>
+                {% endfor %}
+              {% else %}
+                <p class="text-muted text-center">No category data available</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Priority Statistics -->
+        <div class="col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-header bg-light fw-bold">
+              <i class="fas fa-exclamation-triangle me-2"></i>Priority Distribution (प्राथमिकता वितरण)
+            </div>
+            <div class="card-body">
+              {% if priority_stats %}
+                {% for priority in priority_stats %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold">{{ priority.priority|title }}</span>
+                  <span class="badge bg-{% if priority.priority == 'critical' %}danger{% elif priority.priority == 'high' %}warning{% elif priority.priority == 'medium' %}info{% else %}success{% endif %}">{{ priority.count }}</span>
+                </div>
+                <div class="progress mb-3" style="height: 8px;">
+                  <div class="progress-bar bg-{% if priority.priority == 'critical' %}danger{% elif priority.priority == 'high' %}warning{% elif priority.priority == 'medium' %}info{% else %}success{% endif %}" role="progressbar" style="width: {% widthratio priority.count stats.total 100 %}%"></div>
+                </div>
+                {% endfor %}
+              {% else %}
+                <p class="text-muted text-center">No priority data available</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Monthly Trends -->
+      <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">
+          <i class="fas fa-chart-line me-2"></i>Monthly Trends (मासिक प्रवृत्तियां)
+        </div>
+        <div class="card-body">
+          <div class="row">
+            {% for month_data in monthly_data %}
+            <div class="col-md-2 col-6 mb-2">
+              <div class="text-center">
+                <div class="fs-4 fw-bold text-primary">{{ month_data.count }}</div>
+                <div class="small text-muted">{{ month_data.month }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reports & Statistics -->
+      <div class="card mb-4">
+        <div class="card-header bg-light fw-bold"><i class="fas fa-chart-pie me-2"></i>Reports & Statistics (रिपोर्ट्स/आँकड़े)</div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-3 col-12 mb-2">
+              <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#caseTypeModal">Case Type Wise</button>
+            </div>
+            <div class="col-md-3 col-12 mb-2">
+              <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#monthlyStatsModal">Monthly Stats</button>
+            </div>
+            <div class="col-md-3 col-12 mb-2">
+              <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#openClosedModal">Open vs Closed</button>
+            </div>
+            <div class="col-md-3 col-12 mb-2">
+              <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#stationWiseModal">Station-wise</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Recent Activity -->
+      <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">
+          <i class="fas fa-clock me-2"></i>Recent Activity (हाल की गतिविधियां)
+        </div>
+        <div class="card-body">
+          {% if recent_cases %}
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Case ID</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for case in recent_cases %}
+                  <tr>
+                    <td><a href="/reports/report/{{ case.id }}/" class="text-decoration-none">{{ case.case_number }}</a></td>
+                    <td>{{ case.category.name|default:"Unknown" }}</td>
+                    <td><span class="badge bg-{% if case.status == 'closed' %}success{% elif case.status == 'investigating' %}info{% else %}warning{% endif %}">{{ case.get_status_display }}</span></td>
+                    <td><span class="badge bg-{% if case.priority == 'critical' %}danger{% elif case.priority == 'high' %}warning{% elif case.priority == 'medium' %}info{% else %}success{% endif %}">{{ case.get_priority_display }}</span></td>
+                    <td>{{ case.created_at|date:'M d, Y' }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted text-center">No recent activity</p>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- New FIR Button -->
+      <div class="d-flex justify-content-end mb-4">
+        <a href="/reports/submit/" class="btn btn-success btn-lg w-100 w-md-auto"><i class="fas fa-plus me-2"></i>New FIR / Register Complaint (नया मामला दर्ज करें)</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
+<!-- Modals for Profile, Notifications, Settings -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Name:</strong> {{ officer.name|default:'Officer Name' }}</p>
+        <p><strong>Username:</strong> {{ officer.username|default:'N/A' }}</p>
+        <p><strong>Email:</strong> {{ officer.email|default:'N/A' }}</p>
+        <p><strong>ID:</strong> {{ officer.id|default:'12345' }}</p>
+        <p><strong>Role:</strong> {{ officer.role|default:'Police' }}</p>
+        <p><strong>Station:</strong> {{ officer.station|default:'N/A' }}</p>
+        <p><strong>Last Login:</strong> {{ officer.last_login|default:'N/A' }}</p>
+        <p class="text-muted">(Profile editing <b>coming soon!</b>)</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="notificationsModalLabel">Notifications</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          {% if notifications and notifications|length > 0 %}
+            {% for n in notifications %}
+              <li class="list-group-item">🔔 {{ n.message|truncatechars:60 }}<br><span class="small text-muted">{{ n.created_at|date:'Y-m-d H:i' }}</span></li>
+            {% endfor %}
+          {% else %}
+            <li class="list-group-item text-muted">No notifications yet.</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted">Settings options <b>coming soon!</b></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Status Modal -->
+<div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="updateStatusForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateStatusModalLabel">Update Case Status</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="updateStatusCaseId" name="case_id">
+          <div class="mb-3">
+            <label for="newStatus" class="form-label">Select New Status</label>
+            <select class="form-select" id="newStatus" name="status" required>
+              {% for value, label in status_choices %}
+                <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="statusNotes" class="form-label">Notes (optional)</label>
+            <textarea class="form-control" id="statusNotes" name="notes" rows="2"></textarea>
+          </div>
+          <div id="updateStatusMsg" class="text-danger small"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Status</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add Comment Modal -->
+<div class="modal fade" id="addCommentModal" tabindex="-1" aria-labelledby="addCommentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="addCommentForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addCommentModalLabel">Add Comment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="addCommentCaseId" name="case_id">
+          <div class="mb-3">
+            <label for="commentContent" class="form-label">Comment</label>
+            <textarea class="form-control" id="commentContent" name="content" rows="3" required></textarea>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="isInternalComment" name="is_internal">
+            <label class="form-check-label" for="isInternalComment">Internal (only police/admin can see)</label>
+          </div>
+          <div id="addCommentMsg" class="text-danger small"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Comment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Progress Report Modal -->
+<div class="modal fade" id="uploadReportModal" tabindex="-1" aria-labelledby="uploadReportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="uploadReportForm" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadReportModalLabel">Upload Progress Report/Evidence</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="uploadReportCaseId" name="case_id">
+          <div class="mb-3">
+            <label for="evidenceFile" class="form-label">Select File</label>
+            <input class="form-control" type="file" id="evidenceFile" name="file" required>
+          </div>
+          <div class="mb-3">
+            <label for="evidenceDescription" class="form-label">Description</label>
+            <input class="form-control" type="text" id="evidenceDescription" name="description" required>
+          </div>
+          <div id="uploadReportMsg" class="text-danger small"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modals for Reports & Statistics -->
+<div class="modal fade" id="caseTypeModal" tabindex="-1" aria-labelledby="caseTypeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="caseTypeModalLabel">Case Type Wise Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <span class="text-muted">Coming Soon...</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="monthlyStatsModal" tabindex="-1" aria-labelledby="monthlyStatsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="monthlyStatsModalLabel">Monthly Stats Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <span class="text-muted">Coming Soon...</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="openClosedModal" tabindex="-1" aria-labelledby="openClosedModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="openClosedModalLabel">Open vs Closed Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <span class="text-muted">Coming Soon...</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="stationWiseModal" tabindex="-1" aria-labelledby="stationWiseModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="stationWiseModalLabel">Station-wise Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <span class="text-muted">Coming Soon...</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKING MODAL EXAMPLE (for debugging) -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#workingExampleModal">
+  Open Working Modal Example
+</button>
+<div class="modal fade" id="workingExampleModal" tabindex="-1" aria-labelledby="workingExampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="workingExampleModalLabel">Working Modal Example</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        This is a working Bootstrap 5 modal. If you see this, Bootstrap JS is loaded and modal is working!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% block extra_js %}
+{{ block.super }}
+<!-- Bootstrap 5 Bundle JS (Popper included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Leaflet Map Library -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+// Check if Bootstrap 5 is loaded and modal works
+if (typeof bootstrap === 'undefined' || typeof bootstrap.Modal === 'undefined') {
+  alert('Bootstrap 5 JS is NOT loaded! Please include bootstrap.bundle.min.js at the end of your <body>.');
+} else {
+  console.log('Bootstrap 5 loaded:', bootstrap.Modal);
+}
+
+// Simple Map Implementation
+let mapInitialized = false;
+
+function initSimpleMap() {
+  if (mapInitialized) return;
+  
+  const mapContainer = document.getElementById('policeCasesMap');
+  if (!mapContainer) {
+    console.error('Map container not found');
+    return;
+  }
+  
+  // Clear the loading message
+  mapContainer.innerHTML = '';
+  
+  // Check if Leaflet is available
+  if (typeof L === 'undefined') {
+    console.log('Leaflet not loaded, showing fallback');
+    showMapFallback();
+    return;
+  }
+  
+  try {
+    // Create map for showing cases
+    const map = L.map('policeCasesMap').setView([22.9734, 78.6569], 5);
+    
+    // Add tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+    
+    // Store map globally for other functions
+    window.policeMap = map;
+    
+    // Load cases on map
+    loadCasesOnMap();
+    
+    mapInitialized = true;
+    console.log('Cases map loaded successfully');
+    
+    // Show success message
+    if (typeof NotificationSystem !== 'undefined') {
+      NotificationSystem.success('Cases map loaded! View all case locations.', 'Map Ready');
+    }
+    
+  } catch (error) {
+    console.error('Map error:', error);
+    showMapFallback();
+  }
+}
+
+function loadCasesOnMap() {
+  if (!window.policeMap) return;
+  
+  // Clear existing markers
+  if (window.mapMarkers) {
+    window.mapMarkers.forEach(marker => {
+      window.policeMap.removeLayer(marker);
+    });
+  }
+  window.mapMarkers = [];
+  
+  // Get cases data from global variable
+  let cases = window.casesData || [];
+  
+  if (cases.length === 0) {
+    // Add a demo marker if no cases
+    const demoMarker = L.marker([22.9734, 78.6569]).addTo(window.policeMap);
+    demoMarker.bindPopup(`
+      <div style="text-align: center;">
+        <h6>Demo Case</h6>
+        <p><strong>Case #:</strong> DEMO-001</p>
+        <p><strong>Type:</strong> Theft</p>
+        <p><strong>Status:</strong> <span class="badge bg-warning">Open</span></p>
+        <p><strong>Priority:</strong> <span class="badge bg-danger">High</span></p>
+        <small class="text-muted">This is a demo marker. Real cases will appear here.</small>
+      </div>
+    `);
+    window.mapMarkers.push(demoMarker);
+    
+    if (typeof NotificationSystem !== 'undefined') {
+      NotificationSystem.info('No cases with location data found. Showing demo marker.', 'Map Info');
+    }
+    return;
+  }
+  
+  // Add markers for each case
+  cases.forEach(caseData => {
+    const markerColor = getMarkerColor(caseData.priority, caseData.status);
+    const marker = L.circleMarker([caseData.lat, caseData.lng], {
+      radius: 8,
+      fillColor: markerColor,
+      color: '#fff',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.8
+    }).addTo(window.policeMap);
+    
+    // Create popup content
+    const popupContent = `
+      <div style="min-width: 200px;">
+        <h6 style="margin: 0 0 8px 0; color: #333;">
+          <i class="fas fa-file-alt me-1"></i>Case #${caseData.case_number}
+        </h6>
+        <p style="margin: 0 0 5px 0; font-size: 12px;">
+          <strong>Reporter:</strong> ${caseData.reporter_name}
+        </p>
+        <p style="margin: 0 0 5px 0; font-size: 12px;">
+          <strong>Category:</strong> ${caseData.category}
+        </p>
+        <p style="margin: 0 0 5px 0; font-size: 12px;">
+          <strong>Priority:</strong> <span class="badge bg-${getPriorityBadgeColor(caseData.priority)}">${caseData.priority}</span>
+        </p>
+        <p style="margin: 0 0 5px 0; font-size: 12px;">
+          <strong>Status:</strong> <span class="badge bg-${getStatusBadgeColor(caseData.status)}">${caseData.status}</span>
+        </p>
+        <p style="margin: 0 0 8px 0; font-size: 11px; color: #666;">
+          <i class="fas fa-calendar me-1"></i>${caseData.created_at}
+        </p>
+        <div style="text-align: center;">
+          <a href="/reports/report/${caseData.id}/" class="btn btn-sm btn-primary" style="font-size: 11px;">
+            <i class="fas fa-eye me-1"></i>View Details
+          </a>
+        </div>
+      </div>
+    `;
+    
+    marker.bindPopup(popupContent);
+    window.mapMarkers.push(marker);
+  });
+  
+  // Fit map to show all markers
+  if (window.mapMarkers.length > 0) {
+    const group = new L.featureGroup(window.mapMarkers);
+    window.policeMap.fitBounds(group.getBounds().pad(0.1));
+  }
+  
+  if (typeof NotificationSystem !== 'undefined') {
+    NotificationSystem.success(`Loaded ${window.mapMarkers.length} cases on map`, 'Map Updated');
+  }
+}
+
+function getMarkerColor(priority, status) {
+  if (status === 'closed') return '#6c757d'; // Gray for closed cases
+  
+  switch (priority) {
+    case 'critical': return '#dc3545'; // Red
+    case 'high': return '#fd7e14';    // Orange
+    case 'medium': return '#ffc107';   // Yellow
+    case 'low': return '#28a745';      // Green
+    default: return '#007bff';         // Blue
+  }
+}
+
+function getPriorityBadgeColor(priority) {
+  switch (priority) {
+    case 'critical': return 'danger';
+    case 'high': return 'warning';
+    case 'medium': return 'info';
+    case 'low': return 'success';
+    default: return 'secondary';
+  }
+}
+
+function getStatusBadgeColor(status) {
+  switch (status) {
+    case 'submitted': return 'warning';
+    case 'investigating': return 'info';
+    case 'closed': return 'success';
+    case 'resolved': return 'success';
+    default: return 'secondary';
+  }
+}
+
+function showMapFallback() {
+  const mapContainer = document.getElementById('policeCasesMap');
+  if (mapContainer) {
+    mapContainer.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px;">
+        <div style="text-align: center; color: #6c757d;">
+          <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+          <h5>Map Not Available</h5>
+          <p>Map functionality is currently unavailable.</p>
+          <small>This could be due to network issues or browser compatibility.</small>
+          <br><br>
+          <button onclick="initSimpleMap()" class="btn btn-primary btn-sm">
+            <i class="fas fa-sync-alt me-1"></i>Retry
+          </button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function refreshMap() {
+  mapInitialized = false;
+  initSimpleMap();
+}
+
+function toggleMapView() {
+  if (!window.policeMap) return;
+  
+  const currentZoom = window.policeMap.getZoom();
+  if (currentZoom < 8) {
+    window.policeMap.setZoom(12);
+  } else if (currentZoom < 15) {
+    window.policeMap.setZoom(5);
+  } else {
+    window.policeMap.setZoom(8);
+  }
+  
+  if (typeof NotificationSystem !== 'undefined') {
+    NotificationSystem.info('Map view toggled', 'Map View');
+  }
+}
+
+function fitMapToMarkers() {
+  if (!window.policeMap || !window.mapMarkers || window.mapMarkers.length === 0) return;
+  
+  const group = new L.featureGroup(window.mapMarkers);
+  window.policeMap.fitBounds(group.getBounds().pad(0.1));
+  
+  if (typeof NotificationSystem !== 'undefined') {
+    NotificationSystem.success('Map adjusted to show all cases', 'Map Adjusted');
+  }
+}
+
+// Notification System
+const NotificationSystem = {
+  show(message, type = 'info', title = null, duration = 5000) {
+    const container = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    const id = 'notification-' + Date.now();
+    
+    notification.className = `notification-popup ${type}`;
+    notification.id = id;
+    
+    const iconMap = {
+      success: '✅',
+      error: '❌',
+      info: 'ℹ️',
+      warning: '⚠️'
+    };
+    
+    const defaultTitles = {
+      success: 'Success',
+      error: 'Error',
+      info: 'Information',
+      warning: 'Warning'
+    };
+    
+    const displayTitle = title || defaultTitles[type];
+    
+    notification.innerHTML = `
+      <div class="notification-header">
+        <h6 class="notification-title">${iconMap[type]} ${displayTitle}</h6>
+        <button class="notification-close" onclick="NotificationSystem.hide('${id}')">&times;</button>
+      </div>
+      <p class="notification-message">${message}</p>
+      <div class="notification-progress"></div>
+    `;
+    
+    container.appendChild(notification);
+    
+    // Trigger animation
+    setTimeout(() => {
+      notification.classList.add('show', 'new');
+    }, 100);
+    
+    // Auto-dismiss
+    if (duration > 0) {
+      setTimeout(() => {
+        this.hide(id);
+      }, duration);
+    }
+    
+    return id;
+  },
+  
+  hide(id) {
+    const notification = document.getElementById(id);
+    if (notification) {
+      notification.classList.remove('show');
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 300);
+    }
+  },
+  
+  success(message, title = null) {
+    return this.show(message, 'success', title, 4000);
+  },
+  
+  error(message, title = null) {
+    return this.show(message, 'error', title, 6000);
+  },
+  
+  info(message, title = null) {
+    return this.show(message, 'info', title, 5000);
+  },
+  
+  warning(message, title = null) {
+    return this.show(message, 'warning', title, 5000);
+  }
+};
+
+// Refactored modal initialization for Bootstrap 5
+function initializeModal(modalId, options = {}) {
+  const modalElement = document.getElementById(modalId);
+  if (!modalElement) {
+    console.error(`Modal with ID '${modalId}' not found`);
+    return null;
+  }
+  try {
+    // Destroy existing instance if any
+    const existingInstance = bootstrap.Modal.getInstance(modalElement);
+    if (existingInstance) {
+      existingInstance.dispose();
+    }
+    // Create new instance with safe options (Bootstrap 5)
+    const modalInstance = new bootstrap.Modal(modalElement, {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      ...options
+    });
+    return modalInstance;
+  } catch (error) {
+    console.error(`Error initializing modal '${modalId}':`, error);
+    return null;
+  }
+}
+
+function initializeDashboardModalsAndTriggers() {
+  // Initialize all modals safely using DOM elements only
+  const modalIds = [
+    'updateStatusModal',
+    'addCommentModal',
+    'uploadReportModal',
+    'caseTypeModal',
+    'monthlyStatsModal',
+    'openClosedModal',
+    'stationWiseModal'
+  ];
+  modalIds.forEach(modalId => {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+      initializeModal(modalId);
+    }
+  });
+  // --- Update Status Modal ---
+  var updateStatusModal = document.getElementById('updateStatusModal');
+  if (updateStatusModal) {
+    updateStatusModal.addEventListener('show.bs.modal', function (event) {
+      let button = event.relatedTarget;
+      let caseId = button.getAttribute('data-case-id');
+      let currentStatus = button.getAttribute('data-case-status');
+      document.getElementById('updateStatusCaseId').value = caseId;
+      document.getElementById('newStatus').value = currentStatus;
+      document.getElementById('statusNotes').value = '';
+      document.getElementById('updateStatusMsg').textContent = '';
+    });
+  }
+  // --- Add Comment Modal ---
+  var addCommentModal = document.getElementById('addCommentModal');
+  if (addCommentModal) {
+    addCommentModal.addEventListener('show.bs.modal', function (event) {
+      let button = event.relatedTarget;
+      let caseId = button.getAttribute('data-case-id');
+      document.getElementById('addCommentCaseId').value = caseId;
+      document.getElementById('commentContent').value = '';
+      document.getElementById('isInternalComment').checked = false;
+      document.getElementById('addCommentMsg').textContent = '';
+    });
+  }
+  // --- Upload Progress Report Modal ---
+  var uploadReportModal = document.getElementById('uploadReportModal');
+  if (uploadReportModal) {
+    uploadReportModal.addEventListener('show.bs.modal', function (event) {
+      let button = event.relatedTarget;
+      let caseId = button.getAttribute('data-case-id');
+      document.getElementById('uploadReportCaseId').value = caseId;
+      document.getElementById('evidenceFile').value = '';
+      document.getElementById('evidenceDescription').value = '';
+      document.getElementById('uploadReportMsg').textContent = '';
+    });
+  }
+}
+
+// Main dashboard initialization
+document.addEventListener('DOMContentLoaded', function() {
+  try {
+    // Initialize modals and triggers
+    initializeDashboardModalsAndTriggers();
+    
+    // Initialize map with a small delay to ensure everything is loaded
+    setTimeout(() => {
+      initSimpleMap();
+    }, 500);
+    
+    // Auto-refresh notifications every 30 seconds
+    setInterval(() => {
+      // Check for new notifications from server
+      fetch('/notifications/check/', {
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.notifications && data.notifications.length > 0) {
+          data.notifications.forEach(notification => {
+            NotificationSystem.info(notification.message, 'New Notification');
+          });
+        }
+      })
+      .catch(err => {
+        // Silently fail - notifications are optional
+      });
+    }, 30000);
+
+    // Show welcome notification on page load
+    setTimeout(() => {
+      NotificationSystem.info('Welcome to Police Dashboard! All actions will show notifications here.', 'Dashboard Ready');
+    }, 1000);
+    
+    // Initialize real-time case updates
+    lastCaseIds = getCurrentCaseIds();
+    setInterval(pollCasesRealtime, 30000);
+    
+  } catch (error) {
+    console.error('Dashboard initialization error:', error);
+    if (typeof NotificationSystem !== 'undefined') {
+      NotificationSystem.error('Dashboard initialization failed', 'Error');
+    }
+  }
+});
+
+// --- Debug: Check for duplicate modal IDs ---
+(function() {
+  const modalIds = [
+    'updateStatusModal',
+    'addCommentModal',
+    'uploadReportModal',
+    'caseTypeModal',
+    'monthlyStatsModal',
+    'openClosedModal',
+    'stationWiseModal'
+  ];
+  modalIds.forEach(function(id) {
+    const count = document.querySelectorAll('#' + id).length;
+    if (count > 1) {
+      console.warn('Duplicate modal ID found:', id, 'Count:', count);
+    }
+    if (count === 0) {
+      console.error('Modal ID not found in DOM:', id);
+    }
+  });
+
+  // Check all modal triggers
+  document.querySelectorAll('[data-bs-toggle="modal"]').forEach(function(btn) {
+    const target = btn.getAttribute('data-bs-target');
+    if (target && !document.querySelector(target)) {
+      console.error('Modal trigger points to missing modal:', target, btn);
+    }
+  });
+})();
+
+// --- Diagnostic & Robustness Enhancements ---
+// CSRF fallback: get token from cookie if not present
+function getCSRFToken() {
+  let token = '{{ csrf_token }}';
+  if (!token || token === 'None') {
+    const match = document.cookie.match(/csrftoken=([^;]+)/);
+    if (match) token = match[1];
+  }
+  return token;
+}
+
+// Diagnostic function to show errors in a visible box
+function showDiagnostic(msg, type='error') {
+  const box = document.getElementById('diagnosticBox');
+  if (!box) return;
+  box.style.display = 'block';
+  box.style.background = type === 'error' ? '#f8d7da' : '#d1ecf1';
+  box.style.color = '#333';
+  box.innerText = msg;
+  setTimeout(() => { box.style.display = 'none'; }, 8000);
+}
+
+// Patch all AJAX calls to use robust error handling and CSRF fallback
+function robustFetch(url, options, onSuccess, onError) {
+  if (!options.headers) options.headers = {};
+  if (!options.headers['X-CSRFToken']) options.headers['X-CSRFToken'] = getCSRFToken();
+  fetch(url, options)
+    .then(r => r.json().catch(() => ({error: 'Invalid JSON response'})))
+    .then(data => {
+      if (data.success) {
+        onSuccess(data);
+      } else {
+        NotificationSystem.error(data.error || 'Unknown error', 'Error');
+        showDiagnostic('AJAX Error: ' + (data.error || 'Unknown error'));
+        if (onError) onError(data);
+      }
+    })
+    .catch(err => {
+      NotificationSystem.error('Network error', 'Connection Error');
+      showDiagnostic('Network error: ' + err);
+      if (onError) onError({error: err});
+    });
+}
+
+// Patch form submissions to use robustFetch
+document.addEventListener('DOMContentLoaded', function() {
+  const updateStatusForm = document.getElementById('updateStatusForm');
+  const addCommentForm = document.getElementById('addCommentForm');
+  const uploadReportForm = document.getElementById('uploadReportForm');
+  
+  if (updateStatusForm) {
+    updateStatusForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const caseId = document.getElementById('updateStatusCaseId').value;
+      const newStatus = document.getElementById('newStatus').value;
+      const notes = document.getElementById('statusNotes').value;
+      NotificationSystem.info('Updating case status...', 'Processing');
+      robustFetch(`/reports/report/${caseId}/update-status/`, {
+        method: 'POST',
+        headers: {},
+        body: new URLSearchParams({status: newStatus, notes: notes})
+      },
+      (data) => {
+        NotificationSystem.success(`Case status updated to ${data.status_display}`, 'Status Updated');
+        const modal = bootstrap.Modal.getInstance(document.getElementById('updateStatusModal'));
+        if (modal) modal.hide();
+        setTimeout(() => { location.reload(); }, 1500);
+      });
+    });
+  }
+  
+  if (addCommentForm) {
+    addCommentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const caseId = document.getElementById('addCommentCaseId').value;
+      const content = document.getElementById('commentContent').value;
+      const isInternal = document.getElementById('isInternalComment').checked;
+      if (!content.trim()) {
+        NotificationSystem.warning('Please enter a comment', 'Validation Error');
+        return;
+      }
+      NotificationSystem.info('Adding comment...', 'Processing');
+      robustFetch(`/reports/report/${caseId}/comment/`, {
+        method: 'POST',
+        headers: {},
+        body: new URLSearchParams({content: content, is_internal: isInternal})
+      },
+      (data) => {
+        NotificationSystem.success('Comment added successfully!', 'Comment Added');
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addCommentModal'));
+        if (modal) modal.hide();
+        setTimeout(() => { location.reload(); }, 1500);
+      });
+    });
+  }
+  
+  if (uploadReportForm) {
+    uploadReportForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const caseId = document.getElementById('uploadReportCaseId').value;
+      const fileInput = document.getElementById('evidenceFile');
+      const file = fileInput.files[0];
+      const description = document.getElementById('evidenceDescription').value;
+      if (!file) {
+        NotificationSystem.warning('Please select a file to upload', 'File Required');
+        return;
+      }
+      if (!description.trim()) {
+        NotificationSystem.warning('Please provide a description for the file', 'Description Required');
+        return;
+      }
+      NotificationSystem.info('Uploading file...', 'Processing');
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('description', description);
+      robustFetch(`/reports/report/${caseId}/upload-evidence/`, {
+        method: 'POST',
+        headers: {},
+        body: formData
+      },
+      (data) => {
+        NotificationSystem.success('File uploaded successfully!', 'Upload Complete');
+        const modal = bootstrap.Modal.getInstance(document.getElementById('uploadReportModal'));
+        if (modal) modal.hide();
+        setTimeout(() => { location.reload(); }, 1500);
+      });
+    });
+  }
+});
+// --- End Diagnostic & Robustness ---
+
+// --- Real-time Case List Update ---
+let lastCaseIds = [];
+function getCurrentCaseIds() {
+  const rows = document.querySelectorAll('table tbody tr');
+  let ids = [];
+  rows.forEach(row => {
+    const td = row.querySelector('td');
+    if (td) ids.push(td.textContent.trim());
+  });
+  return ids;
+}
+function renderCaseRow(caseObj) {
+  return `<tr>
+    <td>${caseObj.case_number}</td>
+    <td>${caseObj.reporter_name || 'Anonymous'}</td>
+    <td>${caseObj.category_name || ''}</td>
+    <td><span class="badge bg-warning text-dark">${caseObj.status_display}</span></td>
+    <td><span class="badge bg-danger">${caseObj.priority_display}</span></td>
+    <td>${caseObj.created_at}</td>
+    <td>
+      <div class="d-flex flex-wrap gap-1">
+        <a href="/reports/report/${caseObj.id}/" class="btn btn-sm btn-outline-primary w-100 mb-1">View</a>
+        <button class="btn btn-sm btn-outline-success w-100 mb-1" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-case-id="${caseObj.id}" data-case-status="${caseObj.status}">Update Status</button>
+        <button class="btn btn-sm btn-outline-info w-100 mb-1" data-bs-toggle="modal" data-bs-target="#addCommentModal" data-case-id="${caseObj.id}">Add Comment</button>
+        <button class="btn btn-sm btn-outline-secondary w-100 mb-1" data-bs-toggle="modal" data-bs-target="#uploadReportModal" data-case-id="${caseObj.id}">Upload Progress Report</button>
+      </div>
+    </td>
+  </tr>`;
+}
+async function pollCasesRealtime() {
+  try {
+    const resp = await fetch('/reports/police-dashboard/cases/', {headers: {'X-CSRFToken': getCSRFToken()}});
+    const data = await resp.json();
+    if (data.success && Array.isArray(data.cases)) {
+      const tbody = document.querySelector('table tbody');
+      if (!tbody) return;
+      const newIds = data.cases.map(c => c.case_number);
+      // Detect new cases
+      const added = newIds.filter(id => !lastCaseIds.includes(id));
+      // Update table
+      tbody.innerHTML = data.cases.map(renderCaseRow).join('');
+      // Re-initialize modal triggers after table update
+      initializeDashboardModalsAndTriggers();
+      // Animate new rows
+      if (added.length > 0) {
+        added.forEach(id => {
+          const row = Array.from(tbody.querySelectorAll('tr')).find(tr => tr.firstElementChild && tr.firstElementChild.textContent.trim() === id);
+          if (row) {
+            row.style.background = '#d1ecf1';
+            setTimeout(() => { row.style.background = ''; }, 2000);
+          }
+        });
+        NotificationSystem.info(`${added.length} नया मामला आया!`, 'New FIR');
+      }
+      lastCaseIds = newIds;
+    }
+  } catch (err) {
+    // Silent fail
+  }
+}
+// Remove duplicate event listener - this functionality is now in the main DOMContentLoaded above
+
+// Add cases data for map
+const casesData = [
+  {% for case in cases %}
+    {% if case.latitude and case.longitude %}
+    {
+      "id": "{{ case.id }}",
+      "case_number": "{{ case.case_number|escapejs }}",
+      "reporter_name": "{{ case.reporter_name|default:'Anonymous'|escapejs }}",
+      "category": "{{ case.category.name|default:''|escapejs }}",
+      "status": "{{ case.status|escapejs }}",
+      "priority": "{{ case.priority|escapejs }}",
+      "description": "{{ case.description|truncatechars:100|escapejs }}",
+      "lat": {{ case.latitude|default:0 }},
+      "lng": {{ case.longitude|default:0 }},
+      "created_at": "{{ case.created_at|date:'Y-m-d' }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endif %}
+  {% endfor %}
+];
+
+// Store cases data globally
+window.casesData = casesData;
+</script>
+{% endblock %} 

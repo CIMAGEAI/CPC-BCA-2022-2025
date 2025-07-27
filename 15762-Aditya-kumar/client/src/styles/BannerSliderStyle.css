@@ -1,0 +1,67 @@
+.banner-slider {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.banner-slider img {
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
+    border-radius: 16px;
+    transition: opacity 1s ease;
+}
+
+/* ⬅ ➡ controls */
+.banner-controls {
+    position: initial;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    transform: translateY(-50%);
+}
+
+.banner-controls button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #fff;
+    padding: 0.2rem 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.banner-controls button:hover {
+    background: none;
+    color: white;
+}
+
+/* Dots below */
+.slider-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.slider-dots span {
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.slider-dots span.active {
+    background-color: #e76f51;
+}

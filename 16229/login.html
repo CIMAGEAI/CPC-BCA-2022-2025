@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bike Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Watermark */
+        body::after {
+            content: "Praveen Kumar";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.07);
+            z-index: 0;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        /* Header with gradient text */
+        header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: linear-gradient(45deg, #ff4081, #ff9100);
+            position: relative;
+            z-index: 1;
+            border-bottom: 5px solid #fff;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(45deg, #23fc02, #067ff1, #e6fb05, #4c02fa);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                2px 2px 6px rgba(0, 0, 0, 0.3),
+                -2px -2px 6px rgba(255, 255, 255, 0.15);
+            animation: gradientShift 8s ease infinite;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: #ccc;
+            font-weight: bold;
+        }
+
+        /* Navigation bar */
+        nav {
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            z-index: 1;
+            position: relative;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+            transform: translateY(-2px);
+        }
+
+        /* Form Container */
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 200px);
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .form-card:hover::before {
+            left: 100%;
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ffd700, #ff9100);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #ffd700;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #ff9100;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff4081, #ff9100);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 64, 129, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 1.1rem;
+        }
+
+        .register-link a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: #ff9100;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: #51cf66;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Modern Footer */
+        .modern-footer {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            color: white;
+            padding: 40px 20px 20px;
+            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modern-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4081, #ff9100, #23fc02, #067ff1);
+            animation: rainbowShift 3s ease infinite;
+        }
+
+        @keyframes rainbowShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section {
+            padding: 0 15px;
+        }
+
+        .footer-section h3 {
+            color: #ffd700;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, #ff4081, #ff9100);
+            transition: width 0.3s ease;
+        }
+
+        .footer-section:hover h3::after {
+            width: 50px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            padding: 2px 0;
+        }
+
+        .footer-links a::before {
+            content: '→';
+            margin-right: 8px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffd700;
+            transform: translateX(5px);
+        }
+
+        .footer-links a:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .contact-info {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-info li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            color: #e0e0e0;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: #ffd700;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icon i {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .social-icon:hover::before {
+            left: 100%;
+        }
+
+        .social-icon.facebook {
+            background: linear-gradient(45deg, #1877f2, #42a5f5);
+        }
+
+        .social-icon.instagram {
+            background: linear-gradient(45deg, #e4405f, #f06292);
+        }
+
+        .social-icon.whatsapp {
+            background: linear-gradient(45deg, #25d366, #4caf50);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom strong {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 9999; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            .form-card {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .form-title {
+                font-size: 2rem;
+            }
+
+            .modern-footer {
+                padding: 30px 15px 15px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .footer-section {
+                text-align: center;
+                padding: 0 10px;
+            }
+
+            .social-icons {
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .social-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            .contact-info li {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .form-card {
+                padding: 20px 15px;
+            }
+
+            .form-title {
+                font-size: 1.8rem;
+            }
+
+            .modern-footer {
+                padding: 25px 10px 10px;
+            }
+
+            .footer-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .social-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>The Bike Solution</h1>
+        <p>Your Trusted Bike Repair Partner</p>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="aboutus.html">About Us</a>
+        <a href="contactus.html">Contact Us</a>
+        <a href="dashboard.html" id="dashboardNav" style="display: none;">Dashboard</a>
+    </nav>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <div class="form-card">
+            <h2 class="form-title">Welcome Back</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+
+            <div class="register-link">
+                Don't have an account? <a href="register.html">Register here</a>
+            </div>
+            <div class="register-link">
+                <a href="forgot_password.html">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Footer -->
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <!-- Quick Links Section -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">🏠 Home</a></li>
+                    <li><a href="aboutus.html">👥 About Us</a></li>
+                    <li><a href="contactus.html">📞 Contact Us</a></li>
+                    <li><a href="admin.php">⚙️ Admin Panel</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul class="contact-info">
+                    <li><i>📞</i> +91 98765 43210</li>
+                    <li><i>📧</i> info@bikesolutions.com</li>
+                    <li><i>📍</i> 123 Bike Street, City, State</li>
+                    <li><i>🕒</i> Mon-Sat: 9AM-7PM</li>
+                </ul>
+            </div>
+
+            <!-- Social Media -->
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/bikesolution" target="_blank" class="social-icon facebook" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/bikesolution" target="_blank" class="social-icon instagram" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/916202019630" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Services -->
+            <div class="footer-section">
+                <h3>Our Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#">🔧 Bike Repair</a></li>
+                    <li><a href="#">🛠️ Maintenance</a></li>
+                    <li><a href="#">🚿 Bike Wash</a></li>
+                    <li><a href="#">🔋 Battery Service</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>&copy; 2024 <strong>The Bike Solution</strong>. All rights reserved. | Designed and Developed by <strong>Praveen Kumar</strong> 🚀 | Passionate about Bikes & Code</p>
+        </div>
+    </footer>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center; z-index:9999;">
+      <div style="background:#fff; color:#222; border-radius:12px; padding:32px 24px; min-width:320px; max-width:90vw; box-shadow:0 8px 32px rgba(0,0,0,0.3); position:relative;">
+        <h2 style="margin-bottom:18px; color:#2a5298;">Forgot Password</h2>
+        <form id="forgotPasswordForm">
+          <div id="forgotStep1">
+            <input type="email" id="forgotEmail" name="email" required placeholder="Enter your registered email" style="width:100%; padding:12px; font-size:1.1rem; border-radius:8px; border:1px solid #ccc; margin-bottom:12px;">
+            <input type="text" id="forgotPhone" name="phone" required placeholder="Enter your registered phone" style="width:100%; padding:12px; font-size:1.1rem; border-radius:8px; border:1px solid #ccc; margin-bottom:18px;">
+            <button type="button" id="forgotNextBtn" style="padding:8px 18px; border-radius:8px; border:none; background:linear-gradient(45deg,#23fc02,#4caf50); color:#fff; font-weight:bold; width:100%;">Next</button>
+          </div>
+          <div id="forgotStep2" style="display:none;">
+            <input type="text" id="otpInput" name="otp" required placeholder="Enter OTP sent to your email" style="width:100%; padding:12px; font-size:1.1rem; border-radius:8px; border:1px solid #ccc; margin-bottom:18px;">
+            <button type="button" id="verifyOtpBtn" style="padding:8px 18px; border-radius:8px; border:none; background:linear-gradient(45deg,#067ff1,#42a5f5); color:#fff; font-weight:bold; width:100%;">Verify OTP</button>
+          </div>
+          <div id="forgotStep3" style="display:none;">
+            <input type="password" id="newPassword" name="newPassword" required placeholder="Enter new password" style="width:100%; padding:12px; font-size:1.1rem; border-radius:8px; border:1px solid #ccc; margin-bottom:12px;">
+            <input type="password" id="confirmNewPassword" name="confirmNewPassword" required placeholder="Confirm new password" style="width:100%; padding:12px; font-size:1.1rem; border-radius:8px; border:1px solid #ccc; margin-bottom:18px;">
+            <button type="button" id="resetPasswordBtn" style="padding:8px 18px; border-radius:8px; border:none; background:linear-gradient(45deg,#ff4081,#ff9100); color:#fff; font-weight:bold; width:100%;">Reset Password</button>
+            <div id="resetPasswordError" style="color:#f00; margin-top:10px; display:none;"></div>
+          </div>
+          <div id="forgotError" style="color:#f00; margin-top:10px; display:none;"></div>
+          <div id="forgotSuccess" style="color:#23fc02; margin-top:10px; display:none;"></div>
+        </form>
+        <button type="button" onclick="closeForgotModal()" style="margin-top:18px; background:#eee; color:#333; font-weight:bold; border:none; border-radius:8px; padding:8px 18px;">Close</button>
+      </div>
+    </div>
+
+    <script>
+        // Password toggle functionality
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+            const icon = button.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Form validation and login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Reset error messages
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(msg => {
+                msg.style.display = 'none';
+                msg.textContent = '';
+            });
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('emailError', 'Please enter a valid email address');
+                return;
+            }
+            // Password validation
+            if (password.length < 6) {
+                showError('passwordError', 'Password must be at least 6 characters long');
+                return;
+            }
+            // Authenticate with backend
+            fetch('login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ email, password })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    // Store logged in user data
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    alert('Login successful! Welcome back, ' + data.user.fullName);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    showError('emailError', data.message || 'Invalid email or password');
+                }
+            })
+            .catch(() => {
+                showError('emailError', 'Network error. Please try again.');
+            });
+        });
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        // Real-time validation
+        document.getElementById('email').addEventListener('input', function() {
+            const errorElement = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(this.value.trim())) {
+                errorElement.style.display = 'none';
+            }
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            const errorElement = document.getElementById('passwordError');
+            if (this.value.length >= 6) {
+                errorElement.style.display = 'none';
+            }
+        });
+
+        // Check authentication status
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const dashboardNav = document.getElementById('dashboardNav');
+            
+            if (currentUser) {
+                dashboardNav.style.display = 'inline';
+            } else {
+                dashboardNav.style.display = 'none';
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+        });
+
+        // Show modal on click
+        const forgotLink = document.querySelector('.register-link a[href="forgot_password.html"]');
+        if (forgotLink) {
+          forgotLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('forgotPasswordModal').style.display = 'flex';
+          });
+        }
+        function closeForgotModal() {
+          document.getElementById('forgotPasswordModal').style.display = 'none';
+          document.getElementById('forgotPasswordForm').reset();
+          document.getElementById('forgotStep1').style.display = '';
+          document.getElementById('forgotStep2').style.display = 'none';
+          document.getElementById('forgotStep3').style.display = 'none';
+          document.getElementById('forgotError').style.display = 'none';
+          document.getElementById('forgotSuccess').style.display = 'none';
+        }
+        // Step 1: Check email/phone
+        const forgotNextBtn = document.getElementById('forgotNextBtn');
+        if (forgotNextBtn) {
+          forgotNextBtn.onclick = function() {
+            const email = document.getElementById('forgotEmail').value.trim();
+            const phone = document.getElementById('forgotPhone').value.trim();
+            fetch('send_otp.php', {
+              method: 'POST',
+              body: new URLSearchParams({ email, phone })
+            })
+            .then(r => r.json())
+            .then(data => {
+              if (data.success || data.otp) {
+                document.getElementById('forgotStep1').style.display = 'none';
+                document.getElementById('forgotStep2').style.display = '';
+                document.getElementById('forgotError').style.display = 'none';
+                // Show OTP for local testing if present
+                if (data.otp) {
+                  let otpMsg = document.getElementById('otpDevMsg');
+                  if (!otpMsg) {
+                    otpMsg = document.createElement('div');
+                    otpMsg.id = 'otpDevMsg';
+                    otpMsg.style = 'color:#067ff1; margin-bottom:10px; font-weight:bold;';
+                    document.getElementById('forgotStep2').prepend(otpMsg);
+                  }
+                  otpMsg.textContent = 'DEV OTP: ' + data.otp;
+                }
+              } else {
+                document.getElementById('forgotError').textContent = data.message || 'No account found. Please create a new account.';
+                document.getElementById('forgotError').style.display = '';
+              }
+            });
+          };
+        }
+        // Step 2: Verify OTP
+        const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+        if (verifyOtpBtn) {
+          verifyOtpBtn.onclick = function() {
+            const email = document.getElementById('forgotEmail').value.trim();
+            const otp = document.getElementById('otpInput').value.trim();
+            fetch('verify_otp.php', {
+              method: 'POST',
+              body: new URLSearchParams({ email, otp })
+            })
+            .then(r => r.json())
+            .then(data => {
+              if (data.success) {
+                document.getElementById('forgotStep2').style.display = 'none';
+                document.getElementById('forgotStep3').style.display = '';
+                document.getElementById('forgotError').style.display = 'none';
+              } else {
+                document.getElementById('forgotError').textContent = data.message || 'Incorrect OTP. Please try again.';
+                document.getElementById('forgotError').style.display = '';
+              }
+            });
+          };
+        }
+        // Step 3: Reset Password
+        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+        if (resetPasswordBtn) {
+          resetPasswordBtn.onclick = function() {
+            const email = document.getElementById('forgotEmail').value.trim();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            const errorDiv = document.getElementById('resetPasswordError');
+            errorDiv.style.display = 'none';
+            if (newPassword.length < 6) {
+              errorDiv.textContent = 'Password must be at least 6 characters long.';
+              errorDiv.style.display = '';
+              return;
+            }
+            if (newPassword !== confirmNewPassword) {
+              errorDiv.textContent = 'Passwords do not match.';
+              errorDiv.style.display = '';
+              return;
+            }
+            fetch('reset_password.php', {
+              method: 'POST',
+              body: new URLSearchParams({ email, newPassword })
+            })
+            .then(r => r.json())
+            .then(data => {
+              if (data.success) {
+                document.getElementById('forgotSuccess').textContent = 'Password reset successful! You can now log in.';
+                document.getElementById('forgotSuccess').style.display = '';
+                document.getElementById('forgotError').style.display = 'none';
+                setTimeout(closeForgotModal, 2000);
+              } else {
+                errorDiv.textContent = data.message || 'Error resetting password.';
+                errorDiv.style.display = '';
+              }
+            });
+          };
+        }
+    </script>
+</body>
+</html> 

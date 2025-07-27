@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+{% block title %}Verify OTP - Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="otp-verify-container">
+    <div class="otp-verify-card">
+        <div class="otp-header">
+            <div class="otp-logo">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h2>Two-Factor Authentication</h2>
+            <p class="otp-instructions">Enter the 6-digit OTP sent to your email to complete login.<br><span class="otp-email">(Check your inbox or spam folder)</span></p>
+        </div>
+        
+        <form method="post" autocomplete="off" class="otp-form">
+            {% csrf_token %}
+            <div class="otp-input-group">
+                <input type="text" name="otp" maxlength="6" pattern="\d{6}" class="otp-verify-input" placeholder="Enter 6-digit OTP" required autofocus>
+                <div class="otp-input-border"></div>
+            </div>
+            <button type="submit" class="otp-verify-btn">
+                <i class="fas fa-check me-2"></i>Verify OTP
+            </button>
+        </form>
+        
+        <div class="otp-resend">
+            <a href="{% url 'authentication:resend_otp' %}" class="resend-link">
+                <i class="fas fa-redo me-1"></i>Resend OTP
+            </a>
+        </div>
+        
+        {% if messages %}
+            <div class="otp-verify-messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.otp-verify-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 20px;
+}
+
+.otp-verify-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    padding: 3rem 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(30, 58, 138, 0.15);
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.otp-verify-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+}
+
+.otp-header {
+    margin-bottom: 2rem;
+}
+
+.otp-logo {
+    margin-bottom: 1.5rem;
+}
+
+.otp-logo i {
+    font-size: 4rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(30, 58, 138, 0.3);
+}
+
+.otp-verify-card h2 {
+    margin-bottom: 1rem;
+    color: #1f2937;
+    font-weight: 800;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.otp-instructions {
+    color: #6b7280;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.otp-email {
+    color: #1e3a8a;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.otp-form {
+    margin-bottom: 1.5rem;
+}
+
+.otp-input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.otp-verify-input {
+    width: 100%;
+    font-size: 1.8rem;
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 15px;
+    text-align: center;
+    letter-spacing: 0.5em;
+    background: #ffffff;
+    color: #1f2937;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.otp-verify-input:focus {
+    outline: none;
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 0.2rem rgba(30, 58, 138, 0.25);
+    transform: translateY(-2px);
+}
+
+.otp-input-border {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.otp-verify-input:focus + .otp-input-border {
+    width: 100%;
+}
+
+.otp-verify-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.otp-verify-btn:hover {
+    background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+}
+
+.otp-verify-btn:active {
+    transform: translateY(-1px);
+}
+
+.otp-resend {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.resend-link {
+    color: #1e3a8a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    background: rgba(30, 58, 138, 0.05);
+}
+
+.resend-link:hover {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.otp-verify-messages {
+    margin-top: 1.5rem;
+}
+
+.otp-verify-messages .alert {
+    border-radius: 15px;
+    border: none;
+    padding: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.otp-verify-messages .alert-success {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #ffffff;
+}
+
+.otp-verify-messages .alert-error,
+.otp-verify-messages .alert-danger {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: #ffffff;
+}
+
+.otp-verify-messages .alert-warning {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+    .otp-verify-card {
+        padding: 2rem 1.5rem;
+        margin: 10px;
+    }
+    
+    .otp-verify-input {
+        font-size: 1.4rem;
+        padding: 0.8rem;
+    }
+    
+    .otp-verify-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .otp-instructions {
+        font-size: 1rem;
+    }
+    
+    .otp-logo i {
+        font-size: 3rem;
+    }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.otp-verify-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Loading State */
+.otp-verify-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.otp-verify-btn:disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+</style>
+{% endblock %} 

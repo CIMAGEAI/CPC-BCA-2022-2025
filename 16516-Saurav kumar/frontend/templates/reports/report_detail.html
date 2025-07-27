@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Case #{{ report.case_number }} | Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Report Details -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-file-alt me-2"></i>Case #{{ report.case_number }}
+                    </h4>
+                    <span class="status-badge status-{{ report.status }}">
+                        {{ report.get_status_display }}
+                    </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Category:</strong> {{ report.category.name }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Priority:</strong> 
+                        <span class="priority-{{ report.priority }}">
+                            {{ report.get_priority_display }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Incident Date:</strong> {{ report.incident_date|date:"F d, Y \a\t g:i A" }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Submitted:</strong> {{ report.created_at|date:"F d, Y \a\t g:i A" }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Location:</strong>
+                    <p class="mb-1">{{ report.incident_location }}</p>
+                    {% if report.latitude and report.longitude %}
+                        <div id="map" style="height: 300px; width: 100%;" 
+                             data-lat="{{ report.latitude }}" 
+                             data-lng="{{ report.longitude }}"></div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <strong>Description:</strong>
+                    <p>{{ report.description }}</p>
+                </div>
+
+                {% if report.additional_details %}
+                    <div class="mb-3">
+                        <strong>Additional Details:</strong>
+                        <p>{{ report.additional_details }}</p>
+                    </div>
+                {% endif %}
+
+                {% if report.assigned_officer %}
+                    <div class="mb-3">
+                        <strong>Assigned Officer:</strong> 
+                        {{ report.assigned_officer.first_name }} {{ report.assigned_officer.last_name }}
+                        {% if report.assigned_date %}
+                            <br><small class="text-muted">Assigned on {{ report.assigned_date|date:"F d, Y" }}</small>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if report.resolved_at %}
+                    <div class="mb-3">
+                        <strong>Resolved:</strong> {{ report.resolved_at|date:"F d, Y \a\t g:i A" }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Status History -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Status History</h5>
+            </div>
+            <div class="card-body">
+                {% if status_history %}
+                    <div class="timeline">
+                        {% for status in status_history %}
+                            <div class="timeline-item">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">{{ status.get_status_display }}</h6>
+                                            {% if status.notes %}
+                                                <p class="mb-1">{{ status.notes }}</p>
+                                            {% endif %}
+                                            <small class="text-muted">
+                                                Changed by {{ status.changed_by.first_name }} {{ status.changed_by.last_name }}
+                                            </small>
+                                        </div>
+                                        <small class="text-muted">{{ status.changed_at|date:"M d, Y g:i A" }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">No status changes recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Comments -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-comments me-2"></i>Comments</h5>
+            </div>
+            <div class="card-body">
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="comment mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <strong>
+                                        {% if comment.author.role in 'officer,admin,supervisor' %}
+                                            Officer {{ comment.author.first_name }} {{ comment.author.last_name }}
+                                        {% else %}
+                                            {{ comment.author.first_name }} {{ comment.author.last_name }}
+                                        {% endif %}
+                                    </strong>
+                                    {% if comment.is_internal %}
+                                        <span class="badge bg-warning text-dark ms-2">Internal</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">{{ comment.created_at|date:"M d, Y g:i A" }}</small>
+                            </div>
+                            <p class="mb-0">{{ comment.content }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No comments yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Evidence -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-paperclip me-2"></i>Evidence</h5>
+            </div>
+            <div class="card-body">
+                {% if evidence %}
+                    {% for item in evidence %}
+                        <div class="evidence-item mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <strong>{{ item.get_file_type_display }}</strong>
+                                    {% if item.is_verified %}
+                                        <span class="badge bg-success ms-2">Verified</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">{{ item.uploaded_at|date:"M d, Y" }}</small>
+                            </div>
+                            {% if item.description %}
+                                <p class="mb-2">{{ item.description }}</p>
+                            {% endif %}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">{{ item.file_size|filesizeformat }}</small>
+                                <a href="{{ item.file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                    <i class="fas fa-download me-1"></i>View
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No evidence attached.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-tools me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'my_reports' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Back to My Reports
+                    </a>
+                    <a href="{% url 'report_tracking' report.case_number %}" class="btn btn-outline-info">
+                        <i class="fas fa-search me-1"></i>Public Tracking Link
+                    </a>
+                    {% if report.status == 'submitted' %}
+                        <button class="btn btn-outline-warning" disabled>
+                            <i class="fas fa-edit me-1"></i>Edit Report (Under Review)
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Timeline CSS -->
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -35px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 17px;
+    width: 2px;
+    height: calc(100% + 10px);
+    background-color: #dee2e6;
+}
+
+.comment {
+    background-color: #f8f9fa;
+}
+
+.evidence-item {
+    background-color: #f8f9fa;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+{% if report.latitude and report.longitude %}
+<script>
+// Initialize map if Google Maps is available
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof google !== 'undefined' && google.maps) {
+        const mapElement = document.getElementById('map');
+        const lat = parseFloat(mapElement.dataset.lat);
+        const lng = parseFloat(mapElement.dataset.lng);
+        
+        const map = new google.maps.Map(mapElement, {
+            center: { lat, lng },
+            zoom: 15,
+            styles: [
+                {
+                    featureType: 'poi',
+                    elementType: 'labels',
+                    stylers: [{ visibility: 'off' }]
+                }
+            ]
+        });
+
+        new google.maps.Marker({
+            position: { lat, lng },
+            map: map,
+            title: 'Incident Location'
+        });
+    }
+});
+</script>
+{% endif %}
+{% endblock %} 

@@ -1,0 +1,42 @@
+{% extends 'base.html' %} 
+{% block title %} Attendance {% endblock title%}
+{% block head %}
+
+<!--<h1>About Us</h1>
+<p>This is the about page for our fitness application.</p>
+-->
+
+
+<form action="/about/" method="post">{% csrf_token %}
+    <section id="about" class="about">
+      
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          <div class="col-lg-12 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+            <img src="static/assets/img/gymabout.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-12 pt-8 pt-lg-0 order-2 order-lg-1 content"  data-aos-delay="100">
+            <h3>Welcome to Iron Blood Fitness , Where Strength is Earned, Not Given.</h3>
+            <p class="fst-italic">
+              we believe that true transformation begins with discipline, determination, and the right environment. 
+              Established with a mission to empower individuals to reach their peak physical and mental potential, 
+              our gym is more than just a fitness center—it's a community forged in sweat, steel, and strength.
+            </p>
+            <ul>
+              <li><i class="ri-check-double-line"></i> To build a fitness hub where everyone—from beginners to athletes—feels empowered to push boundaries, 
+                embrace challenges, and lead a healthier, stronger life.</li>
+              <li><i class="ri-check-double-line"></i> Spanning over 2100 sq ft, our state-of-the-art facility is designed to meet the needs of all fitness levels.
+                 We maintain high hygiene standards, provide ample workout space, and ensure 24/7 safety and accessibility.</li>
+             
+            </ul>
+            
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+
+{% endblock head %}

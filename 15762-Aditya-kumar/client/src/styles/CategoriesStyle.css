@@ -1,0 +1,136 @@
+.categories-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 2.5rem auto 0 auto;
+    text-align: center;
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+}
+
+.cat-grid {
+    display: flex;
+    gap: 1rem;
+    align-content: center;
+    justify-content: center;
+}
+.cat-grid a{
+    text-decoration: none;
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+}
+
+.category-card img {
+    width: 36px;
+    height: 36px;
+}
+
+.category-card span {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.categories-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2.2rem;
+    color: #222;
+}
+
+.categories-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2.2rem;
+    flex-wrap: wrap;
+}
+
+.category-card-grid {
+    background: #fff;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 16px;
+    width: 7rem;
+    height: 18vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    border-color: #1abc9c;
+    box-shadow: 0 4px 16px rgba(26, 188, 156, 0.08);
+}
+
+.category-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-label {
+    font-size: 0.75rem;
+    color: #222;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+
+
+/* Tablets and below */
+@media (max-width: 900px) {
+    .categories-grid {
+        gap: 1.2rem;
+    }
+
+    .category-card {
+        width: 130px;
+        height: 130px;
+    }
+
+    .categories-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 600px) {
+    .categories-section {
+        padding: 0 0.3rem;
+    }
+
+    .categories-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .category-card {
+        width: 90vw;
+        max-width: 320px;
+        height: 90vw;
+        max-height: 120px;
+        margin-bottom: 1rem;
+    }
+
+    .categories-title {
+        font-size: 1.2rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .category-label {
+        font-size: 1rem;
+    }
+}
+
+/* 124304734878 */

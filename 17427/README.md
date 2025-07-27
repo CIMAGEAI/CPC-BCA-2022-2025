@@ -1,13 +1,13 @@
 <div align="center"> 
-<a href="https://antriview.systems/" target="_blank"><img src="./public/antriviewslogan.png" width="750px" /></a>
+<h2 align="center">✦ Your Al Interviewer That Prepares You Better Than Any Human Can. ✦</h2>
 </div></br>
 
 <div align="center"> 
-<a href="https://antriview.systems/" target="_blank"><img src="./public/antriviewtext.png" width="350px" /></a><br><br>
+<a href="https://antriview.systems/" target="_blank"><img src="./public/iconshadow.png" width="350px" /></a><br><br>
 <img src="./public/thisisantriview.png" width="750px" /><br>
-<h1 align="center"><a href="https://antriview.systems/"><strong>antriview.systems</strong></a></h1>
-
-<a href="https://antriview.systems/" target="_blank"><img src="./public/antriviewpunchline.png" width="750px" /></a>
+<h1 align="center"><a href="https://antriview.systems/"><strong>✦ antriview.systems ✦</strong></a></h1>
+  
+<h2 align="center">Practice Real Interviews. In Real Time. With a Real Al Powered Voice.</h2>
 
 <!--<h4 align="center">✦ Transform your GitHub journey into a professional resume in seconds! ✦</h4>-->
   
@@ -157,7 +157,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 **Ashutosh Kumar**  
 [🌐 www.ashutoshkumar.me](https://www.ashutoshkumar.me)  
 [💻 GitHub: @codeaashu](https://github.com/codeaashu)  
-🆔 College ID: **17427**<br>
-⚡ Reg No: 22303310028
-
+🆔 College ID: **17427**
+⚡ Reg.No - 22303310028
 <hr>

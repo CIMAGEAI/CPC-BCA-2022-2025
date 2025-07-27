@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bike Solutions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      color: white;
+      position: relative;
+    }
+
+    /* Watermark */
+    body::after {
+      content: "Praveen Kumar";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.07);
+      z-index: 0;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* Header with gradient text */
+    header {
+      text-align: center;
+      padding: 50px 20px 20px;
+      background: linear-gradient(45deg, #ff4081, #ff9100);
+      position: relative;
+      z-index: 1;
+      border-bottom: 5px solid #fff;
+    }
+
+    header h1 {
+      font-size: 5.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: linear-gradient(45deg, #23fc02, #067ff1, #e6fb05, #4c02fa);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 
+        2px 2px 6px rgba(0, 0, 0, 0.3),
+        -2px -2px 6px rgba(255, 255, 255, 0.15);
+      animation: gradientShift 8s ease infinite;
+      margin-bottom: 10px;
+      position: relative;
+      display: inline-block;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header p {
+      font-size: 2rem;
+      margin-top: 10px;
+      color: #ccc;
+      font-weight: bold;
+    }
+
+    /* Navigation bar */
+    nav {
+      background-color: rgba(0,0,0,0.5);
+      padding: 10px;
+      z-index: 1;
+      position: relative;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 1.2rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px #000;
+      z-index: 1;
+      position: relative;
+    }
+
+    .bike-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 10px 15px 50px;
+      gap: 20px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .bike-card {
+      background-color: #ffffff;
+      border-radius: 15px;
+      overflow: hidden;
+      width: 350px;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      z-index: 1;
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .bike-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .bike-card img.bike-image {
+      width: 95%;
+      height: 280px;
+      object-fit: cover;
+      background-color: #f4f4f4;
+      display: block;
+      margin: 0 auto;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .bike-card img.logo-image {
+      width: 180px;
+      height: auto;
+      margin: 0px auto 0px;
+      display: block;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+    }
+
+    .bike-card h3 {
+      font-size: 1.2rem;
+      margin: 5px 0 0 0;
+      color: #000;
+    }
+
+    /* Modern Footer Styles */
+    .modern-footer {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+      color: white;
+      padding: 40px 20px 20px;
+      margin-top: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modern-footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff4081, #ff9100, #23fc02, #067ff1);
+      animation: rainbowShift 3s ease infinite;
+    }
+
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-section {
+      padding: 0 15px;
+    }
+
+    .footer-section h3 {
+      color: #ffd700;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+    }
+
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, #ff4081, #ff9100);
+      transition: width 0.3s ease;
+    }
+
+    .footer-section:hover h3::after {
+      width: 50px;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 8px;
+    }
+
+    .footer-links a {
+      color: #e0e0e0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+      position: relative;
+      padding: 2px 0;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      margin-right: 8px;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #ffd700;
+      transform: translateX(5px);
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .contact-info {
+      list-style: none;
+      padding: 0;
+    }
+
+    .contact-info li {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      color: #e0e0e0;
+    }
+
+    .contact-info i {
+      margin-right: 10px;
+      color: #ffd700;
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icon i {
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .social-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .social-icon:hover::before {
+      left: 100%;
+    }
+
+    .social-icon.facebook {
+      background: linear-gradient(45deg, #1877f2, #42a5f5);
+    }
+
+    .social-icon.instagram {
+      background: linear-gradient(45deg, #e4405f, #f06292);
+    }
+
+    .social-icon.whatsapp {
+      background: linear-gradient(45deg, #25d366, #4caf50);
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 30px;
+      padding-top: 20px;
+      text-align: center;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .footer-bottom strong {
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .modern-footer {
+        padding: 30px 15px 15px;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .footer-section {
+        text-align: center;
+        padding: 0 10px;
+      }
+
+      .social-icons {
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .social-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+
+      .contact-info li {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .modern-footer {
+        padding: 25px 10px 10px;
+      }
+
+      .footer-section h3 {
+        font-size: 1.1rem;
+      }
+
+      .social-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>The Bike Solution</h1>
+    <p>Your Trusted Bike Repair Partner</p>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="#" onclick="location.reload(); return false;">Home</a>
+    <a href="aboutus.html">About Us</a>
+    <a href="contactus.html">Contact Us</a>
+    <a href="login.html" id="loginNav">Login</a>
+    <a href="register.html" id="registerNav">Register</a>
+    <a href="dashboard.html" id="dashboardNav" style="display: none;">Dashboard</a>
+  </nav>
+
+  <div class="section-title">Select Your Bike Company</div>
+
+  <section class="bike-container">
+    <div class="bike-card" onclick="selectCompany('Yamaha')">
+      <img src="YAMAHA.jpeg" alt="Yamaha" class="bike-image">
+      <img src="yamaha-logo.png" alt="Yamaha Logo" class="logo-image">
+    </div>
+    <div class="bike-card" onclick="selectCompany('TVS')">
+      <img src="TVS.jpg" alt="TVS" class="bike-image">
+      <img src="tvs-logo.png" alt="TVS Logo" class="logo-image">
+    </div>
+    <div class="bike-card" onclick="selectCompany('Royal Enfield')">
+      <img src="ROYAL.jpg" alt="Royal Enfield" class="bike-image">
+      <img src="royalenfield-logo.png" alt="Royal Enfield Logo" class="logo-image">
+    </div>
+    <div class="bike-card" onclick="selectCompany('Bajaj')">
+      <img src="BAJAJ.jpg" alt="Bajaj" class="bike-image">
+      <img src="bajaj-logo.png" alt="Bajaj Logo" class="logo-image">
+    </div>
+    <div class="bike-card" onclick="selectCompany('KTM')">
+      <img src="KTM.avif" alt="KTM" class="bike-image">
+      <img src="ktm-logo.png" alt="KTM Logo" class="logo-image">
+    </div>
+    <div class="bike-card" onclick="selectCompany('Honda')">
+      <img src="Honda.avif" alt="Honda" class="bike-image">
+      <img src="honda-logo.png" alt="Honda Logo" class="logo-image">
+    </div>
+    <div class="bike-card" onclick="selectCompany('Hero')">
+      <img src="hero.jpg" alt="Hero" class="bike-image">
+      <img src="hero-logo.png" alt="Hero Logo" class="logo-image">
+    </div>
+    <div class="bike-card" onclick="selectCompany('Kawasaki')">
+      <img src="ninja.jpg" alt="Kawasaki" class="bike-image">
+      <img src="kawasaki-logo.png" alt="Kawasaki Logo" class="logo-image">
+    </div>
+  </section>
+
+  <!-- Modern Footer -->
+  <footer class="modern-footer">
+    <div class="footer-content">
+      <!-- Quick Links Section -->
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="#" onclick="location.reload(); return false;">🏠 Home</a></li>
+          <li><a href="aboutus.html">👥 About Us</a></li>
+          <li><a href="contactus.html">📞 Contact Us</a></li>
+          <li><a href="admin.php">⚙️ Admin Panel</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="footer-section">
+        <h3>Contact Info</h3>
+        <ul class="contact-info">
+          <li><i>📞</i> +91 98765 43210</li>
+          <li><i>📧</i> info@bikesolutions.com</li>
+          <li><i>📍</i> 123 Bike Street, City, State</li>
+          <li><i>🕒</i> Mon-Sat: 9AM-7PM</li>
+        </ul>
+      </div>
+
+      <!-- Social Media -->
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/bikesolution" target="_blank" class="social-icon facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.instagram.com/bikesolution" target="_blank" class="social-icon instagram" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://wa.me/916202019630" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div class="footer-section">
+        <h3>Our Services</h3>
+        <ul class="footer-links">
+          <li><a href="#">🔧 Bike Repair</a></li>
+          <li><a href="#">🛠️ Maintenance</a></li>
+          <li><a href="#">🚿 Bike Wash</a></li>
+          <li><a href="#">🔋 Battery Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p>&copy; 2024 <strong>The Bike Solution</strong>. All rights reserved. | Designed and Developed by <strong>Praveen Kumar</strong> 🚀 | Passionate about Bikes & Code</p>
+    </div>
+  </footer>
+
+  <script>
+    // Check authentication status on page load
+    function checkAuthStatus() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const loginNav = document.getElementById('loginNav');
+      const registerNav = document.getElementById('registerNav');
+      const dashboardNav = document.getElementById('dashboardNav');
+      
+      if (currentUser) {
+        // User is logged in
+        loginNav.style.display = 'none';
+        registerNav.style.display = 'none';
+        dashboardNav.style.display = 'inline';
+      } else {
+        // User is not logged in
+        loginNav.style.display = 'inline';
+        registerNav.style.display = 'inline';
+        dashboardNav.style.display = 'none';
+      }
+    }
+
+    function selectCompany(company) {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      
+      if (!currentUser) {
+        const choice = confirm('You need to login to book services. Would you like to login now?');
+        if (choice) {
+          window.location.href = 'login.html';
+        }
+        return;
+      }
+      
+      // Store selected company in localStorage for dashboard
+      localStorage.setItem('selectedCompany', company);
+      
+      // If user is logged in, redirect to dashboard for booking
+      window.location.href = 'dashboard.html';
+    }
+
+    // Check auth status and Footer Enhancement JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+      checkAuthStatus();
+      // Add smooth scroll effect to footer links
+      const footerLinks = document.querySelectorAll('.footer-links a');
+      footerLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          if (this.getAttribute('href') === '#') {
+            e.preventDefault();
+            // Add a subtle animation effect
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              this.style.transform = '';
+            }, 150);
+          }
+        });
+      });
+
+      // Add click effects to social icons
+      const socialIcons = document.querySelectorAll('.social-icon');
+      socialIcons.forEach(icon => {
+        icon.addEventListener('click', function(e) {
+          // Create ripple effect before navigation
+          const ripple = document.createElement('span');
+          ripple.style.position = 'absolute';
+          ripple.style.borderRadius = '50%';
+          ripple.style.background = 'rgba(255,255,255,0.3)';
+          ripple.style.transform = 'scale(0)';
+          ripple.style.animation = 'ripple 0.6s linear';
+          ripple.style.left = '50%';
+          ripple.style.top = '50%';
+          ripple.style.width = '100%';
+          ripple.style.height = '100%';
+          ripple.style.marginLeft = '-50%';
+          ripple.style.marginTop = '-50%';
+          
+          this.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // Add hover sound effect simulation (visual feedback)
+      const footerSections = document.querySelectorAll('.footer-section');
+      footerSections.forEach(section => {
+        section.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-2px)';
+          this.style.transition = 'transform 0.3s ease';
+        });
+        
+        section.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+
+      // Animate footer on page load
+      const footer = document.querySelector('.modern-footer');
+      footer.style.opacity = '0';
+      footer.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        footer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        footer.style.opacity = '1';
+        footer.style.transform = 'translateY(0)';
+      }, 500);
+    });
+
+    // Add CSS animation for ripple effect
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Search Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" action="{% url 'global_search' %}" class="row g-3">
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-lg" 
+                                       name="q" value="{{ query }}" 
+                                       placeholder="Search reports, case numbers, locations...">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-home me-2"></i>Home
+                                </a>
+                                {% if user.is_authenticated %}
+                                <a href="{% url 'my_reports' %}" class="btn btn-outline-info">
+                                    <i class="fas fa-list me-2"></i>My Reports
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if query %}
+    <!-- Search Results -->
+    <div class="row">
+        <!-- Reports Results -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-file-alt me-2"></i>Reports ({{ total_reports }})
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if reports %}
+                        {% for report in reports %}
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">
+                                        <a href="{% url 'report_detail' report.id %}" class="text-decoration-none">
+                                            {{ report.title }}
+                                        </a>
+                                    </h6>
+                                    <p class="text-muted mb-2">{{ report.description|truncatewords:30 }}</p>
+                                    <div class="d-flex gap-3 text-muted small">
+                                        <span><i class="fas fa-hashtag me-1"></i>{{ report.case_number }}</span>
+                                        <span><i class="fas fa-map-marker-alt me-1"></i>{{ report.incident_location }}</span>
+                                        <span><i class="fas fa-user me-1"></i>{{ report.reporter.get_full_name }}</span>
+                                        <span><i class="fas fa-calendar me-1"></i>{{ report.created_at|date:"M d, Y" }}</span>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-{{ report.get_status_color }}">{{ report.get_status_display }}</span>
+                                    <br>
+                                    <small class="text-muted">{{ report.get_priority_display }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No reports found</h5>
+                            <p class="text-muted">Try different keywords or check your spelling.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Results (Admin Only) -->
+        {% if user.is_authenticated and user.role in 'admin,supervisor' and users %}
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-users me-2"></i>Users ({{ total_users }})
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for user_result in users %}
+                    <div class="border-bottom pb-2 mb-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">{{ user_result.get_full_name }}</h6>
+                                <small class="text-muted">{{ user_result.email }}</small>
+                                <br>
+                                <span class="badge bg-primary">{{ user_result.get_role_display }}</span>
+                            </div>
+                            <small class="text-muted">{{ user_result.date_joined|date:"M d, Y" }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Search Tips -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>Search Tips
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Search by:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Case number (e.g., CR-2024-0001)</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Report title or description</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Incident location</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Reporter name</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Advanced search:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-info text-info me-2"></i>Use quotes for exact phrases</li>
+                                <li><i class="fas fa-info text-info me-2"></i>Combine keywords for better results</li>
+                                <li><i class="fas fa-info text-info me-2"></i>Search in specific date ranges</li>
+                                <li><i class="fas fa-info text-info me-2"></i>Filter by status or category</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- No Search Query -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-search fa-4x text-muted mb-4"></i>
+                    <h3 class="text-muted">Search Crime Reports</h3>
+                    <p class="text-muted mb-4">
+                        Enter keywords to search through reports, case numbers, locations, and more.
+                    </p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <form method="get" action="{% url 'global_search' %}">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="q" 
+                                           placeholder="Try: 'theft', 'CR-2024', 'downtown'">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

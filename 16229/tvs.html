@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TVS Service Booking</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1b4d3e, #2e7d32);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #fff8e1;
+      border-radius: 15px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      position: relative;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 36px;
+      background: linear-gradient(90deg, #d4af37, #b8860b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900;
+      margin-bottom: 35px;
+      letter-spacing: 1.5px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #1b4d3e;
+      font-size: 16px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1.5px solid #a67c00;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      font-weight: 500;
+      color: #444;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #d4af37;
+      outline: none;
+      box-shadow: 0 0 6px #d4af37aa;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, #b8860b, #d4af37);
+      color: #2e2a0d;
+      font-size: 20px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px #b8860baa;
+      transition: background 0.4s ease, color 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #d4af37, #b8860b);
+      color: #1b2c07;
+      box-shadow: 0 8px 20px #d4af37cc;
+    }
+
+    #confirmation {
+      position: fixed;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      background-color: #fff8e1;
+      color: #6a4f00;
+      border: 2px solid #b8860b;
+      padding: 20px 25px;
+      border-radius: 12px;
+      font-size: 24px;
+      font-weight: 700;
+      display: none;
+      box-shadow: 0 6px 18px rgba(184, 134, 11, 0.7);
+      max-width: 320px;
+      text-align: center;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="confirmation"></div>
+
+    <h2>Book Your TVS Bike Service</h2>
+    <form id="bookingForm">
+      <label for="model">Select TVS Bike Model:</label>
+      <select name="model" id="model" required>
+        <option value="Sports">Sports</option>
+        <option value="Radeon">Radeon</option>
+        <option value="Starcity">Starcity</option>
+        <option value="Raider">Raider</option>
+        <option value="Ronin">Ronin</option>
+        <option value="Apache RTR 160 2v">Apache RTR 160 2v</option>
+        <option value="Apache RTR 180">Apache RTR 180</option>
+        <option value="Apache RTR 160 4v">Apache RTR 160 4v</option>
+        <option value="Apache RTR 200 4v">Apache RTR 200 4v</option>
+        <option value="Apache RTR 310">Apache RTR 310</option>
+        <option value="Apache RR 310">Apache RR 310</option>
+      </select>
+
+      <label for="regno">Bike Registration No. :</label>
+      <input type="text" name="regno" id="regno" required />
+
+      <label for="name">Customer Name:</label>
+      <input type="text" name="name" id="name" required />
+
+      <label for="phone">Phone Number:</label>
+      <input type="text" name="phone" id="phone" required />
+
+      <label for="address">Address:</label>
+      <textarea name="address" id="address" required></textarea>
+
+      <label for="problem">Bike Problem Description:</label>
+      <textarea name="problem" id="problem" required></textarea>
+
+      <button type="submit">Submit Booking</button>
+    </form>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const { jsPDF } = window.jspdf;
+    const form = document.getElementById("bookingForm");
+    const confirmation = document.getElementById("confirmation");
+
+    function generateToken() {
+      return Math.floor(Math.random() * 100) + 1;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = form.name.value.trim();
+      const phone = form.phone.value.trim();
+      const model = form.model.value;
+      const regno = form.regno.value.trim();
+      const address = form.address.value.trim();
+      const problem = form.problem.value.trim();
+      const company = "TVS";
+
+      const date = new Date();
+      date.setDate(date.getDate() + 2);
+      const time = `09:00 AM`;
+
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const months = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+      const serviceDate = `${days[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()} at ${time}`;
+      const token = generateToken();
+
+      confirmation.innerText = `✅ Thank you, ${name}! Your Token Number is ${token}. Please bring your bike on ${serviceDate}`;
+      confirmation.style.display = "block";
+
+      const doc = new jsPDF();
+      doc.setTextColor(212, 175, 55);
+      doc.setFontSize(24);
+      doc.setFont("helvetica", "bold");
+      doc.text("TVS Bike Service Booking Confirmation", 20, 25);
+
+      doc.setTextColor(101, 67, 33);
+      let y = 40;
+
+      function printField(label, value) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.text(label + ":", 20, y);
+        doc.setFont("helvetica", "normal");
+        doc.text(value, 80, y);
+        y += 12;
+      }
+
+      printField("Customer Name", name);
+      printField("Phone Number", phone);
+      printField("Bike Model", model);
+      printField("Bike Registration No.", regno);
+      printField("Address", address);
+      printField("Problem Description", problem);
+      printField("Token Number", token.toString());
+      printField("Service Date", serviceDate);
+
+      doc.save("TVS_Bike_Service_Booking.pdf");
+
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("mobile", phone);        // mobile to match PHP backend
+      formData.append("bike_model", model);    // bike_model to match PHP backend
+      formData.append("regno", regno);
+      formData.append("address", address);
+      formData.append("problem", problem);
+      formData.append("company", company);
+      formData.append("token", token);
+      formData.append("service_date", serviceDate);
+
+      fetch("submit.php", {
+        method: "POST",
+        body: formData
+      }).then(response => response.text())
+        .then(data => console.log("Response:", data));
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>

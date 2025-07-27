@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Reports | Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Summary Map Section -->
+        <div class="mb-4" style="background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); padding: 24px 32px 20px 32px;">
+            <h4 class="mb-3"><i class="fas fa-map-marked-alt me-2"></i>My Reports Map</h4>
+            <div id="myReportsMap" style="height: 350px; width: 100%; border-radius: 12px;"></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-4" style="background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); padding: 24px 32px 20px 32px;">
+            <h2><i class="fas fa-list me-2"></i>My Reports</h2>
+            <a href="{% url 'report_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i>Submit New Report
+            </a>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Search</label>
+                        <input type="text" name="search" class="form-control" 
+                               value="{{ current_filters.search }}" 
+                               placeholder="Search by case number, description, or location">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="">All Statuses</option>
+                            {% for status_code, status_name in status_choices %}
+                                <option value="{{ status_code }}" 
+                                        {% if current_filters.status == status_code %}selected{% endif %}>
+                                    {{ status_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Category</label>
+                        <select name="category" class="form-select">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" 
+                                        {% if current_filters.category == category.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="fas fa-search me-1"></i>Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                {% if current_filters.search or current_filters.status or current_filters.category %}
+                    <div class="mt-3">
+                        <a href="{% url 'my_reports' %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i>Clear Filters
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Reports List -->
+        {% if page_obj %}
+            <div class="row">
+                {% for report in page_obj %}
+                    <div class="col-12 mb-3">
+                        <div class="card report-item {% if report.priority == 'high' %}high-priority{% elif report.priority == 'medium' %}medium-priority{% else %}low-priority{% endif %}">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h5 class="card-title mb-0">
+                                                <a href="{% url 'report_detail' report.id %}" class="text-decoration-none">
+                                                    Case #{{ report.case_number }}
+                                                </a>
+                                            </h5>
+                                            <span class="status-badge status-{{ report.status }}">
+                                                {{ report.get_status_display }}
+                                            </span>
+                                        </div>
+                                        <p class="card-text text-muted mb-2">
+                                            <i class="fas fa-tag me-1"></i>{{ report.category.name }}
+                                            <span class="mx-2">•</span>
+                                            <i class="fas fa-calendar me-1"></i>{{ report.incident_date|date:"M d, Y" }}
+                                            <span class="mx-2">•</span>
+                                            <i class="fas fa-map-marker-alt me-1"></i>{{ report.incident_location|truncatechars:50 }}
+                                        </p>
+                                        <p class="card-text">{{ report.description|truncatechars:150 }}</p>
+                                    </div>
+                                    <div class="col-md-4 text-md-end">
+                                        <div class="mb-2">
+                                            <span class="badge bg-{% if report.priority == 'high' %}danger{% elif report.priority == 'medium' %}warning{% else %}success{% endif %}">
+                                                {{ report.get_priority_display }} Priority
+                                            </span>
+                                        </div>
+                                        <small class="text-muted">
+                                            Submitted: {{ report.created_at|date:"M d, Y" }}
+                                        </small>
+                                        {% if report.assigned_officer %}
+                                            <br>
+                                            <small class="text-muted">
+                                                Assigned to: {{ report.assigned_officer.first_name }} {{ report.assigned_officer.last_name }}
+                                            </small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+                <nav aria-label="Reports pagination" style="background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); max-width: 500px; margin: 32px auto 0 auto; padding: 16px 0;">
+                    <ul class="pagination justify-content-center mb-0">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}{% if current_filters.status %}&status={{ current_filters.status }}{% endif %}{% if current_filters.category %}&category={{ current_filters.category }}{% endif %}">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}{% if current_filters.status %}&status={{ current_filters.status }}{% endif %}{% if current_filters.category %}&category={{ current_filters.category }}{% endif %}">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}{% if current_filters.status %}&status={{ current_filters.status }}{% endif %}{% if current_filters.category %}&category={{ current_filters.category }}{% endif %}">
+                                        {{ num }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}{% if current_filters.status %}&status={{ current_filters.status }}{% endif %}{% if current_filters.category %}&category={{ current_filters.category }}{% endif %}">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}{% if current_filters.status %}&status={{ current_filters.status }}{% endif %}{% if current_filters.category %}&category={{ current_filters.category }}{% endif %}">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+
+        {% else %}
+            <div class="text-center py-5" style="background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); max-width: 500px; margin: 40px auto;">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No reports found</h4>
+                <p class="text-muted">
+                    {% if current_filters.search or current_filters.status or current_filters.category %}
+                        No reports match your current filters. Try adjusting your search criteria.
+                    {% else %}
+                        You haven't submitted any reports yet. 
+                        <a href="{% url 'report_create' %}" class="text-decoration-none">Submit your first report</a>.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/leaflet.css" />
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/leaflet.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Prepare reports data for map
+    var reports = [
+        {% for report in page_obj %}
+            {% if report.latitude and report.longitude %}
+            {
+                lat: {{ report.latitude }},
+                lng: {{ report.longitude }},
+                case_number: "{{ report.case_number|escapejs }}",
+                description: "{{ report.description|truncatechars:80|escapejs }}",
+                url: "{% url 'report_detail' report.id %}"
+            },
+            {% endif %}
+        {% endfor %}
+    ];
+    if (reports.length > 0) {
+        var map = L.map('myReportsMap').setView([reports[0].lat, reports[0].lng], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        reports.forEach(function(rep) {
+            var marker = L.marker([rep.lat, rep.lng]).addTo(map);
+            marker.bindPopup('<b>Case #' + rep.case_number + '</b><br>' + rep.description + '<br><a href="' + rep.url + '">View Details</a>');
+        });
+        // Fit map to all markers
+        var group = new L.featureGroup(reports.map(r => L.marker([r.lat, r.lng])));
+        map.fitBounds(group.getBounds().pad(0.2));
+    } else {
+        // No reports with location
+        var map = L.map('myReportsMap').setView([22.9734, 78.6569], 5); // Center of India
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    }
+});
+</script>
+{% endblock %} 

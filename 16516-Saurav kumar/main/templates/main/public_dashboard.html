@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title %}Public Dashboard{% endblock %}
+{% block content %}
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 mb-4">
+      <div class="card mb-3">
+        <div class="card-body text-center">
+          <i class="fas fa-user fa-3x mb-2 text-info"></i>
+          <h5 class="card-title">{{ user_info.name|default:'Citizen' }}</h5>
+          <p class="mb-1"><strong>ID:</strong> {{ user_info.id }}</p>
+          <p class="mb-1"><strong>Role:</strong> {{ user_info.role }}</p>
+          <p class="mb-1"><strong>Last Login:</strong> {{ user_info.last_login|default:'-' }}</p>
+        </div>
+      </div>
+      <div class="list-group mb-3">
+        <a href="/reports/submit/" class="list-group-item list-group-item-action"><i class="fas fa-plus me-2"></i>नई शिकायत दर्ज करें</a>
+        <a href="/reports/my_reports/" class="list-group-item list-group-item-action"><i class="fas fa-list me-2"></i>मेरी रिपोर्ट्स देखें</a>
+        <a href="/reports/report_tracking/" class="list-group-item list-group-item-action"><i class="fas fa-search me-2"></i>शिकायत ट्रैक करें</a>
+        <a href="/authentication/profile_edit/" class="list-group-item list-group-item-action"><i class="fas fa-user-edit me-2"></i>प्रोफाइल एडिट करें</a>
+        <a href="/notifications/" class="list-group-item list-group-item-action"><i class="fas fa-bell me-2"></i>नोटिफिकेशन देखें</a>
+        <a href="/auth/logout/" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="col-md-9">
+      <!-- Welcome Panel -->
+      <div class="mb-4">
+        <h2 class="fw-bold mb-1 text-info">👤 Public Dashboard</h2>
+        <p class="text-info">Welcome, {{ user_info.name|default:'Citizen' }}!</p>
+      </div>
+      <!-- Summary Cards -->
+      <div class="row mb-4">
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-white bg-info h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.total|default:'0' }}</div>
+              <div>Total Cases<br><span class="small">कुल मामले</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-dark bg-warning h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.open|default:'0' }}</div>
+              <div>Open<br><span class="small">खुले</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-white bg-primary h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.in_progress|default:'0' }}</div>
+              <div>In Progress<br><span class="small">प्रगति पर</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-6 mb-2">
+          <div class="card text-white bg-success h-100">
+            <div class="card-body text-center">
+              <div class="fs-3">{{ stats.closed|default:'0' }}</div>
+              <div>Closed<br><span class="small">बंद</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Search/Filter Form -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <form class="row g-2 align-items-end" method="get">
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Case ID</label>
+              <input type="text" class="form-control" name="case_id" placeholder="FIR #" value="{{ current_filters.case_id }}">
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Case Type</label>
+              <select class="form-select" name="case_type">
+                <option value="">All</option>
+                {% for category in categories %}
+                  <option value="{{ category.name }}" {% if current_filters.case_type == category.name %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Priority</label>
+              <select class="form-select" name="priority">
+                <option value="">All</option>
+                {% for value, label in priorities %}
+                  <option value="{{ value }}" {% if current_filters.priority == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Status</label>
+              <select class="form-select" name="status">
+                <option value="">All</option>
+                {% for value, label in status_choices %}
+                  <option value="{{ value }}" {% if current_filters.status == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Date From</label>
+              <input type="date" class="form-control" name="date_from" value="{{ current_filters.date_from }}">
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <label class="form-label">Date To</label>
+              <input type="date" class="form-control" name="date_to" value="{{ current_filters.date_to }}">
+            </div>
+            <div class="col-md-2 col-12 mb-2">
+              <button class="btn btn-info w-100"><i class="fas fa-search me-1"></i>Search</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Case List Table -->
+      <div class="card mb-4">
+        <div class="card-header bg-light fw-bold"><i class="fas fa-list me-2"></i>My FIRs (मेरी शिकायतें)</div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-secondary">
+              <tr>
+                <th>Case ID</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Date Filed</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for case in cases %}
+              <tr>
+                <td>{{ case.case_number }}</td>
+                <td>{% if case.category %}{{ case.category.name }}{% endif %}</td>
+                <td><span class="badge bg-warning text-dark">{{ case.get_status_display }}</span></td>
+                <td><span class="badge bg-danger">{{ case.get_priority_display }}</span></td>
+                <td>{{ case.created_at|date:'Y-m-d' }}</td>
+                <td>
+                  <a href="/reports/report/{{ case.id }}/" class="btn btn-sm btn-outline-info">View</a>
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="6" class="text-center text-muted">No FIRs filed yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 

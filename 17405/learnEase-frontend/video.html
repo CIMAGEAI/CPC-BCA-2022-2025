@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LearnEase | Video Lectures + Notes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #007bff;
+      --bg: #f4f8fb;
+      --card: #fff;
+      --text: #333;
+      --gray: #777;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 0;
+    }
+
+    /* Header */
+    header {
+      background: #004080;
+      color: white;
+      padding: 15px 0;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    nav ul.nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding-left: 0;
+    }
+
+    nav ul.nav-menu li {
+      display: inline;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .nav-menu a:hover {
+      color: #ffcc00;
+    }
+
+    /* Main Content */
+    h1 {
+      text-align: center;
+      margin: 2rem 1rem;
+      color: var(--primary);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tabs button {
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--primary);
+      background: var(--card);
+      color: var(--primary);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .tabs button.active,
+    .tabs button:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .content {
+      max-width: 1000px;
+      margin: auto;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border: 0;
+    }
+
+    .playlist, .notes {
+      margin-top: 1rem;
+    }
+
+    .playlist li, .notes li {
+      margin-bottom: 0.5rem;
+      color: var(--gray);
+    }
+
+    .notes li a {
+      text-decoration: none;
+      color: var(--primary);
+    }
+
+    .notes li a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .tabs {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .header-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav ul.nav-menu {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo">LearnEase</div>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="course.html">Courses</a></li>
+          <li><a href="testseries.html">Test Series</a></li>
+          <li><a href="video.html">Videos</a></li>
+          <li><a href="service.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Title -->
+  <h1>LearnEase - Video Lectures & Notes</h1>
+
+  <!-- Tab Buttons -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('c')">C</button>
+    <button class="tab-btn" onclick="showTab('cpp')">C++</button>
+    <button class="tab-btn" onclick="showTab('java')">Java</button>
+    <button class="tab-btn" onclick="showTab('python')">Python</button>
+    <button class="tab-btn" onclick="showTab('html')">HTML</button>
+    <button class="tab-btn" onclick="showTab('css')">CSS</button>
+    <button class="tab-btn" onclick="showTab('ml')">Machine Learning</button>
+  </div>
+
+  <!-- Tab Contents -->
+  <div id="c" class="content tab-content">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/KJgsSFOSQv0" allowfullscreen></iframe>
+    </div>
+    <h3>Topics:</h3>
+    <ul class="playlist">
+      <li>Intro to C</li>
+      <li>Data Types</li>
+      <li>Loops, Functions</li>
+    </ul>
+    <h3>Download Notes:</h3>
+    <ul class="notes">
+      <li><a href="C.pdf" download>📄 C Programming Notes (PDF)</a></li>
+    </ul>
+  </div>
+
+  <div id="cpp" class="content tab-content" style="display:none;">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/vLnPwxZdW4Y" allowfullscreen></iframe>
+    </div>
+    <ul class="playlist">
+      <li>OOP Basics</li>
+      <li>Inheritance, Polymorphism</li>
+    </ul>
+    <h3>Download Notes:</h3>
+    <ul class="notes">
+      <li><a href="C++.pdf" download>📄 C++ Notes (PDF)</a></li>
+    </ul>
+  </div>
+
+  <div id="java" class="content tab-content" style="display:none;">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/UmnCZ7-9yDY" allowfullscreen></iframe>
+    </div>
+    <ul class="playlist">
+      <li>Java Basics</li>
+      <li>OOP, Exceptions</li>
+    </ul>
+    <h3>Download Notes:</h3>
+    <ul class="notes">
+      <li><a href="java.pdf" download>📄 Java Notes (PDF)</a></li>
+    </ul>
+  </div>
+
+  <div id="python" class="content tab-content" style="display:none;">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/_uQrJ0TkZlc" allowfullscreen></iframe>
+    </div>
+    <ul class="playlist">
+      <li>Variables & Data Types</li>
+      <li>Control Flow, Functions</li>
+    </ul>
+    <h3>Download Notes:</h3>
+    <ul class="notes">
+      <li><a href="python.pdf" download>📄 Python Notes (PDF)</a></li>
+    </ul>
+  </div>
+
+  <div id="html" class="content tab-content" style="display:none;">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/qz0aGYrrlhU" allowfullscreen></iframe>
+    </div>
+    <ul class="playlist">
+      <li>Tags & Attributes</li>
+      <li>Forms & Media</li>
+    </ul>
+    <h3>Download Notes:</h3>
+    <ul class="notes">
+      <li><a href="htmlbook.pdf" download>📄 HTML Notes (PDF)</a></li>
+    </ul>
+  </div>
+
+  <div id="css" class="content tab-content" style="display:none;">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/1PnVor36_40" allowfullscreen></iframe>
+    </div>
+    <ul class="playlist">
+      <li>Selectors, Box Model</li>
+      <li>Flexbox & Grid</li>
+    </ul>
+    <h3>Download Notes:</h3>
+    <ul class="notes">
+      <li><a href="htmlbook.pdf" download>📄 CSS Notes (PDF)</a></li>
+    </ul>
+  </div>
+
+  <div id="ml" class="content tab-content" style="display:none;">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/GwIo3gDZCVQ" allowfullscreen></iframe>
+    </div>
+    <ul class="playlist">
+      <li>Intro to ML</li>
+      <li>Regression & Classification</li>
+    </ul>
+    <h3>Download Notes:</h3>
+    <ul class="notes">
+      <li><a href="machine.pdf" download>📄 Machine Learning Using Python Notes (PDF)</a></li>
+    </ul>
+  </div>
+
+  <!-- JS: Tab Switching -->
+  <script>
+    function showTab(id) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

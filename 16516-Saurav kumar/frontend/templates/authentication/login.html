@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login - Crime Report Portal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <!-- Combined Login Form -->
+        <div class="col-lg-6 d-flex align-items-center justify-content-center bg-gradient-primary">
+            <div class="login-container p-5">
+                <div class="text-center mb-4">
+                    <h1 class="display-4 text-white fw-bold">Crime Report Portal</h1>
+                    <p class="lead text-white-50">Choose your login type</p>
+                </div>
+                
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-sign-in-alt fa-3x text-primary mb-3"></i>
+                            <h2 class="h3 mb-0">Login Portal</h2>
+                            <p class="text-muted">Select your role to continue</p>
+                        </div>
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- Login Form -->
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <!-- Login Type Selector (moved inside form) -->
+                            <div class="mb-4">
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="loginType" id="public" value="public" checked required>
+                                    <label class="btn btn-outline-success" for="public">
+                                        <i class="fas fa-users me-2"></i>Public
+                                    </label>
+                                    
+                                    <input type="radio" class="btn-check" name="loginType" id="police" value="police" required>
+                                    <label class="btn btn-outline-warning" for="police">
+                                        <i class="fas fa-badge me-2"></i>Police
+                                    </label>
+                                    
+                                    <input type="radio" class="btn-check" name="loginType" id="admin" value="admin" required>
+                                    <label class="btn btn-outline-primary" for="admin">
+                                        <i class="fas fa-shield-alt me-2"></i>Admin
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">
+                                    <i class="fas fa-user me-2"></i><span id="usernameLabel">Username or Email</span>
+                                </label>
+                                <input type="text" class="form-control form-control-lg" id="username" name="username" required>
+                                <div class="invalid-feedback">
+                                    Please enter your username.
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="password" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>Password
+                                </label>
+                                <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+                                <div class="invalid-feedback">
+                                    Please enter your password.
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3" id="loginBtn">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                            </button>
+                        </form>
+
+                        <div class="text-center mb-3">
+                            <a href="{% url 'authentication:forgot_password' %}" class="text-decoration-none">
+                                <i class="fas fa-key me-1"></i>Forgot Password?
+                            </a>
+                        </div>
+
+                        <div class="text-center">
+                            <p class="text-muted">Don't have an account?</p>
+                            <a href="{% url 'authentication:register' %}" class="btn btn-outline-success">
+                                <i class="fas fa-user-plus me-2"></i>Register Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Preview -->
+        <div class="col-lg-6 d-flex align-items-center justify-content-center bg-light">
+            <div class="p-5">
+                <h2 class="h1 mb-4 text-primary">Portal Features</h2>
+                
+                <!-- Public Features -->
+                <div id="publicFeatures" class="feature-section">
+                    <h3 class="h4 mb-3 text-success"><i class="fas fa-users me-2"></i>Public Citizen</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="feature-card p-3 border rounded">
+                                <i class="fas fa-file-upload fa-2x text-success mb-2"></i>
+                                <h6>Report Crimes</h6>
+                                <small class="text-muted">Submit crime reports easily</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-card p-3 border rounded">
+                                <i class="fas fa-search fa-2x text-success mb-2"></i>
+                                <h6>Track Cases</h6>
+                                <small class="text-muted">Monitor your report status</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Police Features -->
+                <div id="policeFeatures" class="feature-section" style="display: none;">
+                    <h3 class="h4 mb-3 text-warning"><i class="fas fa-badge me-2"></i>Police Officer</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="feature-card p-3 border rounded">
+                                <i class="fas fa-file-alt fa-2x text-warning mb-2"></i>
+                                <h6>Case Management</h6>
+                                <small class="text-muted">Manage criminal cases</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-card p-3 border rounded">
+                                <i class="fas fa-search fa-2x text-warning mb-2"></i>
+                                <h6>Investigation Tools</h6>
+                                <small class="text-muted">Access investigation resources</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Features -->
+                <div id="adminFeatures" class="feature-section" style="display: none;">
+                    <h3 class="h4 mb-3 text-primary"><i class="fas fa-shield-alt me-2"></i>Administrator</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="feature-card p-3 border rounded">
+                                <i class="fas fa-users-cog fa-2x text-primary mb-2"></i>
+                                <h6>User Management</h6>
+                                <small class="text-muted">Manage all users and roles</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-card p-3 border rounded">
+                                <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                                <h6>Analytics Dashboard</h6>
+                                <small class="text-muted">View system statistics</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #c4b289 10%, black 100%);
+}
+
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.login-container {
+    max-width: 500px;
+    width: 100%;
+}
+
+.btn-check:checked + .btn-outline-success {
+    background-color: #198754;
+    border-color: #198754;
+    color: white;
+}
+
+.btn-check:checked + .btn-outline-warning {
+    background-color: #fd7e14;
+    border-color: #fd7e14;
+    color: white;
+}
+
+.btn-check:checked + .btn-outline-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+</style>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Login type selector
+document.addEventListener('DOMContentLoaded', function() {
+    const loginTypeRadios = document.querySelectorAll('input[name="loginType"]');
+    const publicFeatures = document.getElementById('publicFeatures');
+    const policeFeatures = document.getElementById('policeFeatures');
+    const adminFeatures = document.getElementById('adminFeatures');
+    const usernameLabel = document.getElementById('usernameLabel');
+    const loginBtn = document.getElementById('loginBtn');
+
+    loginTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Hide all feature sections
+            publicFeatures.style.display = 'none';
+            policeFeatures.style.display = 'none';
+            adminFeatures.style.display = 'none';
+
+            // Show selected feature section
+            if (this.value === 'public') {
+                publicFeatures.style.display = 'block';
+                usernameLabel.textContent = 'Username or Email';
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Login as Citizen';
+                loginBtn.className = 'btn btn-success btn-lg w-100 mb-3';
+            } else if (this.value === 'police') {
+                policeFeatures.style.display = 'block';
+                usernameLabel.textContent = 'Badge Number';
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Login as Officer';
+                loginBtn.className = 'btn btn-warning btn-lg w-100 mb-3';
+            } else if (this.value === 'admin') {
+                adminFeatures.style.display = 'block';
+                usernameLabel.textContent = 'Username';
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Login as Admin';
+                loginBtn.className = 'btn btn-primary btn-lg w-100 mb-3';
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 
