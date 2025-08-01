@@ -1,0 +1,115 @@
+
+:root {
+  --about-bg: #1a1a1a;
+  --about-card-bg: #1f2937;
+  --about-text-primary: #f3f4f6; 
+  --about-text-secondary: #9ca3af; 
+  --about-accent-color: #2dbab1; 
+  --about-border-color: #374151; 
+}
+
+.about-us-container {
+  background-color: var(--about-bg);
+  color: var(--about-text-primary);
+  padding: 40px 20px;
+  max-width: 960px; 
+  margin: 40px auto;
+  border-radius: 16px;
+  border: 1px solid var(--about-border-color);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.about-us-container h2 {
+  text-align: center;
+  font-size: 2.5rem; 
+  font-weight: 700;
+  color: var(--about-accent-color); 
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.about-us-container > p { 
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--about-text-secondary);
+  margin-bottom: 40px; 
+  line-height: 1.7;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-us-content {
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 30px; 
+}
+
+.about-us-section {
+  background-color: var(--about-card-bg);
+  padding: 30px; 
+  border-radius: 12px;
+  border: 1px solid var(--about-border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-us-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(45, 186, 177, 0.1); 
+}
+
+.about-us-section h3 {
+  font-size: 1.5rem;
+  color: var(--about-text-primary);
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--about-accent-color);
+  padding-bottom: 10px;
+  display: inline-block; 
+}
+
+.about-us-section p {
+  color: var(--about-text-secondary);
+  line-height: 1.6;
+  text-align: left; 
+}
+
+.values-list {
+  list-style-type: none; 
+  padding-left: 0;
+  margin: 0;
+}
+
+.values-list li {
+  color: var(--about-text-secondary);
+  padding-left: 30px; 
+  position: relative;
+  font-size: 1rem;
+  margin-bottom: 15px; 
+  line-height: 1.5;
+}
+
+.values-list li::before {
+  content: '✓'; 
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--about-accent-color);
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .about-us-content {
+    grid-template-columns: 1fr; 
+  }
+
+  .about-us-container h2 {
+    font-size: 2rem;
+  }
+
+  .about-us-section h3 {
+    font-size: 1.3rem;
+  }
+}
